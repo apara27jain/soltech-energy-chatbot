@@ -145,6 +145,7 @@
     flex-direction: row !important;
     justify-content: space-between !important;
     align-items: center !important;
+    height: 70px !important;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
@@ -153,6 +154,7 @@
     flex-direction: row !important;
     align-items: center !important;
     gap: 12px;
+    background: transparent !important; /* Prevents any image leaking */
 }
 
 .company-logo-container {
@@ -169,23 +171,33 @@
 }
 
 .bot-avatar {
-    font-size: 20px;
-    background-color: #ffffff !important;
-    width: 38px;
-    height: 38px;
-    border-radius: 50% !important;
-    overflow: hidden !important;
-    padding: 2px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important; 
+    max-height: 40px !important;
+    background-color: #ffffff !important; 
+    border-radius: 50% !important;        
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: hidden !important;          
+    padding: 3px !important;             
+    box-sizing: border-box !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.bot-avatar img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important; 
+    background: transparent !important;
+    border-radius: 0 !important;   
 }
 
 .header-brand-logo {
     width: 100%;
     height: 100%;
-    object-fit: contain !important; /* Crucial: Scales the whole image down so NO letters are cut off */
+    object-fit: contain !important; 
     border-radius: 50%;
 }
 
