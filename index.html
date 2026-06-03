@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soltech Energy | Solar Solutions Jaipur</title>
+    <meta name="description" content="Soltech Energy provides residential and commercial solar installation services in Jaipur and Rajasthan.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+
+    <button id="chat-toggle" class="chat-toggle">
+        <i class="fas fa-comments"></i>
+        <span class="notification-dot"></span>
+    </button>
+
+    <div id="chatbot-container" class="chatbot-container">
+        
+        <div class="chat-header">
+            <div class="header-left">
+                <div class="bot-avatar">
+                    <img src="logo.jpg" alt="Soltech Logo" style="width: 24px; height: 24px; object-fit: contain;" 
+                    onerror="this.style.display='none';">
+                </div>
+                <div>
+                    <h3>Soltech Assistant</h3>
+                    <span class="status">Online</span>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button id="refresh-chat" title="Restart Chat">
+                    <i class="fas fa-rotate-right"></i>
+                </button>
+                <button id="minimize-chat" title="Minimize">
+                    <i class="fas fa-minus"></i>
+                </button>
+            </div>
+        </div>
+
+        <div id="chat-box" class="chat-box">
+            <div class="bot-message">
+                <div class="message-content">
+                    <strong>☀️ Welcome to Soltech Energy</strong>
+                    <br><br>
+                    We help homeowners and businesses reduce electricity bills with smart solar solutions.
+                    <br><br>
+                    Choose a topic below or ask your specific question directly in the text box.
+                </div>
+            </div>
+            </div>
+
+        <div id="typing-indicator" class="typing-indicator hidden">
+            <div class="typing-bubble">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+
+        <div id="lead-progress" class="lead-progress hidden">
+            <div class="progress-bar">
+                <div id="progress-fill"></div>
+            </div>
+            <small>Solar Assessment Progress</small>
+        </div>
+
+        <div class="chat-input-container">
+            <input 
+                type="text" 
+                id="user-input" 
+                placeholder="Ask about solar panels, subsidy, pricing..." 
+                autocomplete="off"
+            >
+            <button id="send-btn">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
+    <div id="calculator-modal" class="calculator-modal hidden">
+        <div class="calculator-content">
+            <button id="close-calculator">&times;</button>
+            <h2>Solar Savings Calculator</h2>
+            <input type="number" id="monthly-bill" placeholder="Monthly Electricity Bill">
+            <button id="calculate-btn">Calculate Savings</button>
+            <div id="calculator-result"></div>
+        </div>
+    </div>
+
+    <script src="intents.js"></script>
+    <script src="chatbot.js"></script>
+
+</body>
+</html>
