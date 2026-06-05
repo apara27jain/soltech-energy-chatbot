@@ -31,14 +31,14 @@ const CRM_SETTINGS = {
 };
 
 const KEYWORD_OPTIONS = [
-    "Subsidy", 
-    "Net Metering", 
-    "Residential Setup", 
-    "Commercial Setup", 
-    "Maintenance & AMC", 
-    "Warranty & Life", 
-    "Weather Safety",
-    "Get in Touch"
+    "Government Subsidy 🏛️", 
+    "Net Metering Info 🔄", 
+    "Solar for Home 🏡", 
+    "Solar for Business 🏢", 
+    "Cleaning & Service 🔧", 
+    "Warranty & Panel Life 🛡️", 
+    "Rain & Weather Safety 🌧️",
+    "Talk to an Expert 📞"
 ];
 
 // =====================================
@@ -57,7 +57,7 @@ if (minimizeChat) {
 }
 
 // ==========================================================================
-// DEFAULT WELCOME INITIALIZER
+// NATURAL, CUSTOMER-FIRST WELCOME GREETING
 // ==========================================================================
 function initializeWelcomeGreeting() {
     chatBox.innerHTML = `
@@ -66,11 +66,13 @@ function initializeWelcomeGreeting() {
             <div class="company-logo-container" style="margin-bottom: 12px; display: flex; align-items: center;">
                 <img src="logo.png" alt="Soltech Energy Logo" class="chat-company-logo" style="max-height: 40px; width: auto; object-fit: contain;" onerror="this.parentNode.style.display='none';">
             </div>
-            <strong>Welcome to Soltech Energy</strong>
+            <strong>Hi there! Welcome to Soltech Energy. 👋</strong>
             <br><br>
-            We are Jaipur's premier solar engineering firm, designing high-yield systems for residential rooftops and commercial enterprises.
+            We are Jaipur's leading solar team, helping families and businesses switch to clean energy and clear out those heavy monthly power bills. 
             <br><br>
-            Feel free to type a question below, click a quick category, or tap the green <strong>WhatsApp button</strong> anytime to link directly with our engineering desk!
+            💡 <strong>A quick note on pricing:</strong> Every roof gets a different amount of sunlight, shadow, and needs a specific system size. To make sure you get an 100% accurate price tailored to your roof, we don't use generic calculators here. Instead, our engineers share direct, real-time quotes over a quick WhatsApp chat!
+            <br><br>
+            Feel free to type any question below, click one of our popular topics, or tap the green <strong>WhatsApp button</strong> at the bottom to talk to our team right away!
         </div>
     </div>
     `;
@@ -87,7 +89,7 @@ if (refreshChat) {
 }
 
 // ==========================================================================
-// TEXT PROCESSING ENGINE (RE-ENABLED TYPING LOGIC)
+// REALISTIC TEXT PROCESSING ENGINE (REMOVED STIFF REPLIES)
 // ==========================================================================
 function processMessage(userText) {
     const cleanText = userText.toLowerCase().trim();
@@ -98,15 +100,17 @@ function processMessage(userText) {
         
         let targetResponse = "";
         
-        // Dynamic response parser matching keywords or custom user inputs
+        // Conversational responses tailored to what users actually mean
         if (cleanText.includes("subsidy")) {
-            targetResponse = "🏛️ <strong>Subsidy Status:</strong> National solar subsidies apply strictly to residential grid connections. Because these structural rates alter regularly, tap the green WhatsApp banner above to lock in your verified quote with our team!";
-        } else if (cleanText.includes("price") || cleanText.includes("cost") || cleanText.includes("calculator") || cleanText.includes("how much")) {
-            targetResponse = "⚡ <strong>Custom Feasibility Pricing:</strong> Solar plant investment parameters rely on your property's shadow profiles and power habits. To generate an accurate engineering blueprint without hectic form-filling, click the green WhatsApp connection banner!";
-        } else if (cleanText.includes("net metering") || cleanText.includes("jvvnl")) {
-            targetResponse = "🔄 <strong>JVVNL Grid Integration:</strong> Net-metering structures send your extra daytime energy back to the local utility loop. We handle all documentation for this! Let's map your application directly over WhatsApp.";
+            targetResponse = "🏛️ <strong>How do solar subsidies work?</strong><br><br>Great question! The government offers great financial subsidies to help lower the upfront cost of your solar panels, but these strictly apply to residential homes. Since government slabs and application rules can update, tap the green <strong>WhatsApp button</strong> above so our team can check the exact current subsidy discount available for your home setup!";
+        } else if (cleanText.includes("price") || cleanText.includes("cost") || cleanText.includes("calculator") || cleanText.includes("how much") || cleanText.includes("quote")) {
+            targetResponse = "💰 <strong>Looking for a price estimate?</strong><br><br>The exact investment depends entirely on your daily electricity usage and how much open space you have on your roof. Rather than giving you a generic online guess that turns out wrong, we'd love to calculate a free, precise savings report for you. Tap the green <strong>WhatsApp button</strong> above to connect directly with our local engineering desk!";
+        } else if (cleanText.includes("net metering") || cleanText.includes("jvvnl") || cleanText.includes("meter")) {
+            targetResponse = "🔄 <strong>What is Net Metering?</strong><br><br>Net metering is a system where your extra solar power goes back to the JVVNL grid layout. At the end of the month, JVVNL subtracts that from your bill! Our team handles 100% of the paperwork and permissions for this. Tap the green WhatsApp bar to see how we set this up for your property.";
+        } else if (cleanText.includes("weather") || cleanText.includes("rain") || cleanText.includes("cloud")) {
+            targetResponse = "🌧️ <strong>Do panels work during monsoons or winters?</strong><br><br>Yes, they absolutely do! Modern solar systems run on light, not heat, so they keep producing clean energy even when it is cloudy or rainy. Plus, the structure acts like a protective shield for your roof. Want to see past installation examples here in Jaipur? Tap the green WhatsApp button above to chat with us!";
         } else {
-            targetResponse = `🤖 <strong>Query Processed:</strong> For specific system designs, commercial asset sheets, or warranty guidelines in Jaipur, tap the green <strong>WhatsApp banner</strong> to receive instant, verified answers directly on your phone.`;
+            targetResponse = `🤖 <strong>Got your message!</strong><br><br>To give you the most detailed answer about system sizes, warranties, or custom installation options for your property here in Jaipur, please tap the green <strong>WhatsApp button</strong> above. A real expert from our team will take over and answer you instantly!`;
         }
 
         addBotMessage(targetResponse, true);
@@ -114,28 +118,24 @@ function processMessage(userText) {
 }
 
 // ==========================================================================
-// CORE WHATSAPP REDIRECT AND AUTOMATED HEADERS
+// CORE WHATSAPP REDIRECT AND AUTOMATED BACKEND INTEGRATION
 // ==========================================================================
 function launchWhatsAppLeadGen() {
     const waBaseURL = "https://wa.me/";
     const waFullLink = `${waBaseURL}${CRM_SETTINGS.WhatsAppNumber}/?text=${encodeURIComponent(CRM_SETTINGS.InitialHiMessage)}`;
     
-    console.log(`⚡ CRM CORE: Launching auto-lead system to WhatsApp phone app.`);
-    
-    // Automatically tags incoming traffic background data as Jaipur before dispatching
-    notifyCRMofWhatsAppClick(CRM_SETTINGS.DefaultLeadLocation, "Chatbot_Interactive_Widget");
-
+    console.log(`⚡ CRM CORE: Opening WhatsApp channel.`);
+    notifyCRMofWhatsAppClick(CRM_SETTINGS.DefaultLeadLocation, "Chatbot_Friendly_Widget");
     window.open(waFullLink, '_blank');
 }
 
-// Webhook dispatcher for automated CRM Dashboard storage and Google Sheets sync
 async function notifyCRMofWhatsAppClick(locationTag, sourceTag) {
     try {
         const leadPayload = {
             source: sourceTag,
             location_tag: locationTag,
             timestamp: new Date().toISOString(),
-            status: "WhatsApp Lead Triggered"
+            status: "WhatsApp Chat Started"
         };
 
         let localLeads = JSON.parse(localStorage.getItem("Soltech_whatsapp_clicks")) || [];
@@ -148,12 +148,12 @@ async function notifyCRMofWhatsAppClick(locationTag, sourceTag) {
             body: JSON.stringify(leadPayload)
         });
     } catch (error) {
-        console.log("⚠️ Standalone local storage active: Lead buffered securely.");
+        console.log("⚡ Note: Lead data stored safely in local browser memory.");
     }
 }
 
 // ==========================================================================
-// INTERACTIVE TYPING WIDGET COMPONENT UTILITIES
+// INTERACTIVE COMPONENT UTILITIES
 // ==========================================================================
 function sendMessage() {
     if (!userInput) return;
@@ -161,8 +161,7 @@ function sendMessage() {
     if (!message) return;
 
     addUserMessage(message);
-    userInput.value = ""; // Clear input box after typing completes
-
+    userInput.value = ""; 
     processMessage(message);
 }
 
@@ -246,12 +245,10 @@ function loadChat() {
 // INITIALIZATION EVENT LISTENERS
 // =====================================
 document.addEventListener("DOMContentLoaded", function() {
-    // 1. WhatsApp Button Click Handling
     if (footerWhitespaceCta) {
         footerWhitespaceCta.addEventListener("click", launchWhatsAppLeadGen);
     }
 
-    // 2. Typing Input Event Listeners
     if (sendBtn) {
         sendBtn.addEventListener("click", sendMessage);
     }
