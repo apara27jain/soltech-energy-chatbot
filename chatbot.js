@@ -31,14 +31,14 @@ const CRM_SETTINGS = {
 };
 
 const KEYWORD_OPTIONS = [
-    "Subsidy Info", 
+    "Subsidy", 
     "Net Metering", 
     "Residential Setup", 
     "Commercial Setup", 
     "Maintenance & AMC", 
     "Warranty & Life", 
     "Weather Safety",
-    "Connect Live"
+    "Get in Touch"
 ];
 
 // =====================================
@@ -69,8 +69,6 @@ function initializeWelcomeGreeting() {
             <strong>Welcome to Soltech Energy</strong>
             <br><br>
             We are Jaipur's premier solar engineering firm, designing high-yield systems for residential rooftops and commercial enterprises.
-            <br><br>
-            🤖 Solar system costs vary continuously based on your roof space, shadows, and shifting JVVNL net-metering regulations. To protect your financial accuracy, <strong>we do not display fixed estimates here</strong>. 
             <br><br>
             Feel free to type a question below, click a quick category, or tap the green <strong>WhatsApp button</strong> anytime to link directly with our engineering desk!
         </div>
