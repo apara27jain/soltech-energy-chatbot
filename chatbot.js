@@ -225,6 +225,7 @@ function processMessage(userText) {
 
         addBotMessage(targetResponse, true);
     }, 700);
+}
     
 // ==========================================================================
 // Calculation of the savings function 
