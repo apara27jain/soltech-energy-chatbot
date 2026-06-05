@@ -24,9 +24,10 @@
         <div class="chat-header">
             <div class="header-left">
                 <div class="bot-avatar">
-                    <img src="logo.jpg" alt="Soltech Logo">
+                    <img src="logo.jpg" alt="Soltech Logo" style="width: 24px; height: 24px; object-fit: contain;" 
+                    onerror="this.style.display='none';">
                 </div>
-                <div class="header-info">
+                <div>
                     <h3>Soltech Assistant</h3>
                     <span class="status">Online</span>
                 </div>
@@ -48,10 +49,10 @@
                     <br><br>
                     We help homeowners and businesses reduce electricity bills with smart solar solutions.
                     <br><br>
-                    Choose a topic below or ask your specific question directly in the text box.
+                    To get your customized savings breakdown and clear all your doubts instantly, click the button below to text our engineering team directly on WhatsApp!
                 </div>
             </div>
-            </div>
+        </div>
 
         <div id="typing-indicator" class="typing-indicator hidden">
             <div class="typing-bubble">
@@ -68,16 +69,17 @@
             <small>Solar Assessment Progress</small>
         </div>
 
-        <div class="chat-input-container">
-            <input 
-                type="text" 
-                id="user-input" 
-                placeholder="Ask about solar panels, subsidy, pricing..." 
-                autocomplete="off"
-            >
-            <button id="send-btn">
-                <i class="fas fa-paper-plane"></i>
-            </button>
+        <div class="chat-input-container"> 
+            <!-- Persistent Primary WhatsApp Tap Target -->
+              <button class="whatsapp-footer-cta" id="footer-whatsapp-cta">
+                 <i class="fab fa-whatsapp"></i> CONNECT VIA WHATSAPP
+              </button>
+
+        <div class="typing-row">
+             <input type="text" id="user-input" placeholder="Type your solar query here...">
+               <button id="send-btn">
+                 <i class="fas fa-paper-plane"></i>
+               </button>
         </div>
     </div>
 
