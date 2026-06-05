@@ -31,6 +31,7 @@ const CRM_SETTINGS = {
 };
 
 const KEYWORD_OPTIONS = [
+    "Calculate Savings",
     "Government Subsidy", 
     "Net Metering Info", 
     "Solar for Home", 
@@ -65,15 +66,20 @@ function initializeWelcomeGreeting() {
         <div class="message-content">
             <div class="company-logo-container" style="margin-bottom: 12px; display: flex; align-items: center;">
                 <img src="logo.jpg" alt="Soltech Energy Logo" class="chat-company-logo" style="max-height: 40px; width: auto; object-fit: contain;" onerror="this.parentNode.style.display='none';">
+                </div>
+            ☀️ <strong>Welcome to Soltech Energy</strong><br><br>
+            We are Jaipur’s trusted solar energy company helping homes and businesses eliminate electricity bills and switch to clean, affordable solar power.
+            <br><br>
+            ⚡ We design custom solar systems based on:
+            <br>• Your electricity usage
+            <br>• Roof size & structure
+            <br>• Government subsidy eligibility
+            <br><br>
+            💡 Our goal is simple:
+            <strong>Help you generate your own electricity and maximize savings for the next 27+ years.</strong>
+            <br><br>
+            📞 Tap below anytime to connect with our solar experts on WhatsApp.
             </div>
-            <strong>Hi there! Welcome to Soltech Energy. 👋</strong>
-            <br><br>
-            We are Jaipur's leading solar team, helping families and businesses switch to clean energy and clear out those heavy monthly power bills. 
-            <br><br>
-            💡 <strong>A quick note on pricing:</strong> Every roof gets a different amount of sunlight, shadow, and needs a specific system size. To make sure you get an 100% accurate price tailored to your roof, we don't use generic calculators here. Instead, our engineers share direct, real-time quotes over a quick WhatsApp chat!
-            <br><br>
-            Feel free to type any question below, click one of our popular topics, or tap the green <strong>WhatsApp button</strong> at the bottom to talk to our team right away!
-        </div>
     </div>
     `;
     injectDynamicInlineButtons();
@@ -101,7 +107,13 @@ function processMessage(userText) {
         let targetResponse = "";
         
         // 1. Government Subsidy Button
-        if (cleanText.includes("subsidy") || cleanText.includes("government")) {
+        if (cleanText.includes("calculate savings") || cleanText.includes("savings") || cleanText.includes("electricity bill")
+           ) 
+        { 
+            handleSavingsCalculation(userText);
+            return;
+        }
+        else if (cleanText.includes("subsidy") || cleanText.includes("government")) {
             targetResponse = `
                 🏛️ <strong>The Complete Guide to Solar Subsidies (PM-Surya Ghar Scheme)</strong><br><br>
                 Switching to solar is heavily supported by the government right now. Under the active <strong>PM-Surya Ghar Muft Bijli Yojana</strong>, residential homeowners receive substantial financial assistance directly credited to their bank accounts. Here is how the financial slabs work:
@@ -213,7 +225,48 @@ function processMessage(userText) {
 
         addBotMessage(targetResponse, true);
     }, 700);
+    
+// ==========================================================================
+// Calculation of the savings function 
+// ==========================================================================
+function handleSavingsCalculation(message) {
 
+    const billMatch = message.match(/\d+/);
+
+    if (!billMatch) {
+        addBotMessage(`
+⚡ Please enter your monthly electricity bill in rupees.
+
+Example: "My bill is 2500"
+        `);
+        return;
+    }
+
+    const bill = parseInt(billMatch[0]);
+
+    // Simple solar estimation model
+    const monthlySavings = Math.floor(bill * 0.8);
+    const yearlySavings = monthlySavings * 12;
+
+    const systemSize = Math.ceil(bill / 1000); // rough estimate
+
+    addBotMessage(`
+⚡ <strong>Solar Savings Estimate for You</strong><br><br>
+
+💡 Based on your electricity bill of ₹${bill}:
+
+<br>🔋 Recommended System: ~${systemSize} kW
+<br>💰 Monthly Savings: ₹${monthlySavings}
+<br>📊 Yearly Savings: ₹${yearlySavings}
+
+<br><br>
+
+📞 For exact rooftop design & government subsidy eligibility, connect with Soltech Energy experts.
+👉 <a href="https://wa.me/918239573979?text=Hi%20I%20want%20solar%20savings%20calculation" target="_blank" style="color:#25D366;font-weight:bold;">
+Click here to WhatsApp us
+</a>
+    `);
+}
 // ==========================================================================
 // CORE WHATSAPP REDIRECT AND AUTOMATED BACKEND INTEGRATION
 // ==========================================================================
