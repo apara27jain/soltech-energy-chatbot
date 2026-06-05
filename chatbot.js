@@ -217,7 +217,6 @@ function processMessage(userText) {
         addBotMessage(targetResponse, true);
     }, 700);
 }
-}
 
 // ==========================================================================
 // CORE WHATSAPP REDIRECT AND AUTOMATED BACKEND INTEGRATION
