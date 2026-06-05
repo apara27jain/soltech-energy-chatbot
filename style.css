@@ -145,7 +145,6 @@
     flex-direction: row !important;
     justify-content: space-between !important;
     align-items: center !important;
-    height: 70px !important;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
@@ -154,7 +153,6 @@
     flex-direction: row !important;
     align-items: center !important;
     gap: 12px;
-    background: transparent !important; /* Prevents any image leaking */
 }
 
 .company-logo-container {
@@ -171,34 +169,15 @@
 }
 
 .bot-avatar {
-    width: 40px !important;
-    height: 40px !important;
-    min-width: 40px !important; 
-    max-height: 40px !important;
-    background-color: #ffffff !important; 
-    border-radius: 50% !important;        
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    overflow: hidden !important;          
-    padding: 3px !important;             
-    box-sizing: border-box !important;
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
-}
-
-.bot-avatar img {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: contain !important; 
-    background: transparent !important;
-    border-radius: 0 !important;   
-}
-
-.header-brand-logo {
-    width: 100%;
-    height: 100%;
-    object-fit: contain !important; 
+    font-size: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    width: 38px;
+    height: 38px;
     border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .header-info {
@@ -213,6 +192,110 @@
     font-weight: 600;
     letter-spacing: 0.3px;
     line-height: 1.2;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   ⚡ FIXED: BOTTOM INPUT-BAR WHATSAPP CTA
+   ────────────────────────────────────────────────────────────────────────── */
+/* ──────────────────────────────────────────────────────────────────────────
+   ⚡ ACCESS-OPTIMIZED WHATSAPP BANNER + TYPING ROW STYLING
+   ────────────────────────────────────────────────────────────────────────── */
+
+/* Container wrapper styling at the base of the chat widget */
+.chat-input-container {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    background-color: #f8fafc !important; /* Clean neutral light gray background */
+    padding: 12px 16px !important;
+    border-top: 1px solid #e2e8f0 !important;
+    box-sizing: border-box !important;
+}
+
+/* Primary High-Conversion WhatsApp Button Banner */
+.whatsapp-footer-cta {
+    width: 100% !important;
+    height: 42px !important; /* Balanced, thumb-friendly tap height */
+    background: #25D366 !important; /* Authentic vibrant WhatsApp Green */
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 6px !important;
+    font-size: 13px !important;
+    font-weight: 700 !important; /* High prominence bold lettering */
+    letter-spacing: 0.3px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2) !important; /* Soft green ambient shadow */
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Dynamic Hover Effects for the WhatsApp CTA */
+.whatsapp-footer-cta:hover {
+    background: #20ba5a !important; /* Darkens slightly on hover */
+    box-shadow: 0 6px 16px rgba(37, 211, 102, 0.35) !important;
+    transform: translateY(-1px) !important;
+}
+
+.whatsapp-footer-cta:active {
+    transform: translateY(1px) !important; /* Tactile compression when clicked */
+    box-shadow: 0 2px 6px rgba(37, 211, 102, 0.15) !important;
+}
+
+/* Make the font-awesome WhatsApp icon pop cleanly */
+.whatsapp-footer-cta i {
+    font-size: 16px !important;
+}
+
+/* Manual Text Typing Input Area Row */
+.typing-row {
+    display: flex !important;
+    width: 100% !important;
+    gap: 8px !important;
+    box-sizing: border-box !important;
+}
+
+/* Input Field Box Styling */
+.typing-row input[type="text"] {
+    flex: 1 !important;
+    padding: 10px 14px !important;
+    border: 1px solid #cbd5e1 !important; /* Clean subtle border color */
+    border-radius: 6px !important;
+    font-size: 14px !important;
+    color: #1e293b !important;
+    background-color: #ffffff !important;
+    outline: none !important;
+    transition: border-color 0.15s ease !important;
+}
+
+/* Highlight border smoothly when user clicks inside the textbox */
+.typing-row input[type="text"]:focus {
+    border-color: #3b82f6 !important; /* Corporate blue focus accent */
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1) !important;
+}
+
+/* Traditional Send Button layout next to the text input */
+.typing-row button {
+    background: #161b22 !important; /* Sleek dark slate color */
+    color: #ffffff !important;
+    border: none !important;
+    padding: 0 16px !important;
+    border-radius: 6px !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: background-color 0.15s ease !important;
+}
+
+.typing-row button:hover {
+    background: #0f1419 !important; /* Deepens background tint when hovered */
+}
+
+.typing-row button i {
+    font-size: 14px !important;
 }
 
 .status {
