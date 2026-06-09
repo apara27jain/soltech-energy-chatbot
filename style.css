@@ -125,8 +125,6 @@
     opacity: 0;
     pointer-events: none;
     transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-                opacity 1s ease-in-out,
-                scale 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
     font-family: 'Poppins', sans-serif;
 }
 
@@ -136,7 +134,7 @@
     pointer-events: auto;
 }
 
-/* ── FIX: LUXURY HEADER ALIGNMENT RULES ── */
+/* ── LUXURY HEADER ALIGNMENT RULES ── */
 .chat-header {
     background: linear-gradient(135deg, var(--primary-blue), #1e293b) !important;
     color: #ffffff !important;
@@ -194,9 +192,6 @@
     line-height: 1.2;
 }
 
-/* ──────────────────────────────────────────────────────────────────────────
-   ⚡ FIXED: BOTTOM INPUT-BAR WHATSAPP CTA
-   ────────────────────────────────────────────────────────────────────────── */
 /* ──────────────────────────────────────────────────────────────────────────
    ⚡ ACCESS-OPTIMIZED WHATSAPP BANNER + TYPING ROW STYLING
    ────────────────────────────────────────────────────────────────────────── */
@@ -450,15 +445,6 @@
 /* ──────────────────────────────────────────────────────────────────────────
    INPUT UTILITIES & CONTROL PANEL
    ────────────────────────────────────────────────────────────────────────── */
-.chat-input-container {
-    padding: 18px 20px;
-    border-top: 1px solid var(--border-color);
-    display: flex;
-    gap: 12px;
-    background: #ffffff;
-    align-items: center;
-}
-
 #user-input {
     flex: 1;
     padding: 12px 16px;
@@ -597,4 +583,4 @@
 
 #close-calculator:hover {
     color: #ef4444;
-}4s
+}
