@@ -498,6 +498,24 @@
     margin-bottom: 6px;
 }
 
+.quick-btn.back-btn {
+    background-color: transparent !important;
+    border: 1px dashed #94a3b8 !important; /* Dashed gray border to look like a control action */
+    color: #64748b !important;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.quick-btn.back-btn:hover {
+    background-color: #f1f5f9 !important; /* Subtle gray background fill */
+    border-color: #64748b !important;
+    color: #0f172a !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
 #progress-fill {
     width: 0%;
     height: 100%;
