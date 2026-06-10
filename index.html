@@ -14,19 +14,17 @@
 </head>
 <body>
 
-    <!-- Chat Trigger Toggle -->
     <button id="chat-toggle" class="chat-toggle">
         <i class="fas fa-comments"></i>
         <span class="notification-dot"></span>
     </button>
 
-    <!-- Main Chatbot Container Structure -->
     <div id="chatbot-container" class="chatbot-container">
         
         <div class="chat-header">
             <div class="header-left">
                 <div class="bot-avatar">
-                    <img src="logo.jpg" alt="Soltech Logo" style="width: 24px; height: 24px; object-fit: contain;" onerror="this.style.display='none';">
+                    <img src="logo.png" id="chat-logo-fallback" alt="Soltech Logo" style="width: 24px; height: 24px; object-fit: contain;">
                 </div>
                 <div>
                     <h3>Soltech Assistant</h3>
@@ -43,7 +41,6 @@
             </div>
         </div>
 
-        <!-- NEW INJECTED PERSISTENT NAVIGATION TABS GRID -->
         <div class="persistent-tabs-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; background: #f5f5f5; padding: 4px; border-bottom: 1px solid #e0e0e0; font-family: 'Poppins'; font-size: 11px; text-align: center;">
             <div class="persistent-tab-item" data-intent="Cost Calculator" style="cursor:pointer; background:#fff; padding:6px 2px; border-radius:4px; font-weight:500;" title="Quick System Sizing Estimate">💰 Cost Calc</div>
             <div class="persistent-tab-item" data-intent="Savings Calculator" style="cursor:pointer; background:#fff; padding:6px 2px; border-radius:4px; font-weight:500;" title="ROI Calculation Profile">📈 Savings</div>
@@ -51,7 +48,6 @@
             <div class="persistent-tab-item" data-intent="Book Site Survey" style="cursor:pointer; background:#fff; padding:6px 2px; border-radius:4px; font-weight:500; color:#e65100;" title="Schedule Solar Site Inspection">📅 Book Survey</div>
         </div>
 
-        <!-- Sequential Lead Forms Progression Node -->
         <div id="lead-progress" class="lead-progress hidden">
             <div class="progress-bar">
                 <div id="progress-fill" style="width: 0%;"></div>
@@ -59,7 +55,6 @@
             <small>Solar Assessment Progress</small>
         </div>
 
-        <!-- Core Message Rendering viewport -->
         <div id="chat-box" class="chat-box"></div>
 
         <div id="typing-indicator" class="typing-indicator hidden">
@@ -70,9 +65,10 @@
             </div>
         </div>
 
-        <!-- Interactive Typing Console & Sticky Target Controls -->
         <div class="chat-input-container"> 
-            <!-- Primary Structural Sticky Action Block -->
+            
+            <div id="submenu-controls-wrapper" class="quick-actions-wrapper hidden"></div>
+
             <button class="whatsapp-footer-cta" id="footer-whatsapp-cta">
                  <i class="fab fa-whatsapp"></i> CONNECT VIA WHATSAPP
             </button>
@@ -86,7 +82,6 @@
         </div>
     </div>
 
-    <!-- Script Resource Pipeline Core Dependencies -->
     <script src="intents.js"></script>
     <script src="chatbot.js"></script>
 
