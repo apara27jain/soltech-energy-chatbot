@@ -98,7 +98,7 @@ function returnToMainMenu() {
     setTimeout(() => {
         hideTyping();
         initializeWelcomeGreeting();
-    }, 4000);
+    }, 600);
 }
 
 if (refreshChat) {
@@ -134,7 +134,7 @@ function startFlow(flowName) {
     } else if (flowName === "SITE_VISIT") {
         updateProgressBar(1, 2);
         addBotMessage("🗓️ <strong>Let's schedule your structural deployment evaluation. Please enter your 6-digit Pincode:</strong>", false);
-        injectActionMenuButtons([], true); // Render input field with only a back button option
+        injectActionMenuButtons([], true); // Fix: Force back button to render for input fields
     }
 }
 
@@ -263,7 +263,7 @@ function handleFlowStep(userInputText) {
 }
 
 // ==========================================================================
-// CORE CALCULATIONS ENGINE (INTEGRATED WITH SOLTECH FINANCIAL DATA)
+// CORE CALCULATIONS ENGINE
 // ==========================================================================
 function renderEstimatorResults() {
     let sizeKw = 3; let baseCost = 180000; let subsidy = 78000; let annualGen = 4380; let monthlySavings = 3000;
@@ -344,7 +344,7 @@ function renderCIResults() {
 }
 
 // ==========================================================================
-// GATED LEAD SYSTEM INTERFACE DESIGN (STRICT RULE LOCK)
+// GATED LEAD SYSTEM INTERFACE DESIGN
 // ==========================================================================
 function injectGatedActionCTAs() {
     document.querySelectorAll(".gated-wrapper-panel").forEach(el => el.remove());
@@ -369,7 +369,6 @@ function injectGatedActionCTAs() {
     btnWhatsApp.innerHTML = "<i class='fab fa-whatsapp'></i> WhatsApp Expert Desk";
     btnWhatsApp.onclick = () => launchWhatsAppLeadGen();
 
-    // ↩️ Add a clean home landing reset button at the root of calculated outputs
     const btnHome = document.createElement("button");
     btnHome.className = "quick-btn back-btn";
     btnHome.innerHTML = "<i class='fas fa-arrow-left'></i> Back to Main Menu";
@@ -465,13 +464,11 @@ function processMessage(userText) {
     const cleanText = userText.trim();
     if (!cleanText) return;
 
-    // Check if the user is explicitly trying to go back or escape
     if (cleanText === "↩️ Back to Main Menu" || cleanText.toLowerCase() === "back" || cleanText.toLowerCase() === "menu") {
         initializeWelcomeGreeting();
         return;
     }
 
-    // Direct string keyword routing matches
     if (cleanText === "Get a Solar Cost Estimate" || cleanText === "Cost Calculator" || cleanText === "💰 Cost Calc") {
         startFlow("ESTIMATOR"); return;
     }
@@ -494,13 +491,11 @@ function processMessage(userText) {
         launchWhatsAppLeadGen(); return;
     }
 
-    // Active form loop override flags
     if (currentFlow !== null) {
         handleFlowStep(cleanText);
         return;
     }
 
-    // Search lookup dictionary processing
     showTyping();
     setTimeout(() => {
         hideTyping();
@@ -562,7 +557,6 @@ function injectActionMenuButtons(buttonLabelList, includeBackButton = false) {
         wrapper.appendChild(btn);
     });
 
-    // ↩️ Dynamically append the back options into the generated grid array layout if flagged true
     if (includeBackButton) {
         const backBtn = document.createElement("button");
         backBtn.className = "quick-btn back-btn";
@@ -598,7 +592,7 @@ function addBotMessage(text, displayButtons = true) {
     div.innerHTML = `<div class="message-content">${text}</div>`;
     chatBox.appendChild(div);
     if (displayButtons) {
-        injectActionMenuButtons(KEYWORD_OPTIONS, true); // Deep layer generic queries include a back options trace
+        injectActionMenuButtons(KEYWORD_OPTIONS, true); 
     } else {
         scrollBottom();
     }
