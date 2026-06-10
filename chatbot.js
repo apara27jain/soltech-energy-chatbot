@@ -1,6 +1,6 @@
 // ========================================================================== 
 // Soltech Energy Chatbot Engine
-// chatbot.js [EXCLUSIVELY BRANDED FOR SOLTECH ENERGY]
+// chatbot.js [UPDATED WITH 6-DIGIT PINCODE VALIDATION SYSTEM]
 // ==========================================================================
 
 const chatToggle = document.getElementById("chat-toggle");
@@ -62,23 +62,21 @@ if (minimizeChat) {
 }
 
 // ==========================================================================
-// DEFAULT WELCOME INITIALIZER & BACK FUNCTION
+// DEFAULT WELCOME INITIALIZER
 // ==========================================================================
 function initializeWelcomeGreeting() {
     currentFlow = null;
     currentStep = 0;
     flowData = {};
-    
-    const progressNode = document.getElementById("lead-progress");
-    if (progressNode) progressNode.classList.add("hidden");
+    document.getElementById("lead-progress").classList.add("hidden");
     
     chatBox.innerHTML = `
     <div class="bot-message">
         <div class="message-content">
             <div class="company-logo-container" style="margin-bottom: 12px; display: flex; align-items: center;">
-                <img src="logo.jpg" alt="Soltech Energy Logo" class="chat-company-logo" style="max-height: 40px; width: auto; object-fit: contain;" onerror="this.parentNode.style.display='none';">
+                <img src="logo.png" alt="Soltech Energy Logo" class="chat-company-logo" style="max-height: 40px; width: auto; object-fit: contain;" onerror="this.parentNode.style.display='none';">
             </div>
-            <strong>Welcome! I'm your Soltech Assistant. How can I transform your roof today?</strong>
+            <strong>Welcome! I'm your Solar Assistant. How can I help you today?</strong>
             <br><br>
             We are Jaipur's premier solar engineering firm, designing high-yield systems for residential rooftops and commercial enterprises.
             <br><br>
@@ -86,18 +84,9 @@ function initializeWelcomeGreeting() {
         </div>
     </div>
     `;
-    injectActionMenuButtons(MAIN_HOMEPAGE_ACTIONS, false);
+    injectActionMenuButtons(MAIN_HOMEPAGE_ACTIONS);
     scrollBottom();
     saveChat();
-}
-
-function returnToMainMenu() {
-    addUserMessage("↩️ Back to Main Menu");
-    showTyping();
-    setTimeout(() => {
-        hideTyping();
-        initializeWelcomeGreeting();
-    }, 600);
 }
 
 if (refreshChat) {
@@ -114,32 +103,26 @@ function startFlow(flowName) {
     currentFlow = flowName;
     currentStep = 1;
     flowData = {};
-    
-    const progressNode = document.getElementById("lead-progress");
-    if (progressNode) progressNode.classList.remove("hidden");
+    document.getElementById("lead-progress").classList.remove("hidden");
     updateProgressBar(1, 6);
     
     if (flowName === "ESTIMATOR") {
         addBotMessage("1️⃣ <strong>What type of property are you looking to solarize?</strong>", false);
-        injectActionMenuButtons(["Home", "Commercial Building", "Factory/Industry", "School/Institution"], true);
+        injectActionMenuButtons(["Home", "Commercial Building", "Factory/Industry", "School/Institution"]);
     } else if (flowName === "FINANCING") {
         updateProgressBar(1, 3);
         addBotMessage("1️⃣ <strong>Please specify your project deployment type:</strong>", false);
-        injectActionMenuButtons(["Residential Rooftop", "Commercial Enterprise", "Industrial Facility"], true);
+        injectActionMenuButtons(["Residential Rooftop", "Commercial Enterprise", "Industrial Facility"]);
     } else if (flowName === "CI_QUALIFY") {
         updateProgressBar(1, 5);
         addBotMessage("1️⃣ <strong>What is your specific industry or business sector type?</strong>", false);
-        injectActionMenuButtons(["Manufacturing", "Textiles", "Cold Storage", "Warehousing", "Other Commercial"], true);
     } else if (flowName === "SITE_VISIT") {
         updateProgressBar(1, 2);
         addBotMessage("🗓️ <strong>Let's schedule your structural deployment evaluation. Please enter your 6-digit Pincode:</strong>", false);
-        injectActionMenuButtons([], true);
     }
 }
 
 function handleFlowStep(userInputText) {
-    if (userInputText.includes("Back to Main Menu")) return;
-
     showTyping();
     setTimeout(() => {
         hideTyping();
@@ -150,13 +133,12 @@ function handleFlowStep(userInputText) {
                 flowData.propertyType = userInputText;
                 currentStep = 2;
                 updateProgressBar(2, 6);
-                addBotMessage("2️⃣ <strong>Please enter your correct 6-digit Jaipur pincode.</strong>", false);
-                injectActionMenuButtons([], true);
+                addBotMessage("2️⃣ <strong>Please enter your 6-digit Pincode for dynamic shadow mapping:</strong>", false);
             } else if (currentStep === 2) {
+                // Strict 6-digit Pincode format check
                 const pincodeRegex = /^[1-9][0-9]{5}$/;
                 if (!pincodeRegex.test(userInputText.trim())) {
-                    addBotMessage("⚠️ <strong>Invalid Format:</strong> Please enter a valid 6-digit Jaipur Pincode (e.g., 302015) to accurately calculate baseline logistics.", false);
-                    injectActionMenuButtons([], true);
+                    addBotMessage("⚠️ <strong>Invalid Format:</strong> Please enter a valid 6-digit Indian Pincode (e.g., 302001) to accurately calculate baseline logistics.", false);
                     return;
                 }
                 
@@ -164,25 +146,25 @@ function handleFlowStep(userInputText) {
                 currentStep = 3;
                 updateProgressBar(3, 6);
                 addBotMessage("3️⃣ <strong>Select your average monthly electricity bill bracket:</strong>", false);
-                injectActionMenuButtons(["< ₹2,000", "₹2,000–₹5,000", "₹5,000–₹10,000", "₹10,000+"], true);
+                injectActionMenuButtons(["< ₹2,000", "₹2,000–₹5,000", "₹5,000–₹10,000", "₹10,000+"]);
             } else if (currentStep === 3) {
                 flowData.monthlyBill = userInputText;
                 currentStep = 4;
                 updateProgressBar(4, 6);
                 addBotMessage("4️⃣ <strong>What type of roof structure is available?</strong>", false);
-                injectActionMenuButtons(["RCC Roof", "Metal Shed", "Ground Mounted", "Not Sure"], true);
+                injectActionMenuButtons(["RCC Roof", "Metal Shed", "Ground Mounted", "Not Sure"]);
             } else if (currentStep === 4) {
                 flowData.roofType = userInputText;
                 currentStep = 5;
                 updateProgressBar(5, 6);
                 addBotMessage("5️⃣ <strong>What is the approximate shadow-free roof area available?</strong>", false);
-                injectActionMenuButtons(["<500 sq ft", "500–1000 sq ft", "1000–5000 sq ft", "5000+ sq ft"], true);
+                injectActionMenuButtons(["<500 sq ft", "500–1000 sq ft", "1000–5000 sq ft", "5000+ sq ft"]);
             } else if (currentStep === 5) {
                 flowData.roofArea = userInputText;
                 currentStep = 6;
                 updateProgressBar(6, 6);
                 addBotMessage("6️⃣ <strong>Do you own the property?</strong>", false);
-                injectActionMenuButtons(["Yes", "No"], true);
+                injectActionMenuButtons(["Yes", "No"]);
             } else if (currentStep === 6) {
                 flowData.ownership = userInputText;
                 document.getElementById("lead-progress").classList.add("hidden");
@@ -197,13 +179,13 @@ function handleFlowStep(userInputText) {
                 currentStep = 2;
                 updateProgressBar(2, 3);
                 addBotMessage("2️⃣ <strong>What is your projected installation budget range?</strong>", false);
-                injectActionMenuButtons(["Under ₹3 Lakhs", "₹3 Lakhs to ₹7 Lakhs", "Above ₹7 Lakhs"], true);
+                injectActionMenuButtons(["Under ₹3 Lakhs", "₹3 Lakhs to ₹7 Lakhs", "Above ₹7 Lakhs"]);
             } else if (currentStep === 2) {
                 flowData.budget = userInputText;
                 currentStep = 3;
                 updateProgressBar(3, 3);
                 addBotMessage("3️⃣ <strong>Which financial deployment asset model are you looking to check?</strong>", false);
-                injectActionMenuButtons(["EMI", "Loan", "CAPEX", "OPEX/PPA"], true);
+                injectActionMenuButtons(["EMI", "Loan", "CAPEX", "OPEX/PPA"]);
             } else if (currentStep === 3) {
                 flowData.modelChoice = userInputText;
                 document.getElementById("lead-progress").classList.add("hidden");
@@ -218,25 +200,23 @@ function handleFlowStep(userInputText) {
                 currentStep = 2;
                 updateProgressBar(2, 5);
                 addBotMessage("2️⃣ <strong>What is your sanctioned connected load in kW?</strong>", false);
-                injectActionMenuButtons([], true);
             } else if (currentStep === 2) {
                 flowData.connectedLoad = userInputText;
                 currentStep = 3;
                 updateProgressBar(3, 5);
                 addBotMessage("3️⃣ <strong>What is your typical monthly electricity expense corporate bracket?</strong>", false);
-                injectActionMenuButtons(["₹50,000–₹1 Lakh", "₹1 Lakh–₹5 Lakhs", "₹5 Lakhs+"], true);
+                injectActionMenuButtons(["₹50,000–₹1 Lakh", "₹1 Lakh–₹5 Lakhs", "₹5 Lakhs+"]);
             } else if (currentStep === 3) {
                 flowData.monthlyExpense = userInputText;
                 currentStep = 4;
                 updateProgressBar(4, 5);
                 addBotMessage("4️⃣ <strong>What is the total estimated factory or roof area available?</strong>", false);
-                injectActionMenuButtons(["1,000–5,000 sq ft", "5,000–10,000 sq ft", "10,000+ sq ft"], true);
+                injectActionMenuButtons(["1,000–5,000 sq ft", "5,000–10,000 sq ft", "10,000+ sq ft"]);
             } else if (currentStep === 4) {
                 flowData.roofArea = userInputText;
                 currentStep = 5;
                 updateProgressBar(5, 5);
                 addBotMessage("5️⃣ <strong>How many independent production facilities do you operate?</strong>", false);
-                injectActionMenuButtons([], true);
             } else if (currentStep === 5) {
                 flowData.facilityCount = userInputText;
                 document.getElementById("lead-progress").classList.add("hidden");
@@ -250,7 +230,6 @@ function handleFlowStep(userInputText) {
                 const pincodeRegex = /^[1-9][0-9]{5}$/;
                 if (!pincodeRegex.test(userInputText.trim())) {
                     addBotMessage("⚠️ <strong>Invalid Format:</strong> Please enter a valid 6-digit site Pincode to coordinate engineering schedules.", false);
-                    injectActionMenuButtons([], true);
                     return;
                 }
                 flowData.pincode = userInputText.trim();
@@ -261,7 +240,7 @@ function handleFlowStep(userInputText) {
 }
 
 // ==========================================================================
-// CORE CALCULATIONS ENGINE
+// CORE CALCULATIONS ENGINE (INTEGRATED WITH SOLAR LADDER CORE DATA)
 // ==========================================================================
 function renderEstimatorResults() {
     let sizeKw = 3; let baseCost = 180000; let subsidy = 78000; let annualGen = 4380; let monthlySavings = 3000;
@@ -284,6 +263,7 @@ function renderEstimatorResults() {
     let netCost = baseCost - subsidy;
     let paybackYears = (netCost / (monthlySavings * 12)).toFixed(1);
 
+    // Dynamic EMI calculation using Solar Ladder's baseline 7.99% rate for a standard 36-month tenure
     let p = netCost;
     let r = 7.99 / 12 / 100;
     let n = 36;
@@ -299,7 +279,7 @@ function renderEstimatorResults() {
     • <strong>Expected Annual Generation:</strong> ${annualGen} Units (kWh)<br>
     • <strong>Monthly Savings Estimate:</strong> ₹${monthlySavings.toLocaleString()}<br>
     • <strong>Payback Period:</strong> ~${paybackYears} Years<br>
-    • <strong>Soltech EMI Baseline (7.99% Rate over 36M):</strong> ₹${emiResult.toLocaleString()}/month<br><br>
+    • <strong>Typical EMI Baseline (7.99% Rate over 36M):</strong> ₹${emiResult.toLocaleString()}/month<br><br>
     Would you like to unlock your detailed structural engineering proposal brochure or speak to our loan counter expert?
     `;
     
@@ -309,7 +289,7 @@ function renderEstimatorResults() {
 
 function renderFinancingOutputs() {
     let outputHtml = `
-    💳 <strong>Soltech Custom Energy Loan Engine Matrix:</strong><br><br>
+    💳 <strong>Soltech & Solar Ladder Loan Engine Matrix:</strong><br><br>
     • <strong>Base Interest Rate:</strong> Starts at <strong>7.99%</strong> per annum.<br>
     • <strong>Available Loan Tenures:</strong> Flexible options ranging from 6 Months to 5 Years (6M, 1Y, 2Y, 3Y, 4Y, 5Y).<br>
     • <strong>Special Promotional Tranches:</strong> Interest-free (0% Interest) options available for up to 6 months.<br><br>
@@ -330,7 +310,7 @@ function renderCIResults() {
     let carbonSavedTons = (potentialSize * 1450 * 0.00082).toFixed(1);
 
     let outputHtml = `
-    🏭 <strong>Soltech Corporate C&I Asset Feasibility Estimates:</strong><br><br>
+    🏭 <strong>Corporate C&I Asset Feasibility Estimates:</strong><br><br>
     • <strong>Potential System Size Allocation:</strong> Up to ${potentialSize} kWp grid-tied asset installation.<br>
     • <strong>Annual Savings Estimate:</strong> Approx ₹${Math.round(annualSavingsEst).toLocaleString()} per annum.<br>
     • <strong>Accelerated Depreciation Asset Benefit:</strong> Up to 40% taxable write-off allowances in Year 1 allocation profiles.<br>
@@ -342,12 +322,13 @@ function renderCIResults() {
 }
 
 // ==========================================================================
-// GATED LEAD SYSTEM INTERFACE DESIGN
+// GATED LEAD SYSTEM INTERFACE DESIGN (STRICT RULE LOCK)
 // ==========================================================================
 function injectGatedActionCTAs() {
     document.querySelectorAll(".gated-wrapper-panel").forEach(el => el.remove());
     const wrapper = document.createElement("div");
     wrapper.className = "gated-wrapper-panel";
+    wrapper.style.cssText = "margin-top:12px; display:flex; flex-direction:column; gap:8px;";
 
     const btnConsult = document.createElement("button");
     btnConsult.className = "quick-btn functional-action-btn";
@@ -361,41 +342,33 @@ function injectGatedActionCTAs() {
 
     const btnWhatsApp = document.createElement("button");
     btnWhatsApp.className = "quick-btn functional-action-btn wa-direct-btn";
+    btnWhatsApp.style.backgroundColor = "#25D366";
+    btnWhatsApp.style.color = "#FFFFFF";
     btnWhatsApp.innerHTML = "<i class='fab fa-whatsapp'></i> WhatsApp Expert Desk";
     btnWhatsApp.onclick = () => launchWhatsAppLeadGen();
-
-    const btnHome = document.createElement("button");
-    btnHome.className = "quick-btn back-btn";
-    btnHome.innerHTML = "<i class='fas fa-arrow-left'></i> Back to Main Menu";
-    btnHome.onclick = () => initializeWelcomeGreeting();
 
     wrapper.appendChild(btnConsult);
     wrapper.appendChild(btnBrochure);
     wrapper.appendChild(btnWhatsApp);
-    wrapper.appendChild(btnHome);
     chatBox.appendChild(wrapper);
     scrollBottom();
 }
 
 function triggerGatedWall(targetActionGoal) {
     document.querySelectorAll(".gated-wrapper-panel").forEach(el => el.remove());
-    document.querySelectorAll(".quick-actions-wrapper").forEach(el => el.remove());
     
     let leadFormHtml = `
     📋 <strong>Identity Verification Required:</strong><br>
     You must fill out your name and phone number to book a demo or download our brochure files:
     <br><br>
-    <div class="gated-form-container">
-        <input type="text" id="lead-name" placeholder="Your Name *" required>
-        <input type="text" id="lead-phone" placeholder="Phone Number *" required>
-        <input type="text" id="lead-company" placeholder="Company Name (Optional)">
-        <button id="submit-lead-gated-btn" class="quick-btn submit-btn">Verify to Access</button>
-        <button id="cancel-lead-gated-btn" class="quick-btn back-btn">↩️ Exit to Menu</button>
+    <div class="gated-form-container" style="display:flex; flex-direction:column; gap:8px; background:rgba(0,0,0,0.03); padding:10px; border-radius:8px;">
+        <input type="text" id="lead-name" placeholder="Your Name *" style="padding:8px; border:1px solid #ccc; border-radius:4px;">
+        <input type="text" id="lead-phone" placeholder="Phone Number *" style="padding:8px; border:1px solid #ccc; border-radius:4px;">
+        <input type="text" id="lead-company" placeholder="Company Name (Optional)" style="padding:8px; border:1px solid #ccc; border-radius:4px;">
+        <button id="submit-lead-gated-btn" class="quick-btn" style="background:#ff9800; color:#fff; padding:10px; font-weight:bold; border:none; border-radius:4px; cursor:pointer;">Verify to Access</button>
     </div>
     `;
     addBotMessage(leadFormHtml, false);
-    
-    document.getElementById("cancel-lead-gated-btn").onclick = () => initializeWelcomeGreeting();
     
     document.getElementById("submit-lead-gated-btn").onclick = () => {
         const nameVal = document.getElementById("lead-name").value.trim();
@@ -440,12 +413,12 @@ async function processCompletedLeadCaptured() {
 
     setTimeout(() => {
         hideTyping();
-        addBotMessage(`✅ <strong>Thank you, ${flowData.leadName}.</strong> Your request has been verified and processed by Soltech.`, false);
+        addBotMessage(`✅ <strong>Thank you, ${flowData.leadName}.</strong> Your request has been verified and processed.`, false);
         
         if (flowData.actionContextTarget.includes("Brochure")) {
-            addBotMessage(`🎉 <strong>Access Granted:</strong> <a href="#" onclick="alert('Starting your Soltech technical brochure download...'); return false;" class="download-link">Click here to download the brochure file</a>.`, false);
+            addBotMessage(`🎉 <strong>Access Granted:</strong> <a href="#" onclick="alert('Starting your technical brochure download...'); return false;" style="text-decoration:underline; font-weight:bold; color:#0d47a1;">Click here to download the brochure file</a>.`, false);
         } else {
-            addBotMessage(`📞 Our engineering team will connect with you shortly at <strong>${flowData.leadPhone}</strong> to conduct your live system demo.`, false);
+            addBotMessage(`📞 Our expert team will connect with you shortly at <strong>${flowData.leadPhone}</strong> to conduct your live system demo.`, false);
         }
         
         setTimeout(() => { initializeWelcomeGreeting(); }, 4000);
@@ -459,18 +432,14 @@ function processMessage(userText) {
     const cleanText = userText.trim();
     if (!cleanText) return;
 
-    if (cleanText === "↩️ Back to Main Menu" || cleanText.toLowerCase() === "back" || cleanText.toLowerCase() === "menu") {
-        initializeWelcomeGreeting();
-        return;
-    }
-
-    if (cleanText === "Get a Solar Cost Estimate" || cleanText === "Cost Calculator" || cleanText === "💰 Cost Calc") {
+    // Direct string keyword routing matches
+    if (cleanText === "Get a Solar Cost Estimate" || cleanText === "Cost Calculator") {
         startFlow("ESTIMATOR"); return;
     }
-    if (cleanText === "Calculate Savings" || cleanText === "Savings Calculator" || cleanText === "📈 Savings") {
+    if (cleanText === "Calculate Savings" || cleanText === "Savings Calculator") {
         startFlow("ESTIMATOR"); return;
     }
-    if (cleanText === "Financing & Subsidies" || cleanText === "Subsidy Info" || cleanText === "📋 Subsidy" || cleanText === "Subsidy Checker") {
+    if (cleanText === "Financing & Subsidies" || cleanText === "Subsidy Info" || cleanText === "Subsidy Checker") {
         startFlow("FINANCING"); return;
     }
     if (cleanText === "Residential Solar") {
@@ -479,18 +448,20 @@ function processMessage(userText) {
     if (cleanText === "Commercial Solar" || cleanText === "Solar for Industries" || cleanText === "Industrial Solar") {
         startFlow("CI_QUALIFY"); return;
     }
-    if (cleanText === "Request a Site Visit" || cleanText === "Book Site Visit" || cleanText === "Book Site Survey" || cleanText === "📅 Book Survey") {
+    if (cleanText === "Request a Site Visit" || cleanText === "Book Site Visit" || cleanText === "Book Site Survey") {
         startFlow("SITE_VISIT"); return;
     }
     if (cleanText === "Talk to an Expert" || cleanText === "Connect Live") {
         launchWhatsAppLeadGen(); return;
     }
 
+    // Active form loop override flags
     if (currentFlow !== null) {
         handleFlowStep(cleanText);
         return;
     }
 
+    // Search lookup dictionary processing
     showTyping();
     setTimeout(() => {
         hideTyping();
@@ -513,7 +484,7 @@ function processMessage(userText) {
 function launchWhatsAppLeadGen() {
     const waBaseURL = "https://wa.me/";
     const waFullLink = `${waBaseURL}${CRM_SETTINGS.WhatsAppNumber}/?text=${encodeURIComponent(CRM_SETTINGS.InitialHiMessage)}`;
-    notifyCRMofWhatsAppClick(flowData.pincode || CRM_SETTINGS.DefaultLeadLocation, "Soltech_Chatbot_Widget");
+    notifyCRMofWhatsAppClick(flowData.pincode || CRM_SETTINGS.DefaultLeadLocation, "Chatbot_Interactive_Widget");
     window.open(waFullLink, '_blank');
 }
 
@@ -533,16 +504,20 @@ function sendMessage() {
     processMessage(message);
 }
 
-function injectActionMenuButtons(buttonLabelList, includeBackButton = false) {
+function injectActionMenuButtons(buttonLabelList) {
     document.querySelectorAll(".quick-actions-wrapper").forEach(el => el.remove());
     const wrapper = document.createElement("div");
     wrapper.className = "quick-actions-wrapper";
+    wrapper.style.cssText = "display:flex; flex-wrap:wrap; gap:6px; margin-top:10px;";
     
     buttonLabelList.forEach(textLabel => {
         const btn = document.createElement("button");
         btn.className = "quick-btn";
+        btn.style.cssText = "padding:8px 12px; border:1px solid #ff9800; border-radius:20px; background:#fff; cursor:pointer; font-size:13px; font-family:'Poppins'; transition:0.2s;";
         btn.innerText = textLabel;
         
+        btn.onmouseover = () => { btn.style.background = "#ff9800"; btn.style.color = "#fff"; };
+        btn.onmouseout = () => { btn.style.background = "#fff"; btn.style.color = "#000"; };
         btn.onclick = (e) => {
             e.preventDefault();
             addUserMessage(textLabel);
@@ -550,18 +525,6 @@ function injectActionMenuButtons(buttonLabelList, includeBackButton = false) {
         };
         wrapper.appendChild(btn);
     });
-
-    if (includeBackButton) {
-        const backBtn = document.createElement("button");
-        backBtn.className = "quick-btn back-btn";
-        backBtn.innerHTML = "<i class='fas fa-arrow-left'></i> Main Menu";
-        backBtn.onclick = (e) => {
-            e.preventDefault();
-            returnToMainMenu();
-        };
-        wrapper.appendChild(backBtn);
-    }
-
     chatBox.appendChild(wrapper);
     scrollBottom();
 }
@@ -586,7 +549,7 @@ function addBotMessage(text, displayButtons = true) {
     div.innerHTML = `<div class="message-content">${text}</div>`;
     chatBox.appendChild(div);
     if (displayButtons) {
-        injectActionMenuButtons(KEYWORD_OPTIONS, true); 
+        injectActionMenuButtons(KEYWORD_OPTIONS);
     } else {
         scrollBottom();
     }
@@ -607,16 +570,9 @@ function scrollBottom() { chatBox.scrollTop = chatBox.scrollHeight; }
 function saveChat() { localStorage.setItem("Soltech_chat", chatBox.innerHTML); }
 
 function loadChat() {
-    let chat = localStorage.getItem("Soltech_chat");
-    if (chat) {
-        if (chat.includes('logo.png')) {
-            chat = chat.replace(/logo\.png/g, 'logo.jpg');
-            localStorage.setItem("Soltech_chat", chat);
-        }
-        chatBox.innerHTML = chat;
-    } else {
-        initializeWelcomeGreeting();
-    }
+    const chat = localStorage.getItem("Soltech_chat");
+    if (chat) chatBox.innerHTML = chat;
+    else initializeWelcomeGreeting();
 }
 
 document.addEventListener("DOMContentLoaded", function() {
