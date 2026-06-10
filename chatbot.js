@@ -62,19 +62,21 @@ if (minimizeChat) {
 }
 
 // ==========================================================================
-// DEFAULT WELCOME INITIALIZER
+// DEFAULT WELCOME INITIALIZER & BACK FUNCTION
 // ==========================================================================
 function initializeWelcomeGreeting() {
     currentFlow = null;
     currentStep = 0;
     flowData = {};
-    document.getElementById("lead-progress").classList.add("hidden");
+    
+    const progressNode = document.getElementById("lead-progress");
+    if (progressNode) progressNode.classList.add("hidden");
     
     chatBox.innerHTML = `
     <div class="bot-message">
         <div class="message-content">
             <div class="company-logo-container" style="margin-bottom: 12px; display: flex; align-items: center;">
-                <img src="logo.jpg" alt="Soltech Energy Logo" class="chat-company-logo" style="max-height: 40px; width: auto; object-fit: contain;" onerror="this.parentNode.style.display='none';">
+                <img src="logo.png" alt="Soltech Energy Logo" class="chat-company-logo" style="max-height: 40px; width: auto; object-fit: contain;" onerror="this.parentNode.style.display='none';">
             </div>
             <strong>Welcome! I'm your Soltech Assistant. How can I transform your roof today?</strong>
             <br><br>
@@ -84,9 +86,19 @@ function initializeWelcomeGreeting() {
         </div>
     </div>
     `;
-    injectActionMenuButtons(MAIN_HOMEPAGE_ACTIONS);
+    injectActionMenuButtons(MAIN_HOMEPAGE_ACTIONS, false); // No back button on the landing homepage
     scrollBottom();
     saveChat();
+}
+
+// Global programmatic action to reset step flows safely
+function returnToMainMenu() {
+    addUserMessage("↩️ Back to Main Menu");
+    showTyping();
+    setTimeout(() => {
+        hideTyping();
+        initializeWelcomeGreeting();
+    }, 4000);
 }
 
 if (refreshChat) {
@@ -103,26 +115,33 @@ function startFlow(flowName) {
     currentFlow = flowName;
     currentStep = 1;
     flowData = {};
-    document.getElementById("lead-progress").classList.remove("hidden");
+    
+    const progressNode = document.getElementById("lead-progress");
+    if (progressNode) progressNode.classList.remove("hidden");
     updateProgressBar(1, 6);
     
     if (flowName === "ESTIMATOR") {
         addBotMessage("1️⃣ <strong>What type of property are you looking to solarize?</strong>", false);
-        injectActionMenuButtons(["Home", "Commercial Building", "Factory/Industry", "School/Institution"]);
+        injectActionMenuButtons(["Home", "Commercial Building", "Factory/Industry", "School/Institution"], true);
     } else if (flowName === "FINANCING") {
         updateProgressBar(1, 3);
         addBotMessage("1️⃣ <strong>Please specify your project deployment type:</strong>", false);
-        injectActionMenuButtons(["Residential Rooftop", "Commercial Enterprise", "Industrial Facility"]);
+        injectActionMenuButtons(["Residential Rooftop", "Commercial Enterprise", "Industrial Facility"], true);
     } else if (flowName === "CI_QUALIFY") {
         updateProgressBar(1, 5);
         addBotMessage("1️⃣ <strong>What is your specific industry or business sector type?</strong>", false);
+        injectActionMenuButtons(["Manufacturing", "Textiles", "Cold Storage", "Warehousing", "Other Commercial"], true);
     } else if (flowName === "SITE_VISIT") {
         updateProgressBar(1, 2);
         addBotMessage("🗓️ <strong>Let's schedule your structural deployment evaluation. Please enter your 6-digit Pincode:</strong>", false);
+        injectActionMenuButtons([], true); // Render input field with only a back button option
     }
 }
 
 function handleFlowStep(userInputText) {
+    // If the user clicked the back button option directly, bail immediately
+    if (userInputText.includes("Back to Main Menu")) return;
+
     showTyping();
     setTimeout(() => {
         hideTyping();
@@ -134,10 +153,12 @@ function handleFlowStep(userInputText) {
                 currentStep = 2;
                 updateProgressBar(2, 6);
                 addBotMessage("2️⃣ <strong>Please enter your correct 6-digit Jaipur pincode.</strong>", false);
+                injectActionMenuButtons([], true);
             } else if (currentStep === 2) {
                 const pincodeRegex = /^[1-9][0-9]{5}$/;
                 if (!pincodeRegex.test(userInputText.trim())) {
                     addBotMessage("⚠️ <strong>Invalid Format:</strong> Please enter a valid 6-digit Jaipur Pincode (e.g., 302015) to accurately calculate baseline logistics.", false);
+                    injectActionMenuButtons([], true);
                     return;
                 }
                 
@@ -145,25 +166,25 @@ function handleFlowStep(userInputText) {
                 currentStep = 3;
                 updateProgressBar(3, 6);
                 addBotMessage("3️⃣ <strong>Select your average monthly electricity bill bracket:</strong>", false);
-                injectActionMenuButtons(["< ₹2,000", "₹2,000–₹5,000", "₹5,000–₹10,000", "₹10,000+"]);
+                injectActionMenuButtons(["< ₹2,000", "₹2,000–₹5,000", "₹5,000–₹10,000", "₹10,000+"], true);
             } else if (currentStep === 3) {
                 flowData.monthlyBill = userInputText;
                 currentStep = 4;
                 updateProgressBar(4, 6);
                 addBotMessage("4️⃣ <strong>What type of roof structure is available?</strong>", false);
-                injectActionMenuButtons(["RCC Roof", "Metal Shed", "Ground Mounted", "Not Sure"]);
+                injectActionMenuButtons(["RCC Roof", "Metal Shed", "Ground Mounted", "Not Sure"], true);
             } else if (currentStep === 4) {
                 flowData.roofType = userInputText;
                 currentStep = 5;
                 updateProgressBar(5, 6);
                 addBotMessage("5️⃣ <strong>What is the approximate shadow-free roof area available?</strong>", false);
-                injectActionMenuButtons(["<500 sq ft", "500–1000 sq ft", "1000–5000 sq ft", "5000+ sq ft"]);
+                injectActionMenuButtons(["<500 sq ft", "500–1000 sq ft", "1000–5000 sq ft", "5000+ sq ft"], true);
             } else if (currentStep === 5) {
                 flowData.roofArea = userInputText;
                 currentStep = 6;
                 updateProgressBar(6, 6);
                 addBotMessage("6️⃣ <strong>Do you own the property?</strong>", false);
-                injectActionMenuButtons(["Yes", "No"]);
+                injectActionMenuButtons(["Yes", "No"], true);
             } else if (currentStep === 6) {
                 flowData.ownership = userInputText;
                 document.getElementById("lead-progress").classList.add("hidden");
@@ -178,13 +199,13 @@ function handleFlowStep(userInputText) {
                 currentStep = 2;
                 updateProgressBar(2, 3);
                 addBotMessage("2️⃣ <strong>What is your projected installation budget range?</strong>", false);
-                injectActionMenuButtons(["Under ₹3 Lakhs", "₹3 Lakhs to ₹7 Lakhs", "Above ₹7 Lakhs"]);
+                injectActionMenuButtons(["Under ₹3 Lakhs", "₹3 Lakhs to ₹7 Lakhs", "Above ₹7 Lakhs"], true);
             } else if (currentStep === 2) {
                 flowData.budget = userInputText;
                 currentStep = 3;
                 updateProgressBar(3, 3);
                 addBotMessage("3️⃣ <strong>Which financial deployment asset model are you looking to check?</strong>", false);
-                injectActionMenuButtons(["EMI", "Loan", "CAPEX", "OPEX/PPA"]);
+                injectActionMenuButtons(["EMI", "Loan", "CAPEX", "OPEX/PPA"], true);
             } else if (currentStep === 3) {
                 flowData.modelChoice = userInputText;
                 document.getElementById("lead-progress").classList.add("hidden");
@@ -199,23 +220,25 @@ function handleFlowStep(userInputText) {
                 currentStep = 2;
                 updateProgressBar(2, 5);
                 addBotMessage("2️⃣ <strong>What is your sanctioned connected load in kW?</strong>", false);
+                injectActionMenuButtons([], true);
             } else if (currentStep === 2) {
                 flowData.connectedLoad = userInputText;
                 currentStep = 3;
                 updateProgressBar(3, 5);
                 addBotMessage("3️⃣ <strong>What is your typical monthly electricity expense corporate bracket?</strong>", false);
-                injectActionMenuButtons(["₹50,000–₹1 Lakh", "₹1 Lakh–₹5 Lakhs", "₹5 Lakhs+"]);
+                injectActionMenuButtons(["₹50,000–₹1 Lakh", "₹1 Lakh–₹5 Lakhs", "₹5 Lakhs+"], true);
             } else if (currentStep === 3) {
                 flowData.monthlyExpense = userInputText;
                 currentStep = 4;
                 updateProgressBar(4, 5);
                 addBotMessage("4️⃣ <strong>What is the total estimated factory or roof area available?</strong>", false);
-                injectActionMenuButtons(["1,000–5,000 sq ft", "5,000–10,000 sq ft", "10,000+ sq ft"]);
+                injectActionMenuButtons(["1,000–5,000 sq ft", "5,000–10,000 sq ft", "10,000+ sq ft"], true);
             } else if (currentStep === 4) {
                 flowData.roofArea = userInputText;
                 currentStep = 5;
                 updateProgressBar(5, 5);
                 addBotMessage("5️⃣ <strong>How many independent production facilities do you operate?</strong>", false);
+                injectActionMenuButtons([], true);
             } else if (currentStep === 5) {
                 flowData.facilityCount = userInputText;
                 document.getElementById("lead-progress").classList.add("hidden");
@@ -229,6 +252,7 @@ function handleFlowStep(userInputText) {
                 const pincodeRegex = /^[1-9][0-9]{5}$/;
                 if (!pincodeRegex.test(userInputText.trim())) {
                     addBotMessage("⚠️ <strong>Invalid Format:</strong> Please enter a valid 6-digit site Pincode to coordinate engineering schedules.", false);
+                    injectActionMenuButtons([], true);
                     return;
                 }
                 flowData.pincode = userInputText.trim();
@@ -262,7 +286,6 @@ function renderEstimatorResults() {
     let netCost = baseCost - subsidy;
     let paybackYears = (netCost / (monthlySavings * 12)).toFixed(1);
 
-    // Dynamic EMI calculation using Soltech's baseline 7.99% rate for a standard 36-month tenure
     let p = netCost;
     let r = 7.99 / 12 / 100;
     let n = 36;
@@ -346,15 +369,23 @@ function injectGatedActionCTAs() {
     btnWhatsApp.innerHTML = "<i class='fab fa-whatsapp'></i> WhatsApp Expert Desk";
     btnWhatsApp.onclick = () => launchWhatsAppLeadGen();
 
+    // ↩️ Add a clean home landing reset button at the root of calculated outputs
+    const btnHome = document.createElement("button");
+    btnHome.className = "quick-btn back-btn";
+    btnHome.innerHTML = "<i class='fas fa-arrow-left'></i> Back to Main Menu";
+    btnHome.onclick = () => initializeWelcomeGreeting();
+
     wrapper.appendChild(btnConsult);
     wrapper.appendChild(btnBrochure);
     wrapper.appendChild(btnWhatsApp);
+    wrapper.appendChild(btnHome);
     chatBox.appendChild(wrapper);
     scrollBottom();
 }
 
 function triggerGatedWall(targetActionGoal) {
     document.querySelectorAll(".gated-wrapper-panel").forEach(el => el.remove());
+    document.querySelectorAll(".quick-actions-wrapper").forEach(el => el.remove());
     
     let leadFormHtml = `
     📋 <strong>Identity Verification Required:</strong><br>
@@ -365,9 +396,12 @@ function triggerGatedWall(targetActionGoal) {
         <input type="text" id="lead-phone" placeholder="Phone Number *" style="padding:8px; border:1px solid #ccc; border-radius:4px;">
         <input type="text" id="lead-company" placeholder="Company Name (Optional)" style="padding:8px; border:1px solid #ccc; border-radius:4px;">
         <button id="submit-lead-gated-btn" class="quick-btn" style="background:#ff9800; color:#fff; padding:10px; font-weight:bold; border:none; border-radius:4px; cursor:pointer;">Verify to Access</button>
+        <button id="cancel-lead-gated-btn" class="quick-btn back-btn" style="padding:8px; margin-top:4px;">↩️ Exit to Menu</button>
     </div>
     `;
     addBotMessage(leadFormHtml, false);
+    
+    document.getElementById("cancel-lead-gated-btn").onclick = () => initializeWelcomeGreeting();
     
     document.getElementById("submit-lead-gated-btn").onclick = () => {
         const nameVal = document.getElementById("lead-name").value.trim();
@@ -424,43 +458,6 @@ async function processCompletedLeadCaptured() {
     }, 800);
 }
 
-// Function to clear deep selections and bring back original options
-function showMainMenuOptions() {
-    const submenuWrapper = document.getElementById('submenu-controls-wrapper');
-    
-    // Clear out the submenus and re-hide container structure
-    submenuWrapper.innerHTML = '';
-    submenuWrapper.classList.add('hidden');
-    
-    // Fire the original initialization method inside your chatbot.js file
-    // example: displayWelcomeMenuOptions();
-}
-
-// Function to call whenever an option tree layer changes
-function displaySubMenuLayer(optionsArray) {
-    const submenuWrapper = document.getElementById('submenu-controls-wrapper');
-    submenuWrapper.innerHTML = ''; // Clear previous
-    
-    // Loop through current child choices and draw buttons...
-    optionsArray.forEach(option => {
-        const btn = document.createElement('button');
-        btn.className = 'quick-btn';
-        btn.innerText = option.label;
-        btn.onclick = () => handleSelection(option.intent);
-        submenuWrapper.appendChild(btn);
-    });
-    
-    // ↩️ Inject the Back Button at the base of the dynamic choices loop
-    const backBtn = document.createElement('button');
-    backBtn.className = 'quick-btn back-btn';
-    backBtn.innerHTML = `<i class="fas fa-arrow-left"></i> Main Menu`;
-    backBtn.onclick = showMainMenuOptions;
-    submenuWrapper.appendChild(backBtn);
-    
-    // Render the layout frame smoothly visible
-    submenuWrapper.classList.remove('hidden');
-}
-
 // ==========================================================================
 // TEXT PROCESSING ENGINE WITH LOGICAL OVERRIDES
 // ==========================================================================
@@ -468,14 +465,20 @@ function processMessage(userText) {
     const cleanText = userText.trim();
     if (!cleanText) return;
 
+    // Check if the user is explicitly trying to go back or escape
+    if (cleanText === "↩️ Back to Main Menu" || cleanText.toLowerCase() === "back" || cleanText.toLowerCase() === "menu") {
+        initializeWelcomeGreeting();
+        return;
+    }
+
     // Direct string keyword routing matches
-    if (cleanText === "Get a Solar Cost Estimate" || cleanText === "Cost Calculator") {
+    if (cleanText === "Get a Solar Cost Estimate" || cleanText === "Cost Calculator" || cleanText === "💰 Cost Calc") {
         startFlow("ESTIMATOR"); return;
     }
-    if (cleanText === "Calculate Savings" || cleanText === "Savings Calculator") {
+    if (cleanText === "Calculate Savings" || cleanText === "Savings Calculator" || cleanText === "📈 Savings") {
         startFlow("ESTIMATOR"); return;
     }
-    if (cleanText === "Financing & Subsidies" || cleanText === "Subsidy Info" || cleanText === "Subsidy Checker") {
+    if (cleanText === "Financing & Subsidies" || cleanText === "Subsidy Info" || cleanText === "📋 Subsidy" || cleanText === "Subsidy Checker") {
         startFlow("FINANCING"); return;
     }
     if (cleanText === "Residential Solar") {
@@ -484,7 +487,7 @@ function processMessage(userText) {
     if (cleanText === "Commercial Solar" || cleanText === "Solar for Industries" || cleanText === "Industrial Solar") {
         startFlow("CI_QUALIFY"); return;
     }
-    if (cleanText === "Request a Site Visit" || cleanText === "Book Site Visit" || cleanText === "Book Site Survey") {
+    if (cleanText === "Request a Site Visit" || cleanText === "Book Site Visit" || cleanText === "Book Site Survey" || cleanText === "📅 Book Survey") {
         startFlow("SITE_VISIT"); return;
     }
     if (cleanText === "Talk to an Expert" || cleanText === "Connect Live") {
@@ -540,7 +543,7 @@ function sendMessage() {
     processMessage(message);
 }
 
-function injectActionMenuButtons(buttonLabelList) {
+function injectActionMenuButtons(buttonLabelList, includeBackButton = false) {
     document.querySelectorAll(".quick-actions-wrapper").forEach(el => el.remove());
     const wrapper = document.createElement("div");
     wrapper.className = "quick-actions-wrapper";
@@ -549,11 +552,8 @@ function injectActionMenuButtons(buttonLabelList) {
     buttonLabelList.forEach(textLabel => {
         const btn = document.createElement("button");
         btn.className = "quick-btn";
-        btn.style.cssText = "padding:8px 12px; border:1px solid #ff9800; border-radius:20px; background:#fff; cursor:pointer; font-size:13px; font-family:'Poppins'; transition:0.2s;";
         btn.innerText = textLabel;
         
-        btn.onmouseover = () => { btn.style.background = "#ff9800"; btn.style.color = "#fff"; };
-        btn.onmouseout = () => { btn.style.background = "#fff"; btn.style.color = "#000"; };
         btn.onclick = (e) => {
             e.preventDefault();
             addUserMessage(textLabel);
@@ -561,6 +561,19 @@ function injectActionMenuButtons(buttonLabelList) {
         };
         wrapper.appendChild(btn);
     });
+
+    // ↩️ Dynamically append the back options into the generated grid array layout if flagged true
+    if (includeBackButton) {
+        const backBtn = document.createElement("button");
+        backBtn.className = "quick-btn back-btn";
+        backBtn.innerHTML = "<i class='fas fa-arrow-left'></i> Main Menu";
+        backBtn.onclick = (e) => {
+            e.preventDefault();
+            returnToMainMenu();
+        };
+        wrapper.appendChild(backBtn);
+    }
+
     chatBox.appendChild(wrapper);
     scrollBottom();
 }
@@ -585,7 +598,7 @@ function addBotMessage(text, displayButtons = true) {
     div.innerHTML = `<div class="message-content">${text}</div>`;
     chatBox.appendChild(div);
     if (displayButtons) {
-        injectActionMenuButtons(KEYWORD_OPTIONS);
+        injectActionMenuButtons(KEYWORD_OPTIONS, true); // Deep layer generic queries include a back options trace
     } else {
         scrollBottom();
     }
