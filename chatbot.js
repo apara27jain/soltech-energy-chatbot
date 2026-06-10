@@ -76,7 +76,7 @@ function initializeWelcomeGreeting() {
     <div class="bot-message">
         <div class="message-content">
             <div class="company-logo-container" style="margin-bottom: 12px; display: flex; align-items: center;">
-                <img src="logo.png" alt="Soltech Energy Logo" class="chat-company-logo" style="max-height: 40px; width: auto; object-fit: contain;" onerror="this.parentNode.style.display='none';">
+                <img src="logo.jpg" alt="Soltech Energy Logo" class="chat-company-logo" style="max-height: 40px; width: auto; object-fit: contain;" onerror="this.parentNode.style.display='none';">
             </div>
             <strong>Welcome! I'm your Soltech Assistant. How can I transform your roof today?</strong>
             <br><br>
