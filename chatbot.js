@@ -133,12 +133,12 @@ function handleFlowStep(userInputText) {
                 flowData.propertyType = userInputText;
                 currentStep = 2;
                 updateProgressBar(2, 6);
-                addBotMessage("2️⃣ <strong>Please enter your 6-digit Pincode for dynamic shadow mapping:</strong>", false);
+                addBotMessage("2️⃣ <strong>Please enter your Jaipur's 6 digit pincode (e.g., 302018)</strong>", false);
             } else if (currentStep === 2) {
                 // Strict 6-digit Pincode format check
                 const pincodeRegex = /^[1-9][0-9]{5}$/;
                 if (!pincodeRegex.test(userInputText.trim())) {
-                    addBotMessage("⚠️ <strong>Invalid Format:</strong> Please enter a valid 6-digit Indian Pincode (e.g., 302001) to accurately calculate baseline logistics.", false);
+                    addBotMessage("⚠️ <strong>Invalid Format:</strong> Please enter a valid 6-digit Jaipur Pincode (e.g., 302018) to accurately calculate baseline logistics.", false);
                     return;
                 }
                 
