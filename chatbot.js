@@ -86,12 +86,11 @@ function initializeWelcomeGreeting() {
         </div>
     </div>
     `;
-    injectActionMenuButtons(MAIN_HOMEPAGE_ACTIONS, false); // No back button on the landing homepage
+    injectActionMenuButtons(MAIN_HOMEPAGE_ACTIONS, false);
     scrollBottom();
     saveChat();
 }
 
-// Global programmatic action to reset step flows safely
 function returnToMainMenu() {
     addUserMessage("↩️ Back to Main Menu");
     showTyping();
@@ -134,12 +133,11 @@ function startFlow(flowName) {
     } else if (flowName === "SITE_VISIT") {
         updateProgressBar(1, 2);
         addBotMessage("🗓️ <strong>Let's schedule your structural deployment evaluation. Please enter your 6-digit Pincode:</strong>", false);
-        injectActionMenuButtons([], true); // Fix: Force back button to render for input fields
+        injectActionMenuButtons([], true);
     }
 }
 
 function handleFlowStep(userInputText) {
-    // If the user clicked the back button option directly, bail immediately
     if (userInputText.includes("Back to Main Menu")) return;
 
     showTyping();
@@ -350,7 +348,6 @@ function injectGatedActionCTAs() {
     document.querySelectorAll(".gated-wrapper-panel").forEach(el => el.remove());
     const wrapper = document.createElement("div");
     wrapper.className = "gated-wrapper-panel";
-    wrapper.style.cssText = "margin-top:12px; display:flex; flex-direction:column; gap:8px;";
 
     const btnConsult = document.createElement("button");
     btnConsult.className = "quick-btn functional-action-btn";
@@ -364,8 +361,6 @@ function injectGatedActionCTAs() {
 
     const btnWhatsApp = document.createElement("button");
     btnWhatsApp.className = "quick-btn functional-action-btn wa-direct-btn";
-    btnWhatsApp.style.backgroundColor = "#25D366";
-    btnWhatsApp.style.color = "#FFFFFF";
     btnWhatsApp.innerHTML = "<i class='fab fa-whatsapp'></i> WhatsApp Expert Desk";
     btnWhatsApp.onclick = () => launchWhatsAppLeadGen();
 
@@ -390,12 +385,12 @@ function triggerGatedWall(targetActionGoal) {
     📋 <strong>Identity Verification Required:</strong><br>
     You must fill out your name and phone number to book a demo or download our brochure files:
     <br><br>
-    <div class="gated-form-container" style="display:flex; flex-direction:column; gap:8px; background:rgba(0,0,0,0.03); padding:10px; border-radius:8px;">
-        <input type="text" id="lead-name" placeholder="Your Name *" style="padding:8px; border:1px solid #ccc; border-radius:4px;">
-        <input type="text" id="lead-phone" placeholder="Phone Number *" style="padding:8px; border:1px solid #ccc; border-radius:4px;">
-        <input type="text" id="lead-company" placeholder="Company Name (Optional)" style="padding:8px; border:1px solid #ccc; border-radius:4px;">
-        <button id="submit-lead-gated-btn" class="quick-btn" style="background:#ff9800; color:#fff; padding:10px; font-weight:bold; border:none; border-radius:4px; cursor:pointer;">Verify to Access</button>
-        <button id="cancel-lead-gated-btn" class="quick-btn back-btn" style="padding:8px; margin-top:4px;">↩️ Exit to Menu</button>
+    <div class="gated-form-container">
+        <input type="text" id="lead-name" placeholder="Your Name *" required>
+        <input type="text" id="lead-phone" placeholder="Phone Number *" required>
+        <input type="text" id="lead-company" placeholder="Company Name (Optional)">
+        <button id="submit-lead-gated-btn" class="quick-btn submit-btn">Verify to Access</button>
+        <button id="cancel-lead-gated-btn" class="quick-btn back-btn">↩️ Exit to Menu</button>
     </div>
     `;
     addBotMessage(leadFormHtml, false);
@@ -448,7 +443,7 @@ async function processCompletedLeadCaptured() {
         addBotMessage(`✅ <strong>Thank you, ${flowData.leadName}.</strong> Your request has been verified and processed by Soltech.`, false);
         
         if (flowData.actionContextTarget.includes("Brochure")) {
-            addBotMessage(`🎉 <strong>Access Granted:</strong> <a href="#" onclick="alert('Starting your Soltech technical brochure download...'); return false;" style="text-decoration:underline; font-weight:bold; color:#0d47a1;">Click here to download the brochure file</a>.`, false);
+            addBotMessage(`🎉 <strong>Access Granted:</strong> <a href="#" onclick="alert('Starting your Soltech technical brochure download...'); return false;" class="download-link">Click here to download the brochure file</a>.`, false);
         } else {
             addBotMessage(`📞 Our engineering team will connect with you shortly at <strong>${flowData.leadPhone}</strong> to conduct your live system demo.`, false);
         }
@@ -542,7 +537,6 @@ function injectActionMenuButtons(buttonLabelList, includeBackButton = false) {
     document.querySelectorAll(".quick-actions-wrapper").forEach(el => el.remove());
     const wrapper = document.createElement("div");
     wrapper.className = "quick-actions-wrapper";
-    wrapper.style.cssText = "display:flex; flex-wrap:wrap; gap:6px; margin-top:10px;";
     
     buttonLabelList.forEach(textLabel => {
         const btn = document.createElement("button");
@@ -613,9 +607,16 @@ function scrollBottom() { chatBox.scrollTop = chatBox.scrollHeight; }
 function saveChat() { localStorage.setItem("Soltech_chat", chatBox.innerHTML); }
 
 function loadChat() {
-    const chat = localStorage.getItem("Soltech_chat");
-    if (chat) chatBox.innerHTML = chat;
-    else initializeWelcomeGreeting();
+    let chat = localStorage.getItem("Soltech_chat");
+    if (chat) {
+        if (chat.includes('logo.png')) {
+            chat = chat.replace(/logo\.png/g, 'logo.jpg');
+            localStorage.setItem("Soltech_chat", chat);
+        }
+        chatBox.innerHTML = chat;
+    } else {
+        initializeWelcomeGreeting();
+    }
 }
 
 document.addEventListener("DOMContentLoaded", function() {
