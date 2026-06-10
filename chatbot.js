@@ -424,6 +424,43 @@ async function processCompletedLeadCaptured() {
     }, 800);
 }
 
+// Function to clear deep selections and bring back original options
+function showMainMenuOptions() {
+    const submenuWrapper = document.getElementById('submenu-controls-wrapper');
+    
+    // Clear out the submenus and re-hide container structure
+    submenuWrapper.innerHTML = '';
+    submenuWrapper.classList.add('hidden');
+    
+    // Fire the original initialization method inside your chatbot.js file
+    // example: displayWelcomeMenuOptions();
+}
+
+// Function to call whenever an option tree layer changes
+function displaySubMenuLayer(optionsArray) {
+    const submenuWrapper = document.getElementById('submenu-controls-wrapper');
+    submenuWrapper.innerHTML = ''; // Clear previous
+    
+    // Loop through current child choices and draw buttons...
+    optionsArray.forEach(option => {
+        const btn = document.createElement('button');
+        btn.className = 'quick-btn';
+        btn.innerText = option.label;
+        btn.onclick = () => handleSelection(option.intent);
+        submenuWrapper.appendChild(btn);
+    });
+    
+    // ↩️ Inject the Back Button at the base of the dynamic choices loop
+    const backBtn = document.createElement('button');
+    backBtn.className = 'quick-btn back-btn';
+    backBtn.innerHTML = `<i class="fas fa-arrow-left"></i> Main Menu`;
+    backBtn.onclick = showMainMenuOptions;
+    submenuWrapper.appendChild(backBtn);
+    
+    // Render the layout frame smoothly visible
+    submenuWrapper.classList.remove('hidden');
+}
+
 // ==========================================================================
 // TEXT PROCESSING ENGINE WITH LOGICAL OVERRIDES
 // ==========================================================================
