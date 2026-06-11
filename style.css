@@ -384,6 +384,10 @@
     box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
 }
 
+/* =====================================================
+   SOLTECH ORANGE QUICK ACTION BUTTONS
+===================================================== */
+
 .quick-actions-wrapper {
     display: flex;
     flex-wrap: wrap;
@@ -394,41 +398,75 @@
     max-width: 100%;
 }
 
+/* Default Button Style */
 .quick-btn {
-    background-color: #ffffff;
-    border: 1px solid #cbd5e1;
-    color: #475569;
+    background: #ffffff !important;
+    border: 1.5px solid #f59e0b !important;
+    color: #0f172a !important;
+
     padding: 8px 16px;
     border-radius: 30px;
     font-size: 12px;
     font-weight: 500;
     cursor: pointer;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+
+    transition: all 0.25s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.03);
 }
 
+/* Hover Effect */
 .quick-btn:hover {
-    background-color: #ffffff;
-    border-color: #64748b;
-    color: #0f172a;
+    background: #f59e0b !important;
+    border-color: #f59e0b !important;
+    color: #ffffff !important;
+
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(15, 23, 42, 0.06);
+
+    box-shadow: 0 6px 14px rgba(245, 158, 11, 0.35);
 }
 
+/* Active / Selected Button */
+.quick-btn.active,
+.quick-btn.selected {
+    background: #f59e0b !important;
+    border-color: #f59e0b !important;
+    color: #ffffff !important;
+
+    box-shadow: 0 6px 14px rgba(245, 158, 11, 0.35);
+}
+
+/* Orange CTA Buttons */
 .quick-btn.orange-quote-btn {
-    background: var(--accent-orange) !important;
+    background: linear-gradient(135deg, #ff6b00 0%, #e65c00 100%) !important;
     color: #ffffff !important;
     border: none !important;
     font-weight: 600 !important;
-    box-shadow: 0 4px 14px rgba(230, 92, 0, 0.3) !important;
-    position: relative;
-    overflow: hidden;
-    animation: premiumPulse 2.5s infinite ease-in-out;
+
+    box-shadow: 0 4px 14px rgba(230, 92, 0, 0.30) !important;
 }
 
+/* Orange CTA Hover */
 .quick-btn.orange-quote-btn:hover {
-    transform: translateY(-3px) scale(1.02);
+    transform: translateY(-3px);
     box-shadow: 0 8px 20px rgba(230, 92, 0, 0.45) !important;
+    filter: brightness(1.05);
+}
+
+/* Back Button */
+.quick-btn.back-btn {
+    background: transparent !important;
+    border: 1px dashed #94a3b8 !important;
+    color: #64748b !important;
+    font-weight: 600;
+}
+
+.quick-btn.back-btn:hover {
+    background: #f8fafc !important;
+    border-color: #64748b !important;
+    color: #0f172a !important;
+
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
 
 @keyframes premiumPulse {
