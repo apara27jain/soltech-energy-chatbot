@@ -1,4 +1,4 @@
-// ========================================================================== 
+// ==========================================================================
 // Soltech Energy Chatbot Engine
 // chatbot.js [UPDATED WITH COMPREHENSIVE BACK BUTTONS & CSS PROTECTION]
 // ==========================================================================
@@ -18,33 +18,15 @@ let currentStep = 0;
 let flowData = {};
 
 const CRM_SETTINGS = {
-    WhatsAppNumber: "918239573979", 
+    WhatsAppNumber: "918239573979",
     InitialHiMessage: "Hi! I want to check solar details for my property.",
-    DefaultLeadLocation: "Jaipur", 
-    LeadStorageWebhook: "http://localhost:5000/api/leads" 
+    DefaultLeadLocation: "Jaipur",
+    LeadStorageWebhook: "http://localhost:5000/api/leads"
 };
 
-const MAIN_HOMEPAGE_ACTIONS = [
-    "Get a Solar Cost Estimate",
-    "Calculate Savings",
-    "Residential Solar",
-    "Commercial Solar",
-    "Solar for Industries",
-    "Request a Site Visit",
-    "Financing & Subsidies",
-    "Talk to an Expert"
-];
+const MAIN_HOMEPAGE_ACTIONS = ["Get a Solar Cost Estimate", "Calculate Savings", "Residential Solar", "Commercial Solar", "Solar for Industries", "Request a Site Visit", "Financing & Subsidies", "Talk to an Expert"];
 
-const KEYWORD_OPTIONS = [
-    "Subsidy Info", 
-    "Net Metering", 
-    "Residential Setup", 
-    "Commercial Setup", 
-    "Maintenance & AMC", 
-    "Warranty & Life", 
-    "Weather Safety",
-    "Connect Live"
-];
+const KEYWORD_OPTIONS = ["Subsidy Info", "Net Metering", "Residential Setup", "Commercial Setup", "Maintenance & AMC", "Warranty & Life", "Weather Safety", "Connect Live"];
 
 // =====================================
 // WINDOW MANAGEMENT
@@ -68,24 +50,24 @@ function initializeWelcomeGreeting() {
     currentFlow = null;
     currentStep = 0;
     flowData = {};
-    
+
     const progressNode = document.getElementById("lead-progress");
     if (progressNode) progressNode.classList.add("hidden");
-    
+
     chatBox.innerHTML = `
-    <div class="bot-message">
-        <div class="message-content">
-            <div class="company-logo-container" style="margin-bottom: 12px; display: flex; align-items: center;">
-                <img src="logo.jpg" alt="Soltech Energy Logo" class="chat-company-logo" style="max-height: 40px; width: auto; object-fit: contain;" onerror="this.parentNode.style.display='none';">
-            </div>
-            <strong>Welcome! I'm your Solar Assistant. How can I help you today?</strong>
-            <br><br>
-            We are Jaipur's premier solar engineering firm, designing high-yield systems for residential rooftops and commercial enterprises.
-            <br><br>
-            🤖 Solar system costs vary continuously based on your roof space, shadows, and shifting JVVNL net-metering regulations. Feel free to use our quick calculators below!
+<div class="bot-message">
+    <div class="message-content">
+        <div class="company-logo-container" style="margin-bottom: 12px; display: flex; align-items: center;">
+            <img src="logo.jpg" alt="Soltech Energy Logo" class="chat-company-logo" style="max-height: 40px; width: auto; object-fit: contain;" onerror="this.parentNode.style.display='none';">
         </div>
+        <strong>Welcome! I'm your Solar Assistant. How can I help you today?</strong>
+        <br><br>
+        We are Jaipur's premier solar engineering firm, designing high-yield systems for residential rooftops and commercial enterprises.
+        <br><br>
+        🤖 Solar system costs vary continuously based on your roof space, shadows, and shifting JVVNL net-metering regulations. Feel free to use our quick calculators below!
     </div>
-    `;
+</div>
+`;
     injectActionMenuButtons(MAIN_HOMEPAGE_ACTIONS, false);
     scrollBottom();
     saveChat();
@@ -114,11 +96,11 @@ function startFlow(flowName) {
     currentFlow = flowName;
     currentStep = 1;
     flowData = {};
-    
+
     const progressNode = document.getElementById("lead-progress");
     if (progressNode) progressNode.classList.remove("hidden");
     updateProgressBar(1, 6);
-    
+
     if (flowName === "ESTIMATOR") {
         addBotMessage("1️⃣ <strong>What type of property are you looking to solarize?</strong>", false);
         injectActionMenuButtons(["Home", "Commercial Building", "Factory/Industry", "School/Institution"], true);
@@ -265,7 +247,7 @@ function handleFlowStep(userInputText) {
 // ==========================================================================
 function renderEstimatorResults() {
     let sizeKw = 3; let baseCost = 180000; let subsidy = 78000; let annualGen = 4380; let monthlySavings = 3000;
-    
+
     if (flowData.monthlyBill.includes("< ₹2,000")) {
         sizeKw = 2; baseCost = 130000; subsidy = 60000; annualGen = 2920; monthlySavings = 1600;
     } else if (flowData.monthlyBill.includes("₹2,000–₹5,000")) {
@@ -290,35 +272,35 @@ function renderEstimatorResults() {
     let emiResult = Math.round((p * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1));
 
     let outputHtml = `
-    📊 <strong>Your Custom Soltech System Design Blueprint:</strong><br><br>
-    • <strong>Target Coverage Pincode:</strong> ${flowData.pincode}<br>
-    • <strong>Recommended System Size:</strong> ${sizeKw} kWp<br>
-    • <strong>Estimated Project Cost (Gross):</strong> ₹${baseCost.toLocaleString()}<br>
-    • <strong>Government Subsidy Benefit:</strong> -₹${subsidy.toLocaleString()}<br>
-    • <strong style="color: #2e7d32;">Net Cost Investment:</strong> ₹${netCost.toLocaleString()}<br>
-    • <strong>Expected Annual Generation:</strong> ${annualGen} Units (kWh)<br>
-    • <strong>Monthly Savings Estimate:</strong> ₹${monthlySavings.toLocaleString()}<br>
-    • <strong>Payback Period:</strong> ~${paybackYears} Years<br>
-    • <strong>Typical EMI Baseline (7.99% Rate over 36M):</strong> ₹${emiResult.toLocaleString()}/month<br><br>
-    Would you like to unlock your detailed structural engineering proposal brochure or speak to our loan counter expert?
-    `;
-    
+=======Your Custom Soltech System Design Blueprint:=======<br><br>
+• <strong>Target Coverage Pincode:</strong> ${flowData.pincode}<br>
+• <strong>Recommended System Size:</strong> ${sizeKw} kWp<br>
+• <strong>Estimated Project Cost (Gross):</strong> ₹${baseCost.toLocaleString()}<br>
+• <strong>Government Subsidy Benefit:</strong> -₹${subsidy.toLocaleString()}<br>
+• <strong style="color: #2e7d32;">Net Cost Investment:</strong> ₹${netCost.toLocaleString()}<br>
+• <strong>Expected Annual Generation:</strong> ${annualGen} Units (kWh)<br>
+• <strong>Monthly Savings Estimate:</strong> ₹${monthlySavings.toLocaleString()}<br>
+• <strong>Payback Period:</strong> ~${paybackYears} Years<br>
+• <strong>Typical EMI Baseline (7.99% Rate over 36M):</strong> ₹${emiResult.toLocaleString()}/month<br><br>
+Would you like to unlock your detailed structural engineering proposal brochure or speak to our loan counter expert?
+`;
+
     addBotMessage(outputHtml, false);
     injectGatedActionCTAs();
 }
 
 function renderFinancingOutputs() {
     let outputHtml = `
-    💳 <strong>Soltech & Solar Ladder Loan Engine Matrix:</strong><br><br>
-    • <strong>Base Interest Rate:</strong> Starts at <strong>7.99%</strong> per annum.<br>
-    • <strong>Available Loan Tenures:</strong> Flexible options ranging from 6 Months to 5 Years (6M, 1Y, 2Y, 3Y, 4Y, 5Y).<br>
-    • <strong>Special Promotional Tranches:</strong> Interest-free (0% Interest) options available for up to 6 months.<br><br>
-    📋 <strong>Official Required Documents Checklist (Soltech Flow):</strong><br>
-    • <strong>Common Base Requirements:</strong> PAN Card, Aadhaar Card (Front/Back), Last 3 Months' Electricity Bill, 1-Year Bank Statement, Passport Photo, Applicant Email & Phone Number, and a Detailed Solar Proposal.<br>
-    • <strong>For Salaried Employees:</strong> 3 Months' Salary Slips.<br>
-    • <strong>For Self-Employed:</strong> 2 Years of Income Tax Returns (ITR) along with Business Proof (GST Certificate or Udyam Registration).<br><br>
-    To book a live system demo and download the technical loan structure brochure, tap below to verify your details.
-    `;
+💳 <strong>Soltech & Solar Ladder Loan Engine Matrix:</strong><br><br>
+• <strong>Base Interest Rate:</strong> Starts at <strong>7.99%</strong> per annum.<br>
+• <strong>Available Loan Tenures:</strong> Flexible options ranging from 6 Months to 5 Years (6M, 1Y, 2Y, 3Y, 4Y, 5Y).<br>
+• <strong>Special Promotional Tranches:</strong> Interest-free (0% Interest) options available for up to 6 months.<br><br>
+📋 <strong>Official Required Documents Checklist (Soltech Flow):</strong><br>
+• <strong>Common Base Requirements:</strong> PAN Card, Aadhaar Card (Front/Back), Last 3 Months' Electricity Bill, 1-Year Bank Statement, Passport Photo, Applicant Email & Phone Number, and a Detailed Solar Proposal.<br>
+• <strong>For Salaried Employees:</strong> 3 Months' Salary Slips.<br>
+• <strong>For Self-Employed:</strong> 2 Years of Income Tax Returns (ITR) along with Business Proof (GST Certificate or Udyam Registration).<br><br>
+To book a live system demo and download the technical loan structure brochure, tap below to verify your details.
+`;
     addBotMessage(outputHtml, false);
     injectGatedActionCTAs();
 }
@@ -330,13 +312,13 @@ function renderCIResults() {
     let carbonSavedTons = (potentialSize * 1450 * 0.00082).toFixed(1);
 
     let outputHtml = `
-    🏭 <strong>Corporate C&I Asset Feasibility Estimates:</strong><br><br>
-    • <strong>Potential System Size Allocation:</strong> Up to ${potentialSize} kWp grid-tied asset installation.<br>
-    • <strong>Annual Savings Estimate:</strong> Approx ₹${Math.round(annualSavingsEst).toLocaleString()} per annum.<br>
-    • <strong>Accelerated Depreciation Asset Benefit:</strong> Up to 40% taxable write-off allowances in Year 1 allocation profiles.<br>
-    • <strong>Carbon Reduction Estimate:</strong> Net reduction of <strong>${carbonSavedTons} Metric Tons of CO2</strong> annually.<br><br>
-    Unlock full case study portfolios and trigger automated engineering calculations by submitting your verification logs.
-    `;
+🏭 <strong>Corporate C&I Asset Feasibility Estimates:</strong><br><br>
+• <strong>Potential System Size Allocation:</strong> Up to ${potentialSize} kWp grid-tied asset installation.<br>
+• <strong>Annual Savings Estimate:</strong> Approx ₹${Math.round(annualSavingsEst).toLocaleString()} per annum.<br>
+• <strong>Accelerated Depreciation Asset Benefit:</strong> Up to 40% taxable write-off allowances in Year 1 allocation profiles.<br>
+• <strong>Carbon Reduction Estimate:</strong> Net reduction of <strong>${carbonSavedTons} Metric Tons of CO2</strong> annually.<br><br>
+Unlock full case study portfolios and trigger automated engineering calculations by submitting your verification logs.
+`;
     addBotMessage(outputHtml, false);
     injectGatedActionCTAs();
 }
@@ -380,23 +362,23 @@ function injectGatedActionCTAs() {
 function triggerGatedWall(targetActionGoal) {
     document.querySelectorAll(".gated-wrapper-panel").forEach(el => el.remove());
     document.querySelectorAll(".quick-actions-wrapper").forEach(el => el.remove());
-    
+
     let leadFormHtml = `
-    📋 <strong>Identity Verification Required:</strong><br>
-    You must fill out your name and phone number to book a demo or download our brochure files:
-    <br><br>
-    <div class="gated-form-container">
-        <input type="text" id="lead-name" placeholder="Your Name *" required>
-        <input type="text" id="lead-phone" placeholder="Phone Number *" required>
-        <input type="text" id="lead-company" placeholder="Company Name (Optional)">
-        <button id="submit-lead-gated-btn" class="quick-btn submit-btn">Verify to Access</button>
-        <button id="cancel-lead-gated-btn" class="quick-btn back-btn">↩️ Exit to Menu</button>
-    </div>
-    `;
+📋 <strong>Identity Verification Required:</strong><br>
+You must fill out your name and phone number to book a demo or download our brochure files:
+<br><br>
+<div class="gated-form-container">
+    <input type="text" id="lead-name" placeholder="Your Name *" required>
+    <input type="text" id="lead-phone" placeholder="Phone Number *" required>
+    <input type="text" id="lead-company" placeholder="Company Name (Optional)">
+    <button id="submit-lead-gated-btn" class="quick-btn submit-btn">Verify to Access</button>
+    <button id="cancel-lead-gated-btn" class="quick-btn back-btn">↩️ Exit to Menu</button>
+</div>
+`;
     addBotMessage(leadFormHtml, false);
-    
+
     document.getElementById("cancel-lead-gated-btn").onclick = () => initializeWelcomeGreeting();
-    
+
     document.getElementById("submit-lead-gated-btn").onclick = () => {
         const nameVal = document.getElementById("lead-name").value.trim();
         const phoneVal = document.getElementById("lead-phone").value.trim();
@@ -529,7 +511,7 @@ function sendMessage() {
     const message = userInput.value.trim();
     if (!message) return;
     addUserMessage(message);
-    userInput.value = ""; 
+    userInput.value = "";
     processMessage(message);
 }
 
@@ -537,7 +519,7 @@ function injectActionMenuButtons(buttonLabelList, includeBackButton = false) {
     document.querySelectorAll(".quick-actions-wrapper").forEach(el => el.remove());
     const wrapper = document.createElement("div");
     wrapper.className = "quick-actions-wrapper";
-    
+
     buttonLabelList.forEach(textLabel => {
         const btn = document.createElement("button");
         btn.className = "quick-btn";
@@ -586,7 +568,7 @@ function addBotMessage(text, displayButtons = true) {
     div.innerHTML = `<div class="message-content">${text}</div>`;
     chatBox.appendChild(div);
     if (displayButtons) {
-        injectActionMenuButtons(KEYWORD_OPTIONS, true); 
+        injectActionMenuButtons(KEYWORD_OPTIONS, true);
     } else {
         scrollBottom();
     }
@@ -610,7 +592,7 @@ function loadChat() {
     let chat = localStorage.getItem("Soltech_chat");
     if (chat) {
         if (chat.includes('logo.png')) {
-            chat = chat.replace(/logo\.png/g, 'logo.jpg');
+            chat = chat.replace(/logo.png/g, 'logo.jpg');
             localStorage.setItem("Soltech_chat", chat);
         }
         chatBox.innerHTML = chat;
