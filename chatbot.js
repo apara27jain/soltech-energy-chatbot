@@ -411,17 +411,23 @@ function triggerGatedWall(targetActionGoal) {
     document.querySelectorAll(".quick-actions-wrapper").forEach(el => el.remove());
 
     let leadFormHtml = `
-📋 <strong>Identity Verification Required:</strong><br>
-You must fill out your name and phone number to book a demo or download our brochure files:
-<br><br>
-<div class="gated-form-container">
-    <input type="text" id="lead-name" placeholder="Your Name *" required>
-    <input type="text" id="lead-phone" placeholder="Phone Number *" required>
-    <input type="text" id="lead-company" placeholder="Company Name (Optional)">
-    <button id="submit-lead-gated-btn" class="quick-btn submit-btn">Verify to Access</button>
-    <button id="cancel-lead-gated-btn" class="quick-btn back-btn">↩️ Exit to Menu</button>
-</div>
-`;
+📋 // Locate where you output the verification window inside chatbot.js
+const formHTML = `
+<div class="lead-form-card">
+    <strong>📋 Identity Verification Required:</strong>
+    <p>You must fill out your name and phone number to book a demo or download our brochure files:</p>
+    
+    <input type="text" id="leadName" placeholder="Your Name *" required>
+    <input type="tel" id="leadPhone" placeholder="Phone Number *" required>
+    <input type="text" id="leadCompany" placeholder="Company Name (Optional)">
+    
+    <button class="verify-btn" onclick="handleLeadSubmission()">Verify to Access</button>
+    
+    <a href="#" class="exit-menu-link" onclick="initializeWelcomeGreeting(); return false;">
+        ↪️ Exit to Menu
+    </a>
+</div>`
+;
     addBotMessage(leadFormHtml, false);
 
     document.getElementById("cancel-lead-gated-btn").onclick = () => initializeWelcomeGreeting();
