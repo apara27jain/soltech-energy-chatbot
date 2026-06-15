@@ -1,7 +1,6 @@
-```javascript
 // ==========================================================================
 // Soltech Energy Chatbot Engine
-// chatbot.js [UPDATED WITH COMPREHENSIVE BACK BUTTONS & CSS PROTECTION]
+// chatbot.js [SYNTAX ERROR FIXED & STRUCTURALLY VERIFIED]
 // ==========================================================================
 
 const chatToggle = document.getElementById("chat-toggle");
@@ -35,7 +34,6 @@ const KEYWORD_OPTIONS = ["Subsidy Info", "Net Metering", "Residential Setup", "C
 if (chatToggle) {
     chatToggle.addEventListener("click", () => {
         chatbotContainer.classList.toggle("open");
-        // Ensure that opening the chatbot hides any default HTML static form card and brings up the main menu
         const staticFormCard = document.querySelector(".lead-form-card");
         if (staticFormCard) {
             staticFormCard.style.display = "none";
@@ -60,7 +58,6 @@ function initializeWelcomeGreeting() {
     const progressNode = document.getElementById("lead-progress");
     if (progressNode) progressNode.classList.add("hidden");
 
-    // Hide the static HTML identity verification form card if it's visible
     const staticFormCard = document.querySelector(".lead-form-card");
     if (staticFormCard) {
         staticFormCard.style.display = "none";
@@ -153,7 +150,6 @@ function handleFlowStep(userInputText) {
                     injectActionMenuButtons([], true);
                     return;
                 }
-                
                 flowData.pincode = userInputText.trim();
                 currentStep = 3;
                 updateProgressBar(3, 6);
@@ -179,7 +175,9 @@ function handleFlowStep(userInputText) {
                 injectActionMenuButtons(["Yes", "No"], true);
             } else if (currentStep === 6) {
                 flowData.ownership = userInputText;
-                document.getElementById("lead-progress").classList.add("hidden");
+                if (document.getElementById("lead-progress")) {
+                    document.getElementById("lead-progress").classList.add("hidden");
+                }
                 renderEstimatorResults();
             }
         }
@@ -200,7 +198,9 @@ function handleFlowStep(userInputText) {
                 injectActionMenuButtons(["EMI", "Loan", "CAPEX", "OPEX/PPA"], true);
             } else if (currentStep === 3) {
                 flowData.modelChoice = userInputText;
-                document.getElementById("lead-progress").classList.add("hidden");
+                if (document.getElementById("lead-progress")) {
+                    document.getElementById("lead-progress").classList.add("hidden");
+                }
                 renderFinancingOutputs();
             }
         }
@@ -233,7 +233,9 @@ function handleFlowStep(userInputText) {
                 injectActionMenuButtons([], true);
             } else if (currentStep === 5) {
                 flowData.facilityCount = userInputText;
-                document.getElementById("lead-progress").classList.add("hidden");
+                if (document.getElementById("lead-progress")) {
+                    document.getElementById("lead-progress").classList.add("hidden");
+                }
                 renderCIResults();
             }
         }
@@ -258,19 +260,23 @@ function handleFlowStep(userInputText) {
 // CORE CALCULATIONS ENGINE
 // ==========================================================================
 function renderEstimatorResults() {
-    let sizeKw = 3; let baseCost = 180000; let subsidy = 78000; let annualGen = 4380; let monthlySavings = 3000;
+    let sizeKw = 3; 
+    let baseCost = 180000; 
+    let subsidy = 78000; 
+    let annualGen = 4380; 
+    let monthlySavings = 3000;
 
-    if (flowData.monthlyBill.includes("< ₹2,000")) {
+    if (flowData.monthlyBill && flowData.monthlyBill.includes("< ₹2,000")) {
         sizeKw = 2; baseCost = 130000; subsidy = 60000; annualGen = 2920; monthlySavings = 1600;
-    } else if (flowData.monthlyBill.includes("₹2,000–₹5,000")) {
+    } else if (flowData.monthlyBill && flowData.monthlyBill.includes("₹2,000–₹5,000")) {
         sizeKw = 4; baseCost = 240000; subsidy = 78000; annualGen = 5840; monthlySavings = 4000;
-    } else if (flowData.monthlyBill.includes("₹5,000–₹10,000")) {
+    } else if (flowData.monthlyBill && flowData.monthlyBill.includes("₹5,000–₹10,000")) {
         sizeKw = 7; baseCost = 410000; subsidy = 78000; annualGen = 10220; monthlySavings = 7500;
-    } else if (flowData.monthlyBill.includes("₹10,000+")) {
+    } else if (flowData.monthlyBill && flowData.monthlyBill.includes("₹10,000+")) {
         sizeKw = 10; baseCost = 550000; subsidy = 78000; annualGen = 14600; monthlySavings = 11000;
     }
 
-    if (flowData.roofArea.includes("<500 sq ft") && sizeKw > 4) {
+    if (flowData.roofArea && flowData.roofArea.includes("<500 sq ft") && sizeKw > 4) {
         addBotMessage(`⚠️ <strong>Roof Constraints Identified:</strong> Your consumption requires a ${sizeKw}kW system, but your area fits up to 4kW. Our team will optimize placement using satellite mapping.`, false);
         sizeKw = 4;
     }
@@ -285,7 +291,7 @@ function renderEstimatorResults() {
 
     let outputHtml = `
 📊 <strong>Your Custom Soltech System Design Blueprint:</strong><br><br>
-• <strong>Target Coverage Pincode:</strong> ${flowData.pincode}<br>
+• <strong>Target Coverage Pincode:</strong> ${flowData.pincode || "N/A"}<br>
 • <strong>Recommended System Size:</strong> ${sizeKw} kWp<br>
 • <strong>Estimated Project Cost (Gross):</strong> ₹${baseCost.toLocaleString()}<br>
 • <strong>Government Subsidy Benefit:</strong> -₹${subsidy.toLocaleString()}<br>
@@ -436,7 +442,7 @@ async function processCompletedLeadCaptured() {
         hideTyping();
         addBotMessage(`✅ <strong>Thank you, ${flowData.leadName}.</strong> Your request has been verified and processed by Soltech.`, false);
         
-        if (flowData.actionContextTarget.includes("Brochure")) {
+        if (flowData.actionContextTarget && flowData.actionContextTarget.includes("Brochure")) {
             addBotMessage(`🎉 <strong>Access Granted:</strong> <a href="#" onclick="alert('Starting your Soltech technical brochure download...'); return false;" class="download-link">Click here to download the brochure file</a>.`, false);
         } else {
             addBotMessage(`📞 Our engineering team will connect with you shortly at <strong>${flowData.leadPhone}</strong> to conduct your live system demo.`, false);
@@ -600,8 +606,8 @@ function hideTyping() {
 // Global scope helpers for HTML element callbacks
 window.initializeWelcomeGreeting = initializeWelcomeGreeting;
 
-function scrollBottom() { chatBox.scrollTop = chatBox.scrollHeight; }
-function saveChat() { localStorage.setItem("Soltech_chat", chatBox.innerHTML); }
+function scrollBottom() { if (chatBox) chatBox.scrollTop = chatBox.scrollHeight; }
+function saveChat() { if (chatBox) localStorage.setItem("Soltech_chat", chatBox.innerHTML); }
 
 function loadChat() {
     let chat = localStorage.getItem("Soltech_chat");
@@ -625,7 +631,6 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // Set up exit/back controls handling for the static elements inside your HTML layout structure
     const staticExitBtn = document.querySelector(".exit-btn");
     if (staticExitBtn) {
         staticExitBtn.addEventListener("click", function(e) {
@@ -643,5 +648,3 @@ document.addEventListener("DOMContentLoaded", function() {
     });
     loadChat();
 });
-
-```
