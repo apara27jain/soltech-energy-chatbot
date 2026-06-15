@@ -63,20 +63,49 @@ function initializeWelcomeGreeting() {
         staticFormCard.style.display = "none";
     }
 
-    chatBox.innerHTML = 
-`<div class="bot-message">
-    <div class="message-content">
-        <div class="company-logo-container" style="margin-bottom: 12px; display: flex; align-items: center;">
-            <img src="logo.jpg" alt="Soltech Energy Logo" class="chat-company-logo" style="max-height: 40px; width: auto; object-fit: contain;" onerror="this.parentNode.style.display='none';">
-        </div>
+    // Safely clearing the box clean
+    chatBox.innerHTML = "";
+
+    // Build the outer message container securely
+    const botMessageDiv = document.createElement("div");
+    botMessageDiv.className = "bot-message";
+
+    const messageContentDiv = document.createElement("div");
+    messageContentDiv.className = "message-content";
+
+    // Build the logo block safely
+    const logoContainer = document.createElement("div");
+    logoContainer.className = "company-logo-container";
+    logoContainer.style.marginBottom = "12px";
+    logoContainer.style.display = "flex";
+    logoContainer.style.alignItems = "center";
+
+    const logoImg = document.createElement("img");
+    logoImg.src = "logo.jpg";
+    logoImg.alt = "Soltech Energy Logo";
+    logoImg.className = "chat-company-logo";
+    logoImg.style.maxHeight = "40px";
+    logoImg.style.width = "auto";
+    logoImg.style.objectFit = "contain";
+    logoImg.onerror = function() { logoContainer.style.display = "none"; };
+
+    logoContainer.appendChild(logoImg);
+    messageContentDiv.appendChild(logoContainer);
+
+    // Add text instructions safely via innerHTML to process formatting tags
+    const textInstructions = document.createElement("span");
+    textInstructions.innerHTML = `
         <strong>Welcome! I'm your Solar Assistant. How can I help you today?</strong>
         <br><br>
         We are Jaipur's premier solar engineering firm, designing high-yield systems for residential rooftops and commercial enterprises.
         <br><br>
         🤖 Solar system costs vary continuously based on your roof space, shadows, and shifting JVVNL net-metering regulations. Feel free to use our quick calculators below!
-    </div>
-</div>`
-;
+    `;
+    
+    messageContentDiv.appendChild(textInstructions);
+    botMessageDiv.appendChild(messageContentDiv);
+    chatBox.appendChild(botMessageDiv);
+
     injectActionMenuButtons(MAIN_HOMEPAGE_ACTIONS, false);
     scrollBottom();
     saveChat();
