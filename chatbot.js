@@ -1,3 +1,4 @@
+```javascript
 // ==========================================================================
 // Soltech Energy Chatbot Engine
 // chatbot.js [UPDATED WITH COMPREHENSIVE BACK BUTTONS & CSS PROTECTION]
@@ -34,6 +35,11 @@ const KEYWORD_OPTIONS = ["Subsidy Info", "Net Metering", "Residential Setup", "C
 if (chatToggle) {
     chatToggle.addEventListener("click", () => {
         chatbotContainer.classList.toggle("open");
+        // Ensure that opening the chatbot hides any default HTML static form card and brings up the main menu
+        const staticFormCard = document.querySelector(".lead-form-card");
+        if (staticFormCard) {
+            staticFormCard.style.display = "none";
+        }
     });
 }
 
@@ -53,6 +59,12 @@ function initializeWelcomeGreeting() {
 
     const progressNode = document.getElementById("lead-progress");
     if (progressNode) progressNode.classList.add("hidden");
+
+    // Hide the static HTML identity verification form card if it's visible
+    const staticFormCard = document.querySelector(".lead-form-card");
+    if (staticFormCard) {
+        staticFormCard.style.display = "none";
+    }
 
     chatBox.innerHTML = `
 <div class="bot-message">
@@ -272,7 +284,7 @@ function renderEstimatorResults() {
     let emiResult = Math.round((p * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1));
 
     let outputHtml = `
-=======Your Custom Soltech System Design Blueprint:=======<br><br>
+📊 <strong>Your Custom Soltech System Design Blueprint:</strong><br><br>
 • <strong>Target Coverage Pincode:</strong> ${flowData.pincode}<br>
 • <strong>Recommended System Size:</strong> ${sizeKw} kWp<br>
 • <strong>Estimated Project Cost (Gross):</strong> ₹${baseCost.toLocaleString()}<br>
@@ -585,6 +597,9 @@ function hideTyping() {
     if (ti) ti.classList.add("hidden");
 }
 
+// Global scope helpers for HTML element callbacks
+window.initializeWelcomeGreeting = initializeWelcomeGreeting;
+
 function scrollBottom() { chatBox.scrollTop = chatBox.scrollHeight; }
 function saveChat() { localStorage.setItem("Soltech_chat", chatBox.innerHTML); }
 
@@ -609,6 +624,16 @@ document.addEventListener("DOMContentLoaded", function() {
             if (e.key === "Enter") sendMessage();
         });
     }
+
+    // Set up exit/back controls handling for the static elements inside your HTML layout structure
+    const staticExitBtn = document.querySelector(".exit-btn");
+    if (staticExitBtn) {
+        staticExitBtn.addEventListener("click", function(e) {
+            e.preventDefault();
+            initializeWelcomeGreeting();
+        });
+    }
+
     document.querySelectorAll(".persistent-tab-item").forEach(tab => {
         tab.addEventListener("click", (e) => {
             const label = e.currentTarget.getAttribute("data-intent");
@@ -618,3 +643,5 @@ document.addEventListener("DOMContentLoaded", function() {
     });
     loadChat();
 });
+
+```
