@@ -55,43 +55,23 @@
             <small>Solar Assessment Progress</small>
         </div>
         
-        <div class="lead-form-card">
+        <!-- FIXED: The nesting inside this form card container has been repaired -->
+        <div class="lead-form-card" style="display: none;">
             <div class="lead-form-header">
-                <div class="lead-form-icon">
-                    📋
+                <div class="lead-form-icon">📋</div>
+                <div>
+                    <div class="lead-form-title">Identity Verification Required</div>
+                    <div class="lead-form-subtitle">Please provide your details to book a free demo or download our brochure.</div>
                 </div>
-            <div>
-                <div class="lead-form-title">
-                    Identity Verification Required
-                </div>
+            </div>
 
-            <div class="lead-form-subtitle">
-                Please provide your details to book a free demo or download our brochure.
-            </div>
-            </div>
+            <input type="text" class="premium-input" placeholder="👤 Your Full Name *">
+            <input type="tel" class="premium-input" placeholder="📞 Mobile Number *">
+            <input type="text" class="premium-input" placeholder="🏢 Company Name (Optional)">
+
+            <button class="verify-btn">🛡 Verify & Continue</button>
+            <button class="exit-btn">⬅ Exit to Menu</button>
         </div>
-
-    <input type="text"
-           class="premium-input"
-           placeholder="👤 Your Full Name *">
-
-    <input type="tel"
-           class="premium-input"
-           placeholder="📞 Mobile Number *">
-
-    <input type="text"
-           class="premium-input"
-           placeholder="🏢 Company Name (Optional)">
-
-    <button class="verify-btn">
-        🛡 Verify & Continue
-    </button>
-
-    <button class="exit-btn">
-        ⬅ Exit to Menu
-    </button>
-
-</div>
         
         <div id="chat-box" class="chat-box"></div>
 
@@ -114,7 +94,7 @@
             <div class="typing-row">
                  <input type="text" id="user-input" placeholder="Type your solar query here...">
                  <button id="send-btn">
-                   <i class="fas fa-paper-plane"></i>
+                    <i class="fas fa-paper-plane"></i>
                  </button>
             </div>
         </div>
