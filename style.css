@@ -542,11 +542,39 @@
 
 .lead-form-card {
     background: #ffffff;
-    border: 1px solid #fde7d3;
-    border-radius: 18px;
-    padding: 18px;
-    margin-top: 12px;
-    box-shadow: 0 8px 24px rgba(15,23,42,0.06);
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 16px;
+    margin: 12px 0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.lead-form-card p {
+    font-size: 14px;
+    line-height: 1.5;
+    color: #4a5568;
+    margin: 0 0 8px 0;
+}
+
+.lead-form-card input[type="text"],
+.lead-form-card input[type="tel"] {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+    outline: none;
+    color: #334155;
+}
+
+.lead-form-card input:focus {
+    border-color: #4ade80; /* Soltech Brand Green accent */
+    box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.15);
 }
 
 .lead-form-header {
@@ -554,6 +582,44 @@
     align-items: flex-start;
     gap: 12px;
     margin-bottom: 18px;
+}
+
+.lead-form-card .verify-btn {
+    width: 100%;
+    background-color: #25d366; /* Matching WhatsApp green ecosystem */
+    color: white;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    text-align: center;
+    box-sizing: border-box;
+    margin-top: 4px;
+}
+
+.lead-form-card .verify-btn:hover {
+    background-color: #1ebd58;
+}
+
+/* Back Link Fix */
+.lead-form-card .exit-menu-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 13px;
+    color: #64748b;
+    text-decoration: none;
+    margin-top: 6px;
+    transition: color 0.2s;
+}
+
+.lead-form-card .exit-menu-link:hover {
+    color: #334155;
+    text-decoration: underline;
 }
 
 .lead-form-icon {
