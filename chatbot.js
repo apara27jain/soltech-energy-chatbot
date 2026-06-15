@@ -63,8 +63,8 @@ function initializeWelcomeGreeting() {
         staticFormCard.style.display = "none";
     }
 
-    chatBox.innerHTML = `
-<div class="bot-message">
+    chatBox.innerHTML = 
+`<div class="bot-message">
     <div class="message-content">
         <div class="company-logo-container" style="margin-bottom: 12px; display: flex; align-items: center;">
             <img src="logo.jpg" alt="Soltech Energy Logo" class="chat-company-logo" style="max-height: 40px; width: auto; object-fit: contain;" onerror="this.parentNode.style.display='none';">
@@ -75,8 +75,8 @@ function initializeWelcomeGreeting() {
         <br><br>
         🤖 Solar system costs vary continuously based on your roof space, shadows, and shifting JVVNL net-metering regulations. Feel free to use our quick calculators below!
     </div>
-</div>
-`;
+</div>`
+;
     injectActionMenuButtons(MAIN_HOMEPAGE_ACTIONS, false);
     scrollBottom();
     saveChat();
