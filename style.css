@@ -11,14 +11,7 @@
     --border-color: #e2e8f0;
     --accent-orange: linear-gradient(135deg, #ff6b00 0%, #e65c00 100%); /* Premium fluid gradient orange */
     --btn-blue: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-    --premium-glass: rgba(255, 255, 255, 0.92); /* Increased opacity slightly to secure content readability */
-}
-
-/* Structural Reset to enforce consistency across all browsers */
-#chatbot-container, #chatbot-container * {
-    box-sizing: border-box !important;
-    margin: 0;
-    padding: 0;
+    --premium-glass: rgba(255, 255, 255, 0.85);
 }
 
 .hidden {
@@ -117,9 +110,7 @@
     bottom: 105px; 
     right: 25px;
     width: 380px;
-    height: 600px; /* Enhanced height profile to keep inner elements cleanly grouped */
-    max-width: calc(100vw - 50px);
-    max-height: calc(100vh - 140px);
+    height: 540px; 
     background: var(--premium-glass);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
@@ -127,7 +118,7 @@
     border-radius: 24px;
     box-shadow: 0 20px 40px rgba(15, 23, 42, 0.12);
     display: flex;
-    flex-direction: column; /* Strict layout orientation to block disappearing elements */
+    flex-direction: column;
     overflow: hidden;
     z-index: 100000 !important; 
     transform: translateY(40px) scale(0.85);
@@ -138,9 +129,8 @@
 }
 
 .chatbot-container.open {
-    opacity: 1 !important;
-    visibility: visible !important;
     transform: translateY(0) scale(1);
+    opacity: 1;
     pointer-events: auto;
 }
 
@@ -148,14 +138,12 @@
 .chat-header {
     background: linear-gradient(135deg, var(--primary-blue), #1e293b) !important;
     color: #ffffff !important;
-    padding: 14px 18px;
+    padding: 16px 20px;
     display: flex !important;
     flex-direction: row !important;
     justify-content: space-between !important;
     align-items: center !important;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    height: 68px;
-    flex-shrink: 0; /* Strict protection line against content-collapse bugs */
 }
 
 .header-left {
@@ -163,27 +151,31 @@
     flex-direction: row !important;
     align-items: center !important;
     gap: 12px;
-    min-width: 0; /* Permits truncation defense */
+}
+
+.company-logo-container {
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+}
+
+.chat-company-logo {
+    max-height: 40px;
+    width: auto;
+    object-fit: contain;
+    background: transparent;
 }
 
 .bot-avatar {
-    font-size: 16px;
+    font-size: 20px;
     background: rgba(255, 255, 255, 0.1);
-    width: 36px;
-    height: 36px;
+    width: 38px;
+    height: 38px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     border: 1px solid rgba(255, 255, 255, 0.15);
-    flex-shrink: 0;
-}
-
-.bot-avatar img {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    object-fit: cover;
 }
 
 .header-info {
@@ -194,13 +186,111 @@
 .chat-header h3 {
     margin: 0 !important;
     color: #ffffff !important;
-    font-size: 14px;
+    font-size: 14.5px;
     font-weight: 600;
     letter-spacing: 0.3px;
     line-height: 1.2;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   ⚡ ACCESS-OPTIMIZED WHATSAPP BANNER + TYPING ROW STYLING
+   ────────────────────────────────────────────────────────────────────────── */
+
+/* Container wrapper styling at the base of the chat widget */
+.chat-input-container {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    background-color: #f8fafc !important; /* Clean neutral light gray background */
+    padding: 12px 16px !important;
+    border-top: 1px solid #e2e8f0 !important;
+    box-sizing: border-box !important;
+}
+
+/* Primary High-Conversion WhatsApp Button Banner */
+.whatsapp-footer-cta {
+    width: 100% !important;
+    height: 42px !important; /* Balanced, thumb-friendly tap height */
+    background: #25D366 !important; /* Authentic vibrant WhatsApp Green */
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 6px !important;
+    font-size: 13px !important;
+    font-weight: 700 !important; /* High prominence bold lettering */
+    letter-spacing: 0.3px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2) !important; /* Soft green ambient shadow */
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Dynamic Hover Effects for the WhatsApp CTA */
+.whatsapp-footer-cta:hover {
+    background: #20ba5a !important; /* Darkens slightly on hover */
+    box-shadow: 0 6px 16px rgba(37, 211, 102, 0.35) !important;
+    transform: translateY(-1px) !important;
+}
+
+.whatsapp-footer-cta:active {
+    transform: translateY(1px) !important; /* Tactile compression when clicked */
+    box-shadow: 0 2px 6px rgba(37, 211, 102, 0.15) !important;
+}
+
+/* Make the font-awesome WhatsApp icon pop cleanly */
+.whatsapp-footer-cta i {
+    font-size: 16px !important;
+}
+
+/* Manual Text Typing Input Area Row */
+.typing-row {
+    display: flex !important;
+    width: 100% !important;
+    gap: 8px !important;
+    box-sizing: border-box !important;
+}
+
+/* Input Field Box Styling */
+.typing-row input[type="text"] {
+    flex: 1 !important;
+    padding: 10px 14px !important;
+    border: 1px solid #cbd5e1 !important; /* Clean subtle border color */
+    border-radius: 6px !important;
+    font-size: 14px !important;
+    color: #1e293b !important;
+    background-color: #ffffff !important;
+    outline: none !important;
+    transition: border-color 0.15s ease !important;
+}
+
+/* Highlight border smoothly when user clicks inside the textbox */
+.typing-row input[type="text"]:focus {
+    border-color: #3b82f6 !important; /* Corporate blue focus accent */
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1) !important;
+}
+
+/* Traditional Send Button layout next to the text input */
+.typing-row button {
+    background: #161b22 !important; /* Sleek dark slate color */
+    color: #ffffff !important;
+    border: none !important;
+    padding: 0 16px !important;
+    border-radius: 6px !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: background-color 0.15s ease !important;
+}
+
+.typing-row button:hover {
+    background: #0f1419 !important; /* Deepens background tint when hovered */
+}
+
+.typing-row button i {
+    font-size: 14px !important;
 }
 
 .status {
@@ -209,8 +299,7 @@
     display: flex;
     align-items: center;
     gap: 5px;
-    margin-top: 2px;
-    font-weight: 500;
+    margin-top: 3px;
 }
 
 .status::before {
@@ -223,43 +312,10 @@
     box-shadow: 0 0 8px #34d399;
 }
 
-/* ── REENGINEERED OPERATIONAL HEADER CONTROLS ── */
 .header-actions {
     display: flex !important;
     flex-direction: row !important;
     align-items: center !important;
-    gap: 4px;
-    flex-shrink: 0;
-}
-
-/* Luxury Segmented Language Toggle Pill Framework */
-.lang-switcher-pill {
-    display: flex;
-    background: rgba(255, 255, 255, 0.12);
-    padding: 2px;
-    border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    margin-right: 6px;
-}
-
-.lang-btn {
-    background: transparent !important;
-    border: none !important;
-    color: rgba(255, 255, 255, 0.65) !important;
-    font-size: 10px !important;
-    font-weight: 700 !important;
-    padding: 4px 10px !important;
-    border-radius: 14px !important;
-    cursor: pointer !important;
-    box-shadow: none !important;
-    transform: none !important;
-    transition: all 0.2s ease !important;
-}
-
-.lang-btn.active {
-    background: #ffffff !important;
-    color: var(--primary-blue) !important;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.15) !important;
 }
 
 .header-actions button {
@@ -267,9 +323,9 @@
     border: none !important;
     color: #ffffff !important;
     cursor: pointer;
-    font-size: 15px;
-    padding: 6px;
-    border-radius: 8px;
+    font-size: 16px;
+    padding: 4px;
+    margin-left: 10px;
     opacity: 0.75;
     transition: all 0.2s ease;
     display: inline-flex;
@@ -279,36 +335,7 @@
 
 .header-actions button:hover {
     opacity: 1;
-    background: rgba(255, 255, 255, 0.1);
-}
-
-/* ── PERSISTENT SUBMENU UTILITY NAVIGATION GRID ── */
-.persistent-tabs-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 4px;
-    background: #f1f5f9;
-    padding: 6px;
-    border-bottom: 1px solid #e2e8f0;
-    flex-shrink: 0;
-}
-
-.persistent-tab-item {
-    cursor: pointer;
-    background: #ffffff;
-    padding: 8px 2px;
-    border-radius: 6px;
-    font-size: 10.5px;
-    font-weight: 600;
-    text-align: center;
-    color: var(--text-dark);
-    border: 1px solid rgba(15, 23, 42, 0.05);
-    transition: all 0.2s ease;
-}
-
-.persistent-tab-item:hover {
-    background: var(--primary-blue);
-    color: #ffffff !important;
+    transform: scale(1.18);
 }
 
 /* ──────────────────────────────────────────────────────────────────────────
@@ -316,23 +343,19 @@
    ────────────────────────────────────────────────────────────────────────── */
 .chat-box {
     flex: 1;
-    padding: 18px;
+    padding: 20px;
     overflow-y: auto;
-    background-color: rgba(248, 250, 252, 0.7);
+    background-color: rgba(248, 250, 252, 0.6);
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 16px;
 }
 
 .bot-message, .user-message {
     display: flex;
-    flex-direction: column;
-    max-width: 82%;
+    max-width: 85%;
     animation: bubbleSlideIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
-
-.bot-message { align-self: flex-start; }
-.user-message { align-self: flex-end; }
 
 @keyframes bubbleSlideIn {
     from { opacity: 0; transform: translateY(10px); }
@@ -340,16 +363,17 @@
 }
 
 .message-content {
-    padding: 12px 16px;
+    padding: 12px 18px;
     font-size: 13.5px;
-    line-height: 1.5;
+    line-height: 1.6;
+    border-radius: 18px;
 }
 
 .bot-message .message-content {
     background-color: #ffffff;
     color: var(--text-dark);
     border-radius: 4px 18px 18px 18px;
-    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.02);
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
     border: 1px solid rgba(226, 232, 240, 0.8);
 }
 
@@ -357,65 +381,53 @@
     background: var(--btn-blue);
     color: #ffffff;
     border-radius: 18px 18px 4px 18px;
-    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.12);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
 }
 
-/* ── PROTECTION STYLES FOR INNER BRAND LOGO LOGIC ── */
-.company-logo-container {
-    margin-bottom: 8px;
-    display: flex;
-    align-items: center;
-}
-
-.chat-company-logo {
-    max-height: 32px;
-    width: auto;
-    object-fit: contain;
-}
-
-/* ── SAFE FLOATING ACTION ACTION SUGGESTIONS WRAPPER ── */
 .quick-actions-wrapper {
-    display: flex !important;
-    flex-direction: row !important;
-    flex-wrap: wrap !important;
-    justify-content: flex-start !important;
-    gap: 6px !important;
-    padding: 2px 0 6px 0 !important;
-    width: 100% !important;
-    background: transparent !important;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    align-self: flex-start;
+    max-width: 100%;
 }
 
 /* ──────────────────────────────────────────────────────────────────────────
    ✨ SOLTECH BRAND MATCH: QUICK ACTION BUTTON HOVER EFFECTS
    ────────────────────────────────────────────────────────────────────────── */
-.quick-btn, .quick-actions-wrapper button {
-    background-color: #ffffff !important;
-    border: 1px solid #cbd5e1 !important; /* Smooth grey neutral border by default */
-    color: #475569 !important;            /* Slate grey text by default */
-    padding: 7px 14px !important;
-    border-radius: 30px !important;
-    font-size: 12px !important;
-    font-weight: 500 !important;
-    cursor: pointer !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    transition: all 0.23s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02) !important;
+
+/* ──────────────────────────────────────────────────────────────────────────
+   ✨ SOLTECH BRAND MATCH: QUICK ACTION BUTTON HOVER EFFECTS
+   ────────────────────────────────────────────────────────────────────────── */
+
+.quick-btn {
+    background-color: #ffffff;
+    border: 1px solid #cbd5e1; /* Smooth grey neutral border by default */
+    color: #475569;            /* Slate grey text by default */
+    padding: 8px 16px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    /* Smooth transition for background fill, border, and text color */
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+.quick-btn:hover {
+    background-color: #cbd5e1;  /* same as border */
+    border-color: #cbd5e1;      /* match exactly */
+    color: #0f172a;             /* cleaner dark text */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(203, 213, 225, 0.6);
 }
 
-.quick-btn:hover, .quick-actions-wrapper button:hover {
-    background-color: var(--primary-blue) !important;  
-    border-color: var(--primary-blue) !important;      
-    color: #ffffff !important;             /* Premium bright contrast shift */
-    transform: translateY(-2px) !important;
-    box-shadow: 0 6px 14px rgba(15, 23, 42, 0.15) !important;
-}
 
 /* Tactile click-down animation */
-.quick-btn:active, .quick-actions-wrapper button:active {
-    transform: translateY(1px) !important;
-    box-shadow: 0 2px 4px rgba(15, 23, 42, 0.04) !important;
+.quick-btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(15, 23, 42, 0.04);
 }
 
 /* Premium persistent behavior for specific main call-to-actions */
@@ -427,139 +439,78 @@
 }
 
 .quick-btn.orange-quote-btn:hover {
-    background: var(--primary-blue) !important; 
-    border-color: var(--primary-blue) !important;      
-    color: #ffffff !important;             
-    transform: translateY(-2px) !important;
-    box-shadow: 0 6px 14px rgba(15, 23, 42, 0.15) !important;
+    background-color: #cbd5e1;  /* same as border */
+    border-color: #cbd5e1;      /* match exactly */
+    color: #0f172a;             /* cleaner dark text */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(203, 213, 225, 0.6);
 }
 
-/* ──────────────────────────────────────────────────────────────────────────
-   ⚡ ACCESS-OPTIMIZED WHATSAPP BANNER + TYPING ROW STYLING
-   ────────────────────────────────────────────────────────────────────────── */
-.chat-input-container {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 10px !important;
-    background-color: #ffffff !important; /* Premium unified card fill background */
-    padding: 14px 16px !important;
-    border-top: 1px solid #e2e8f0 !important;
-    box-sizing: border-box !important;
-    flex-shrink: 0; /* Defends console container alignment */
-}
-
-/* Primary High-Conversion WhatsApp Button Banner */
-.whatsapp-footer-cta {
-    width: 100% !important;
-    height: 42px !important; /* Balanced, thumb-friendly tap height */
-    background: #25D366 !important; /* Authentic vibrant WhatsApp Green */
-    color: #ffffff !important;
-    border: none !important;
-    border-radius: 8px !important;
-    font-size: 12.5px !important;
-    font-weight: 700 !important; /* High prominence bold lettering */
-    letter-spacing: 0.3px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    gap: 8px !important;
-    cursor: pointer !important;
-    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.18) !important; /* Soft green ambient shadow */
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
-}
-
-/* Dynamic Hover Effects for the WhatsApp CTA */
-.whatsapp-footer-cta:hover {
-    background: #20ba5a !important; /* Darkens slightly on hover */
-    box-shadow: 0 6px 16px rgba(37, 211, 102, 0.3) !important;
-    transform: translateY(-1px) !important;
-}
-
-.whatsapp-footer-cta:active {
-    transform: translateY(1px) !important; /* Tactile compression when clicked */
-    box-shadow: 0 2px 6px rgba(37, 211, 102, 0.1) !important;
-}
-
-.whatsapp-footer-cta i {
-    font-size: 15px !important;
-}
-
-/* Manual Text Typing Input Area Row Wrapper Layout */
-.typing-row {
-    display: flex !important;
-    align-items: center !important;
-    width: 100% !important;
-    gap: 8px !important;
-    background: #f1f5f9 !important; /* Pill background wrapper styling */
-    border-radius: 24px !important;
-    padding: 4px 6px 4px 14px !important;
-    border: 1px solid #e2e8f0 !important;
-    box-sizing: border-box !important;
-}
-
-.typing-row:focus-within {
-    border-color: #2563eb !important;
-    background: #ffffff !important;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.06) !important;
-}
-
-/* Input Field Box Styling */
-.typing-row input[type="text"] {
-    flex: 1 !important;
-    padding: 0 !important;
-    border: none !important; 
-    border-radius: 0 !important;
-    font-size: 13.5px !important;
-    color: var(--primary-blue) !important;
-    background-color: transparent !important;
-    outline: none !important;
-    height: 36px !important;
-    box-shadow: none !important;
-}
-
-/* Traditional Send Button Layout */
-.typing-row button {
-    background: var(--primary-blue) !important; /* Sleek dark slate premium identity background */
-    color: #ffffff !important;
-    border: none !important;
-    width: 32px !important;
-    height: 32px !important;
-    padding: 0 !important;
-    border-radius: 50% !important; /* Upgraded to a clean round action button circle */
-    cursor: pointer !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    transition: all 0.2s ease !important;
-    flex-shrink: 0;
-}
-
-.typing-row button:hover {
-    background: #1e293b !important; 
-    transform: scale(1.05);
-}
-
-.typing-row button i {
-    font-size: 13px !important;
+@keyframes premiumPulse {
+    0%, 100% {
+        transform: translateY(0) scale(1);
+        box-shadow: 0 4px 14px rgba(230, 92, 0, 0.3);
+    }
+    50% {
+        transform: translateY(-1px) scale(1.04);
+        box-shadow: 0 6px 18px rgba(230, 92, 0, 0.45);
+    }
 }
 
 /* ──────────────────────────────────────────────────────────────────────────
    INPUT UTILITIES & CONTROL PANEL
    ────────────────────────────────────────────────────────────────────────── */
+#user-input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    outline: none;
+    font-size: 13px;
+    background: #f1f5f9;
+    transition: all 0.25s ease;
+    color: var(--text-dark);
+}
+
+#user-input:focus {
+    border-color: #2563eb;
+    background: #ffffff;
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.08);
+}
+
+#send-btn {
+    background: var(--btn-blue);
+    color: #ffffff;
+    border: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+}
+
+#send-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
+}
+
 .lead-progress {
-    padding: 8px 16px;
+    padding: 12px 20px;
     background-color: #ffffff;
-    border-bottom: 1px solid var(--border-color);
-    flex-shrink: 0;
+    border-top: 1px solid var(--border-color);
 }
 
 .progress-bar {
     width: 100%;
-    height: 5px;
+    height: 6px;
     background-color: #e2e8f0;
     border-radius: 10px;
     overflow: hidden;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
 }
 
 #progress-fill {
@@ -570,19 +521,19 @@
 }
 
 .lead-progress small {
-    font-size: 10.5px;
+    font-size: 11px;
     color: #64748b;
     font-weight: 500;
 }
 
 .typing-indicator {
-    padding: 4px 16px;
+    padding: 4px 20px;
     align-self: flex-start;
 }
 
 .typing-bubble {
     background-color: #ffffff;
-    padding: 10px 14px;
+    padding: 12px 16px;
     border-radius: 4px 16px 16px 16px;
     border: 1px solid var(--border-color);
     display: flex;
@@ -606,7 +557,6 @@
     40% { transform: scale(1.1); opacity: 1; }
 }
 
-/* Modals Setup Framework Layout */
 .calculator-modal {
     position: fixed;
     top: 0;
@@ -619,7 +569,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 200000;
+    z-index: 2000;
 }
 
 .calculator-content {
