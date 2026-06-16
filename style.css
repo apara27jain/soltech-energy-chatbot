@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Soltech Energy Premium Chatbot Stylesheet - FIX COMPACT VIEWPORT
+   Soltech Energy Premium Chatbot Stylesheet - HOVER & LOOPHOLE RESOLUTION
    ========================================================================== */
 
 :root {
@@ -18,7 +18,7 @@
     --soltech-transition: cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-/* Enforce absolute containment universally */
+/* Enforce absolute containment universally across all child elements */
 #chatbot-container * {
     box-sizing: border-box !important;
 }
@@ -28,8 +28,8 @@
     position: fixed;
     bottom: 90px;
     right: 25px;
-    width: min(380px, calc(100vw - 30px)); /* Slid down slightly for premium fit */
-    height: min(560px, 75vh); /* Tighter compact sizing */
+    width: min(380px, calc(100vw - 30px)); 
+    height: min(560px, 75vh); 
     background: var(--soltech-bg-light);
     border-radius: var(--soltech-radius-lg);
     box-shadow: var(--soltech-shadow);
@@ -118,9 +118,10 @@
     flex: 1;
     padding: 14px;
     overflow-y: auto;
+    overflow-x: hidden;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 14px;
     background: var(--soltech-bg-light);
     scroll-behavior: smooth;
 }
@@ -131,6 +132,7 @@
     display: flex;
     flex-direction: column;
     margin-bottom: 2px;
+    flex-shrink: 0; /* Loophole Fix: Stops messages from collapsing vertically */
 }
 .bot-message { align-self: flex-start; }
 .user-message { align-self: flex-end; }
@@ -170,13 +172,13 @@
     overflow-x: auto !important;
     overflow-y: hidden !important;
     white-space: nowrap !important;
-    padding: 6px 4px !important;
+    padding: 8px 4px !important;
     gap: 8px !important;
     background: transparent !important;
     border: none !important;
     width: 100% !important;
     clear: both !important;
-    flex-shrink: 0 !important;
+    flex-shrink: 0 !important; /* Loophole Fix: Forces rendering room without clipping */
 }
 
 /* Webkit scrollbar optimizations for dynamic sliders */
@@ -197,12 +199,12 @@
     background: #ffffff !important;
     color: var(--soltech-text-main) !important;
     border: 1px solid rgba(26, 37, 47, 0.15) !important;
-    padding: 0 12px !important;
+    padding: 0 14px !important;
     font-size: 12px !important;
     font-weight: 600 !important;
     border-radius: 16px !important;
     cursor: pointer !important;
-    height: 30px !important;
+    height: 32px !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
@@ -218,7 +220,7 @@
     background: var(--soltech-primary) !important;
     color: #ffffff !important;
     border-color: var(--soltech-primary) !important;
-    transform: translateY(-1.5px) !important;
+    transform: translateY(-2px) !important;
     box-shadow: 0 4px 8px rgba(26, 37, 47, 0.16) !important;
 }
 
@@ -250,7 +252,7 @@
     border-radius: var(--soltech-radius-sm) !important;
     width: 100% !important;
     max-width: 280px !important;
-    margin: 4px auto !important;
+    margin: 6px auto !important;
     box-shadow: 0 3px 8px rgba(37, 211, 102, 0.2) !important;
     cursor: pointer !important;
     text-decoration: none !important;
@@ -280,6 +282,7 @@
     gap: 8px;
     margin: 4px 0;
     width: 100%;
+    flex-shrink: 0;
 }
 
 .lead-form-card strong {
@@ -411,14 +414,4 @@
     height: 3px;
     background: #e1e4e6;
     width: 100%;
-    flex-shrink: 0;
-}
-
-#progress-bar-fill {
-    height: 100%;
-    width: 0%;
-    background: var(--soltech-accent);
-    transition: width 0.3s ease;
-}
-
-.hidden { display: none !important; }
+    flex-shrink
