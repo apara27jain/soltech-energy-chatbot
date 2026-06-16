@@ -1,6 +1,6 @@
 // ==========================================================================
 // Soltech Energy Chatbot Engine
-// chatbot.js [STRUCTURALLY RECONCILED & REPAIRED]
+// chatbot.js [STRUCTURALLY RECONCILED, FIXED & OPTIMIZED]
 // ==========================================================================
 
 const chatToggle = document.getElementById("chat-toggle");
@@ -11,6 +11,7 @@ const chatBox = document.getElementById("chat-box");
 const userInput = document.getElementById("user-input");
 const sendBtn = document.getElementById("send-btn");
 const footerWhitespaceCta = document.getElementById("footer-whatsapp-cta");
+
 // State Tracking Parameters
 let currentFlow = null;
 let currentStep = 0;
@@ -56,7 +57,7 @@ function initializeWelcomeGreeting() {
     }
 
     // Safely clearing the box clean
-    chatBox.innerHTML = "";
+    if (chatBox) chatBox.innerHTML = "";
 
     // Build the outer message container securely
     const botMessageDiv = document.createElement("div");
@@ -96,7 +97,7 @@ function initializeWelcomeGreeting() {
     
     messageContentDiv.appendChild(textInstructions);
     botMessageDiv.appendChild(messageContentDiv);
-    chatBox.appendChild(botMessageDiv);
+    if (chatBox) chatBox.appendChild(botMessageDiv);
 
     injectActionMenuButtons(MAIN_HOMEPAGE_ACTIONS, false);
     scrollBottom();
@@ -394,44 +395,15 @@ function injectGatedActionCTAs() {
     wrapper.appendChild(btnBrochure);
     wrapper.appendChild(btnWhatsApp);
     wrapper.appendChild(btnHome);
-    chatBox.appendChild(wrapper);
+    if (chatBox) chatBox.appendChild(wrapper);
     scrollBottom();
 }
 
 // ==========================================================================
-// UPDATED & ENHANCED VERIFICATION FORM GENERATOR
-// ==========================================================================
-// ==========================================================================
 // UPDATED & USER-FRIENDLY VERIFICATION FORM GENERATOR WITH AUTO-CLEAR EXIT
 // ==========================================================================
-// ======================================================
-// GLOBAL FORM CLEANUP & RETURN HOME
-// ======================================================
-
-function closeLeadFormAndReturnHome() {
-
-    document.querySelectorAll(".lead-form-card").forEach(el => el.remove());
-
-    document.querySelectorAll(".gated-wrapper-panel").forEach(el => el.remove());
-
-    document.querySelectorAll(".quick-actions-wrapper").forEach(el => el.remove());
-
-    currentFlow = null;
-    currentStep = 0;
-    flowData = {};
-
-    const progressNode = document.getElementById("lead-progress");
-
-    if (progressNode) {
-        progressNode.classList.add("hidden");
-    }
-
-    initializeWelcomeGreeting();
-}
-
 function triggerGatedWall(targetActionGoal) {
-
-    // Remove previous forms and buttons
+    // Remove previous active forms, wrapper panels, and button wrappers
     document.querySelectorAll(".gated-wrapper-panel").forEach(el => el.remove());
     document.querySelectorAll(".quick-actions-wrapper").forEach(el => el.remove());
     document.querySelectorAll(".lead-form-card").forEach(el => el.remove());
@@ -441,14 +413,14 @@ function triggerGatedWall(targetActionGoal) {
 
     formContainer.innerHTML = `
         <strong>📋 Identity Verification Required:</strong>
-        <p>Please provide your details to continue.</p>
+        <p>Please provide your details to book a free demo or download our brochure.</p>
 
-        <input type="text" class="lead-name" placeholder="Your Name *">
-        <input type="tel" class="lead-phone" placeholder="Phone Number *">
+        <input type="text" class="lead-name" placeholder="Your Full Name *">
+        <input type="tel" class="lead-phone" placeholder="Mobile Number *">
         <input type="text" class="lead-company" placeholder="Company Name (Optional)">
 
         <button class="verify-btn">
-            Verify to Access
+            Verify & Continue
         </button>
 
         <button type="button" class="exit-form-btn">
@@ -456,92 +428,49 @@ function triggerGatedWall(targetActionGoal) {
         </button>
     `;
 
-    chatBox.appendChild(formContainer);
+    if (chatBox) {
+        chatBox.appendChild(formContainer);
+    }
     scrollBottom();
 
-    // Cancel Button
+    // Cancel / Exit Button Action Mapping
     const cancelBtn = formContainer.querySelector(".exit-form-btn");
-
-    cancelBtn.addEventListener("click", function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-
-        formContainer.remove();
-
-        currentFlow = null;
-        currentStep = 0;
-        flowData = {};
-
-        initializeWelcomeGreeting();
-    });
-
-    // Submit Button
-    const submitBtn = formContainer.querySelector(".verify-btn");
-
-    submitBtn.addEventListener("click", function(e) {
-
-        e.preventDefault();
-
-        const nameVal =
-            formContainer.querySelector(".lead-name").value.trim();
-
-        const phoneVal =
-            formContainer.querySelector(".lead-phone").value.trim();
-
-        const companyVal =
-            formContainer.querySelector(".lead-company").value.trim();
-
-        if (!nameVal || !phoneVal) {
-            alert("Name and Phone Number are required.");
-            return;
-        }
-
-        flowData.leadName = nameVal;
-        flowData.leadPhone = phoneVal;
-        flowData.leadCompany =
-            companyVal || "Individual/Residential";
-
-        flowData.actionContextTarget = targetActionGoal;
-
-        formContainer.remove();
-
-        processCompletedLeadCaptured();
-    });
-}
-    
-document.querySelectorAll(".lead-form-card").forEach((card, index) => {
-    if(index !== document.querySelectorAll(".lead-form-card").length - 1){
-        card.remove();
+    if (cancelBtn) {
+        cancelBtn.addEventListener("click", function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            formContainer.remove();
+            currentFlow = null;
+            currentStep = 0;
+            flowData = {};
+            initializeWelcomeGreeting();
+        });
     }
-});
 
-const exitBtn = formContainer.querySelector("#exitFormBtn");
-exitBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    formContainer.remove();
-    initializeWelcomeGreeting();
-});
-    document.getElementById("submitGatedLeadBtn").onclick = (e) => {
-        e.preventDefault();
-        const nameVal = document.getElementById("leadName").value.trim();
-        const phoneVal = document.getElementById("leadPhone").value.trim();
-        const companyVal = document.getElementById("leadCompany").value.trim();
-        
-        if (!nameVal || !phoneVal) {
-            alert("Name and Phone Number are strictly required fields.");
-            return;
-        }
-        
-        flowData.leadName = nameVal;
-        flowData.leadPhone = phoneVal;
-        flowData.leadCompany = companyVal || "Individual/Residential";
-        flowData.actionContextTarget = targetActionGoal;
-        
-        // Remove the visual form element now that the data is saved
-        formContainer.remove();
-        processCompletedLeadCaptured();
-    };
+    // Submit Verification Data Action Mapping
+    const submitBtn = formContainer.querySelector(".verify-btn");
+    if (submitBtn) {
+        submitBtn.addEventListener("click", function(e) {
+            e.preventDefault();
+
+            const nameVal = formContainer.querySelector(".lead-name").value.trim();
+            const phoneVal = formContainer.querySelector(".lead-phone").value.trim();
+            const companyVal = formContainer.querySelector(".lead-company").value.trim();
+
+            if (!nameVal || !phoneVal) {
+                alert("Name and Phone Number are required.");
+                return;
+            }
+
+            flowData.leadName = nameVal;
+            flowData.leadPhone = phoneVal;
+            flowData.leadCompany = companyVal || "Individual/Residential";
+            flowData.actionContextTarget = targetActionGoal;
+
+            formContainer.remove();
+            processCompletedLeadCaptured();
+        });
+    }
 }
 
 async function processCompletedLeadCaptured() {
@@ -690,7 +619,7 @@ function injectActionMenuButtons(buttonLabelList, includeBackButton = false) {
         wrapper.appendChild(backBtn);
     }
 
-    chatBox.appendChild(wrapper);
+    if (chatBox) chatBox.appendChild(wrapper);
     scrollBottom();
 }
 
@@ -703,7 +632,7 @@ function addUserMessage(text) {
     const div = document.createElement("div");
     div.className = "user-message";
     div.innerHTML = `<div class="message-content">${text}</div>`;
-    chatBox.appendChild(div);
+    if (chatBox) chatBox.appendChild(div);
     document.querySelectorAll(".quick-actions-wrapper").forEach(el => el.remove());
     scrollBottom();
 }
@@ -712,7 +641,7 @@ function addBotMessage(text, displayButtons = true) {
     const div = document.createElement("div");
     div.className = "bot-message";
     div.innerHTML = `<div class="message-content">${text}</div>`;
-    chatBox.appendChild(div);
+    if (chatBox) chatBox.appendChild(div);
     if (displayButtons) {
         injectActionMenuButtons(KEYWORD_OPTIONS, true);
     } else {
@@ -744,7 +673,7 @@ function loadChat() {
             chat = chat.replace(/logo.png/g, 'logo.jpg');
             localStorage.setItem("Soltech_chat", chat);
         }
-        chatBox.innerHTML = chat;
+        if (chatBox) chatBox.innerHTML = chat;
     } else {
         initializeWelcomeGreeting();
     }
