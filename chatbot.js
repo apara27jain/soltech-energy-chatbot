@@ -412,6 +412,43 @@ function injectGatedActionCTAs() {
 // ==========================================================================
 // UPDATED & USER-FRIENDLY VERIFICATION FORM GENERATOR WITH AUTO-CLEAR EXIT
 // ==========================================================================
+// ======================================================
+// GLOBAL FORM CLEANUP & RETURN HOME
+// ======================================================
+function closeLeadFormAndReturnHome() {
+
+    // Remove all dynamic forms
+    document.querySelectorAll(".lead-form-card").forEach(el => {
+        el.remove();
+    });
+
+    // Remove CTA buttons
+    document.querySelectorAll(".gated-wrapper-panel").forEach(el => {
+        el.remove();
+    });
+
+    // Remove quick action buttons
+    document.querySelectorAll(".quick-actions-wrapper").forEach(el => {
+        el.remove();
+    });
+
+    // Hide progress bar
+    const progressNode = document.getElementById("lead-progress");
+    if (progressNode) {
+        progressNode.classList.add("hidden");
+    }
+
+    // Reset chatbot state
+    currentFlow = null;
+    currentStep = 0;
+    flowData = {};
+
+    // Rebuild welcome screen
+    initializeWelcomeGreeting();
+
+    scrollBottom();
+}
+
 function triggerGatedWall(targetActionGoal) {
     document.querySelectorAll(".gated-wrapper-panel").forEach(el => el.remove());
     document.querySelectorAll(".quick-actions-wrapper").forEach(el => el.remove());
@@ -438,22 +475,21 @@ function triggerGatedWall(targetActionGoal) {
 
     chatBox.appendChild(formContainer);
     scrollBottom();
-
-    // Bind clean structural event handlers
-// Bind clean structural event handlers
-document.getElementById("exitFormBtn").onclick = (e) => {
-    e.preventDefault();
-        if (typeof formContainer !== "undefined" && formContainer) {
-        formContainer.remove();
-    }
-    const staticFormCard = document.querySelector(".lead-form-card");
-    if (staticFormCard) {
-        staticFormCard.style.display = "none"; 
-    }
     
-    initializeWelcomeGreeting();
-};
+document.querySelectorAll(".lead-form-card").forEach((card, index) => {
+    if(index !== document.querySelectorAll(".lead-form-card").length - 1){
+        card.remove();
+    }
+});
 
+const exitBtn = formContainer.querySelector("#exitFormBtn");
+
+exitBtn.addEventListener("click", function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    closeLeadFormAndReturnHome();
+});
     document.getElementById("submitGatedLeadBtn").onclick = (e) => {
         e.preventDefault();
         const nameVal = document.getElementById("leadName").value.trim();
