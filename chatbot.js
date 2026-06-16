@@ -1,8 +1,4 @@
-Here is the complete, production-ready `chatbot.js` file. This consolidated script brings together your full bilingual translation arrays, state management, calculations engine, and the **Premium UI Top Header Extension** with full click overrides.
 
-It also patches the missing gated lead validation functions (`triggerGatedWall`, `submitLeadForm`, etc.) at the bottom of the file to give you a fully functional, premium system from top to bottom.
-
-```javascript
 // ==========================================================================
 // Soltech Energy Chatbot Engine
 // chatbot.js [COMPLETE PREMIUM BILINGUAL ENGINE - ENGLISH & HINDI]
@@ -816,5 +812,3 @@ function loadChat() {
 
 // Initialize on execution sequence
 loadChat();
-
-```
