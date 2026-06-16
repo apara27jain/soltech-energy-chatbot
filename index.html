@@ -10,14 +10,18 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="chatbot.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body>
 
-    <button id="chat-toggle" class="chat-toggle">
-        <i class="fas fa-comments"></i>
-        <span class="notification-dot"></span>
-    </button>
+    <div id="chat-toggle-container">
+        <div id="chat-launcher-tooltip">☀️ Calculate Solar Cost & Savings Live!</div>
+        <button id="chat-toggle" class="chat-toggle" title="Open Solar Assistant">
+            <i class="fas fa-comments"></i>
+            <span class="notification-dot"></span>
+        </button>
+    </div>
 
     <div id="chatbot-container" class="chatbot-container">
         
@@ -28,10 +32,15 @@
                 </div>
                 <div>
                     <h3>Soltech Assistant</h3>
-                    <span class="status">Online</span>
+                    <span class="status">● Online</span>
                 </div>
             </div>
+            
             <div class="header-actions">
+                <div class="lang-switcher-pill">
+                    <button class="lang-btn active" data-lang="EN">EN</button>
+                    <button class="lang-btn" data-lang="HI">HI</button>
+                </div>
                 <button id="refresh-chat" title="Restart Chat">
                     <i class="fas fa-rotate-right"></i>
                 </button>
@@ -67,7 +76,7 @@
 
         <div class="chat-input-container"> 
             
-            <div id="submenu-controls-wrapper" class="quick-actions-wrapper hidden"></div>
+            <div id="submenu-controls-wrapper" class="quick-actions-wrapper"></div>
 
             <button class="whatsapp-footer-cta" id="footer-whatsapp-cta">
                  <i class="fab fa-whatsapp"></i> CONNECT VIA WHATSAPP
