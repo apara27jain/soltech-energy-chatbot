@@ -10,7 +10,7 @@ const refreshChat = document.getElementById("refresh-chat");
 const chatBox = document.getElementById("chat-box");
 const userInput = document.getElementById("user-input");
 const sendBtn = document.getElementById("send-btn");
-const footerWhitespaceCta = document.getElementById("footer-whatsapp-cta");
+const footerWhitespaceCta = document.getElementById("footer-whatsafp-cta");
 
 // State Tracking Parameters
 let currentFlow = null;
@@ -34,9 +34,6 @@ const KEYWORD_OPTIONS = ["Subsidy Info", "Net Metering", "Residential Setup", "C
 if (chatToggle) {
     chatToggle.addEventListener("click", () => {
         chatbotContainer.classList.toggle("open");
-        const staticFormCard = document.querySelector(".lead-form-card");
-        if (staticFormCard) {
-            staticFormCard.style.display = "none";
         }
     });
 }
@@ -58,9 +55,6 @@ function initializeWelcomeGreeting() {
     const progressNode = document.getElementById("lead-progress");
     if (progressNode) progressNode.classList.add("hidden");
 
-    const staticFormCard = document.querySelector(".lead-form-card");
-    if (staticFormCard) {
-        staticFormCard.style.display = "none";
     }
 
     // Safely clearing the box clean
@@ -724,14 +718,6 @@ document.addEventListener("DOMContentLoaded", function() {
     if (userInput) {
         userInput.addEventListener("keypress", (e) => {
             if (e.key === "Enter") sendMessage();
-        });
-    }
-
-    const staticExitBtn = document.querySelector(".exit-btn");
-    if (staticExitBtn) {
-        staticExitBtn.addEventListener("click", function(e) {
-            e.preventDefault();
-            initializeWelcomeGreeting();
         });
     }
 
