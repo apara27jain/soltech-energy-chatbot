@@ -409,9 +409,13 @@ function injectGatedActionCTAs() {
 // ==========================================================================
 // UPDATED & ENHANCED VERIFICATION FORM GENERATOR
 // ==========================================================================
+// ==========================================================================
+// UPDATED & USER-FRIENDLY VERIFICATION FORM GENERATOR WITH AUTO-CLEAR EXIT
+// ==========================================================================
 function triggerGatedWall(targetActionGoal) {
     document.querySelectorAll(".gated-wrapper-panel").forEach(el => el.remove());
     document.querySelectorAll(".quick-actions-wrapper").forEach(el => el.remove());
+    document.querySelectorAll(".lead-form-card").forEach(el => el.remove());
 
     // Secure DOM Creation Strategy prevents breaking out of template literals
     const formContainer = document.createElement("div");
@@ -427,17 +431,20 @@ function triggerGatedWall(targetActionGoal) {
         
         <button id="submitGatedLeadBtn" class="verify-btn">Verify to Access</button>
         
-        <a href="#" id="exitFormLink" class="exit-menu-link">
-            ↪️ Exit to Menu
-        </a>
+        <button id="exitFormBtn" class="exit-form-btn">
+            ↩️ Cancel & Return to Main Menu
+        </button>
     `;
 
     chatBox.appendChild(formContainer);
     scrollBottom();
 
     // Bind clean structural event handlers
-    document.getElementById("exitFormLink").onclick = (e) => {
+    document.getElementById("exitFormBtn").onclick = (e) => {
         e.preventDefault();
+        // 1. Instantly drop the active form out of the chat log viewport
+        formContainer.remove();
+        // 2. Safely trigger the core main welcome landing page view
         initializeWelcomeGreeting();
     };
 
