@@ -323,38 +323,39 @@
 .quick-actions-wrapper {
     display: flex !important;
     flex-direction: row !important;
-    flex-wrap: wrap !important;
+    flex-wrap: wrap !important; /* Forces layout options to stretch side-by-side */
     justify-content: flex-start !important;
-    gap: 6px !important;
-    padding: 4px 0 !important;
+    gap: 8px !important;
+    padding: 10px 0 14px 40px !important; /* Matches alignment offset with the sidebar avatar */
     width: 100% !important;
-    background: transparent !important;
+    box-sizing: border-box !important;
+    clear: both !important;
 }
-
 .quick-btn, 
 .quick-actions-wrapper button {
-    background-color: #ffffff !important;
+    background-color: #ffffff !important; /* Solid opaque white background base color */
+    color: #334155 !important;
     border: 1px solid #cbd5e1 !important;
-    color: #475569 !important;
-    padding: 7px 14px !important;
-    border-radius: 30px !important;
+    padding: 8px 14px !important;
+    border-radius: 20px !important;
     font-size: 12px !important;
     font-weight: 500 !important;
     cursor: pointer !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
+    white-space: nowrap !important;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02) !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04) !important;
 }
 
 .quick-btn:hover, 
 .quick-actions-wrapper button:hover {
-    background-color: var(--primary-blue) !important;  
-    border-color: var(--primary-blue) !important;      
-    color: #ffffff !important;
+    background: linear-gradient(135deg, #ff6b00 0%, #e65c00 100%) !important; /* Swaps to vibrant theme accent background on hover */
+    color: #ffffff !important; /* Flips text cleanly to high-contrast white */
+    border-color: #ff6b00 !important;
     transform: translateY(-2px) !important;
-    box-shadow: 0 6px 14px rgba(15, 23, 42, 0.15) !important;
+    box-shadow: 0 6px 12px rgba(230, 92, 0, 0.25) !important;
 }
 
 .quick-btn:active, 
@@ -541,7 +542,89 @@
     justify-content: center !important;
     z-index: 200000 !important;
 }
+#chatbot-container,
+.chatbot-container {
+    background: #ffffff !important; /* Replaced translucent glass with a solid backing layer */
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15) !important;
+}
 
+.chat-box {
+    background-color: #f8fafc !important; /* Opaque baseline panel layout container */
+}
+
+/* ── SEPARATE EXTERIOR SIDE LOGO AVATAR RULES ── */
+.bot-message-wrapper {
+    display: flex !important;
+    align-items: flex-end !important; /* Sticks avatar to the base profile row of text bubbles */
+    gap: 8px !important;
+    margin-top: 10px !important;
+    width: 100% !important;
+}
+
+.company-logo-sidebar {
+    flex-shrink: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 32px !important;
+    height: 32px !important;
+}
+
+.chat-sidebar-logo {
+    height: 32px !important;
+    width: 32px !important;
+    border-radius: 50% !important;
+    object-fit: cover !important;
+    border: 1px solid #e2e8f0 !important;
+    background-color: #ffffff !important;
+}
+
+/* Soft Adjustment for Gated Form Containers and standard Bot Bubble scaling */
+.bot-message {
+    max-width: 82% !important;
+    display: inline-block !important;
+}
+
+/* ── TOP RIGHT HEADER LANGUAGE SELECTOR ALIGNMENT ── */
+.chat-header-controls {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+
+.premium-lang-bar {
+    display: flex !important;
+    gap: 4px !important;
+    margin-right: 6px !important;
+}
+
+.lang-toggle-btn {
+    background: rgba(255, 255, 255, 0.15) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    padding: 3px 8px !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    border-radius: 12px !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    line-height: 1 !important;
+}
+
+.lang-toggle-btn:hover {
+    background: rgba(255, 255, 255, 0.3) !important;
+    border-color: #ffffff !important;
+}
+
+.lang-toggle-btn.active-lang {
+    background-color: #ffffff !important;
+    color: #ff6b00 !important; /* Active indicator uses your theme color accent */
+    border-color: #ffffff !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
 .calculator-content {
     background: #ffffff !important;
     padding: 30px !important;
