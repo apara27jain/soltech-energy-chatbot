@@ -90,7 +90,7 @@ const STRINGS = {
         leadSuccess: "✅ <strong>धन्यवाद, {name}।</strong> आपका अनुरोध सत्यापित कर दिया गया है और सॉलटेक द्वारा संसाधित किया जा रहा है।",
         accessGranted: "🎉 <strong>अनुमति मिली:</strong> <a href='#' onclick=\"alert('सॉलटेक तकनीकी ब्रोशर डाउनलोड शुरू हो रहा है...'); return false;\" class='download-link'>ब्रोशर फ़ाइल डाउनलोड करने के लिए यहाँ क्लिक करें</a>.",
         teamConnect: "📞 हमारी engineering टीम आपके लाइव सिस्टम डेमो के लिए जल्द ही आपसे <strong>{phone}</strong> पर संपर्क करेगी।",
-        fallbackResponse: "🤖  कस्टम इंजीनियरिंग योजनाओं, सटीक सॉलटेक प्रोजेक्ट विवरण या तेज़ JVVNL स्वीकृतियों के लिए, नीचे दिए गए विकल्पों के माध्यम से सीधे हमारे डेस्क से जुड़ें:",
+        fallbackResponse: "🤖 कस्टम इंजीनियरिंग योजनाओं, सटीक सॉलटेक प्रोजेक्ट विवरण या तेज़ JVVNL स्वीकृतियों के लिए, नीचे दिए गए विकल्पों के माध्यम से सीधे हमारे डेस्क से जुड़ें:",
         btnDemo: "📅 मुफ्त डेमो / साइट सर्वेक्षण बुक करें",
         btnBrochure: "📥 तकनीकी ब्रोशर डाउनलोड करें",
         btnWhatsApp: "<i class='fab fa-whatsapp'></i> व्हाट्सएप विशेषज्ञ डेस्क",
@@ -166,7 +166,7 @@ if (minimizeChat) {
 }
 
 // ==========================================================================
-// PREMIUM PERSISTENT LANGUAGE HEADER (MOVED BESIDE CONTROLS ON RIGHT)
+// PREMIUM PERSISTENT LANGUAGE HEADER (MOVED TO TOP RIGHT CONTROLS)
 // ==========================================================================
 function renderPremiumLanguageHeader() {
     document.querySelectorAll(".premium-lang-bar").forEach(el => el.remove());
@@ -211,7 +211,7 @@ function renderPremiumLanguageHeader() {
 }
 
 // ==========================================================================
-// WELCOME INITIALIZER WITH SEPARATE SIDE-ALIGNED LOGO
+// WELCOME INITIALIZER WITH EXTERNAL SIDE-ALIGNED CIRCULAR AVATAR
 // ==========================================================================
 function initializeWelcomeGreeting() {
     currentFlow = null;
@@ -225,14 +225,14 @@ function initializeWelcomeGreeting() {
 
     if (chatBox) chatBox.innerHTML = "";
 
-    // Load inline-header translation nodes
+    // Load top header language switchers
     renderPremiumLanguageHeader();
 
-    // Structural Wrapper Row for Logo next to the Message Bubble
+    // Structuring container wrapper for side avatar placement
     const messageRow = document.createElement("div");
     messageRow.className = "bot-message-wrapper";
 
-    // Independent Side Logo Container
+    // Create the outer layout circle for the avatar
     const logoContainer = document.createElement("div");
     logoContainer.className = "company-logo-sidebar";
 
@@ -245,7 +245,7 @@ function initializeWelcomeGreeting() {
     logoContainer.appendChild(logoImg);
     messageRow.appendChild(logoContainer);
 
-    // Bot message text bubble container (No inside logo overlay)
+    // Dynamic clean text message bubble
     const botMessageDiv = document.createElement("div");
     botMessageDiv.className = "bot-message intro-card";
 
