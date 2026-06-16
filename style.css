@@ -383,3 +383,604 @@
         border-radius: 0 !important;
     }
 }
+/* ==========================================================================
+   Soltech Energy - Ultra-Premium Modernized Chatbot Layout Custom Overhaul
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --primary-blue: #0f172a; /* Ultra-dark slate premium blue */
+    --light-bg: #f8fafc;
+    --text-dark: #334155;
+    --border-color: #e2e8f0;
+    --accent-orange: linear-gradient(135deg, #ff6b00 0%, #e65c00 100%); /* Premium fluid gradient orange */
+    --btn-blue: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    --premium-glass: rgba(255, 255, 255, 0.85);
+}
+
+.hidden {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   FLOATING ACTION TOGGLE BUTTON
+   ────────────────────────────────────────────────────────────────────────── */
+.chat-toggle {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--accent-orange);
+    color: #ffffff;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(230, 92, 0, 0.3);
+    z-index: 100001 !important; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: iconEntrance 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards, 
+               iconAttention 1.5s ease-in-out infinite 2.5s;
+               
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.chat-toggle:hover {
+    transform: scale(1.15) rotate(15deg) !important;
+    box-shadow: 0 14px 32px rgba(230, 92, 0, 0.5) !important;
+}
+
+@keyframes iconEntrance {
+    0% {
+        transform: scale(0) translateY(100px) rotate(-45deg);
+        opacity: 0;
+    }
+    70% {
+        transform: scale(1.15) translateY(-5px) rotate(10deg);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1) translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+}
+
+@keyframes iconAttention {
+    0%, 100% {
+        transform: scale(1) rotate(0deg);
+        box-shadow: 0 8px 24px rgba(230, 92, 0, 0.3);
+    }
+    8% {
+        transform: scale(1.14) translateY(-6px) rotate(-10deg);
+        box-shadow: 0 16px 32px rgba(230, 92, 0, 0.45);
+    }
+    14% {
+        transform: scale(1.14) translateY(-6px) rotate(12deg);
+    }
+    20% {
+        transform: scale(1.14) translateY(-6px) rotate(-6deg);
+    }
+    26% {
+        transform: scale(1.14) translateY(-6px) rotate(4deg);
+    }
+    32% {
+        transform: scale(1) translateY(0) rotate(0deg);
+        box-shadow: 0 8px 24px rgba(230, 92, 0, 0.3);
+    }
+}
+
+.notification-dot {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 12px;
+    height: 12px;
+    background-color: #ef4444;
+    border-radius: 50%;
+    border: 2px solid #ffffff;
+}
+
+/* ────────────────────────────────────────────────────────────────────────
+   MODERN CHATBOT WINDOW CONTAINER
+──────────────────────────────────────────────────────────────────────── */
+.chatbot-container {
+    position: fixed;
+    bottom: 105px; 
+    right: 25px;
+    width: 380px;
+    height: 540px; 
+    background: var(--premium-glass);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(15, 23, 42, 0.12);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 100000 !important; 
+    transform: translateY(40px) scale(0.85);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    font-family: 'Poppins', sans-serif;
+}
+
+.chatbot-container.open {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* ── LUXURY HEADER ALIGNMENT RULES ── */
+.chat-header {
+    background: linear-gradient(135deg, var(--primary-blue), #1e293b) !important;
+    color: #ffffff !important;
+    padding: 16px 20px;
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.header-left {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 12px;
+}
+
+.company-logo-container {
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+}
+
+.chat-company-logo {
+    max-height: 40px;
+    width: auto;
+    object-fit: contain;
+    background: transparent;
+}
+
+.bot-avatar {
+    font-size: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.header-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-header h3 {
+    margin: 0 !important;
+    color: #ffffff !important;
+    font-size: 14.5px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    line-height: 1.2;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   ⚡ ACCESS-OPTIMIZED WHATSAPP BANNER + TYPING ROW STYLING
+   ────────────────────────────────────────────────────────────────────────── */
+
+/* Container wrapper styling at the base of the chat widget */
+.chat-input-container {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    background-color: #f8fafc !important; /* Clean neutral light gray background */
+    padding: 12px 16px !important;
+    border-top: 1px solid #e2e8f0 !important;
+    box-sizing: border-box !important;
+}
+
+/* Primary High-Conversion WhatsApp Button Banner */
+.whatsapp-footer-cta {
+    width: 100% !important;
+    height: 42px !important; /* Balanced, thumb-friendly tap height */
+    background: #25D366 !important; /* Authentic vibrant WhatsApp Green */
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 6px !important;
+    font-size: 13px !important;
+    font-weight: 700 !important; /* High prominence bold lettering */
+    letter-spacing: 0.3px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2) !important; /* Soft green ambient shadow */
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Dynamic Hover Effects for the WhatsApp CTA */
+.whatsapp-footer-cta:hover {
+    background: #20ba5a !important; /* Darkens slightly on hover */
+    box-shadow: 0 6px 16px rgba(37, 211, 102, 0.35) !important;
+    transform: translateY(-1px) !important;
+}
+
+.whatsapp-footer-cta:active {
+    transform: translateY(1px) !important; /* Tactile compression when clicked */
+    box-shadow: 0 2px 6px rgba(37, 211, 102, 0.15) !important;
+}
+
+/* Make the font-awesome WhatsApp icon pop cleanly */
+.whatsapp-footer-cta i {
+    font-size: 16px !important;
+}
+
+/* Manual Text Typing Input Area Row */
+.typing-row {
+    display: flex !important;
+    width: 100% !important;
+    gap: 8px !important;
+    box-sizing: border-box !important;
+}
+
+/* Input Field Box Styling */
+.typing-row input[type="text"] {
+    flex: 1 !important;
+    padding: 10px 14px !important;
+    border: 1px solid #cbd5e1 !important; /* Clean subtle border color */
+    border-radius: 6px !important;
+    font-size: 14px !important;
+    color: #1e293b !important;
+    background-color: #ffffff !important;
+    outline: none !important;
+    transition: border-color 0.15s ease !important;
+}
+
+/* Highlight border smoothly when user clicks inside the textbox */
+.typing-row input[type="text"]:focus {
+    border-color: #3b82f6 !important; /* Corporate blue focus accent */
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1) !important;
+}
+
+/* Traditional Send Button layout next to the text input */
+.typing-row button {
+    background: #161b22 !important; /* Sleek dark slate color */
+    color: #ffffff !important;
+    border: none !important;
+    padding: 0 16px !important;
+    border-radius: 6px !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: background-color 0.15s ease !important;
+}
+
+.typing-row button:hover {
+    background: #0f1419 !important; /* Deepens background tint when hovered */
+}
+
+.typing-row button i {
+    font-size: 14px !important;
+}
+
+.status {
+    font-size: 11px;
+    color: #34d399 !important;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 3px;
+}
+
+.status::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: #34d399;
+    border-radius: 50%;
+    display: inline-block;
+    box-shadow: 0 0 8px #34d399;
+}
+
+.header-actions {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+}
+
+.header-actions button {
+    background: none !important;
+    border: none !important;
+    color: #ffffff !important;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 4px;
+    margin-left: 10px;
+    opacity: 0.75;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header-actions button:hover {
+    opacity: 1;
+    transform: scale(1.18);
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   CHATPLAY WORKSPACE & MESSAGE BUBBLES
+   ────────────────────────────────────────────────────────────────────────── */
+.chat-box {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    background-color: rgba(248, 250, 252, 0.6);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.bot-message, .user-message {
+    display: flex;
+    max-width: 85%;
+    animation: bubbleSlideIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes bubbleSlideIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.message-content {
+    padding: 12px 18px;
+    font-size: 13.5px;
+    line-height: 1.6;
+    border-radius: 18px;
+}
+
+.bot-message .message-content {
+    background-color: #ffffff;
+    color: var(--text-dark);
+    border-radius: 4px 18px 18px 18px;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+    border: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+.user-message .message-content {
+    background: var(--btn-blue);
+    color: #ffffff;
+    border-radius: 18px 18px 4px 18px;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+}
+
+.quick-actions-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    align-self: flex-start;
+    max-width: 100%;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   ✨ SOLTECH BRAND MATCH: QUICK ACTION BUTTON HOVER EFFECTS
+   ────────────────────────────────────────────────────────────────────────── */
+
+/* ──────────────────────────────────────────────────────────────────────────
+   ✨ SOLTECH BRAND MATCH: QUICK ACTION BUTTON HOVER EFFECTS
+   ────────────────────────────────────────────────────────────────────────── */
+
+.quick-btn {
+    background-color: #ffffff;
+    border: 1px solid #cbd5e1; /* Smooth grey neutral border by default */
+    color: #475569;            /* Slate grey text by default */
+    padding: 8px 16px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    /* Smooth transition for background fill, border, and text color */
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+.quick-btn:hover {
+    background-color: #cbd5e1;  /* same as border */
+    border-color: #cbd5e1;      /* match exactly */
+    color: #0f172a;             /* cleaner dark text */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(203, 213, 225, 0.6);
+}
+
+
+/* Tactile click-down animation */
+.quick-btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(15, 23, 42, 0.04);
+}
+
+/* Premium persistent behavior for specific main call-to-actions */
+.quick-btn.orange-quote-btn {
+    background: var(--accent-orange) !important;
+    color: #ffffff !important;
+    border: none !important;
+    font-weight: 600 !important;
+}
+
+.quick-btn.orange-quote-btn:hover {
+    background-color: #cbd5e1;  /* same as border */
+    border-color: #cbd5e1;      /* match exactly */
+    color: #0f172a;             /* cleaner dark text */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(203, 213, 225, 0.6);
+}
+
+@keyframes premiumPulse {
+    0%, 100% {
+        transform: translateY(0) scale(1);
+        box-shadow: 0 4px 14px rgba(230, 92, 0, 0.3);
+    }
+    50% {
+        transform: translateY(-1px) scale(1.04);
+        box-shadow: 0 6px 18px rgba(230, 92, 0, 0.45);
+    }
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   INPUT UTILITIES & CONTROL PANEL
+   ────────────────────────────────────────────────────────────────────────── */
+#user-input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    outline: none;
+    font-size: 13px;
+    background: #f1f5f9;
+    transition: all 0.25s ease;
+    color: var(--text-dark);
+}
+
+#user-input:focus {
+    border-color: #2563eb;
+    background: #ffffff;
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.08);
+}
+
+#send-btn {
+    background: var(--btn-blue);
+    color: #ffffff;
+    border: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+}
+
+#send-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
+}
+
+.lead-progress {
+    padding: 12px 20px;
+    background-color: #ffffff;
+    border-top: 1px solid var(--border-color);
+}
+
+.progress-bar {
+    width: 100%;
+    height: 6px;
+    background-color: #e2e8f0;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 6px;
+}
+
+#progress-fill {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, #10b981, #34d399);
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.lead-progress small {
+    font-size: 11px;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.typing-indicator {
+    padding: 4px 20px;
+    align-self: flex-start;
+}
+
+.typing-bubble {
+    background-color: #ffffff;
+    padding: 12px 16px;
+    border-radius: 4px 16px 16px 16px;
+    border: 1px solid var(--border-color);
+    display: flex;
+    gap: 5px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+}
+
+.typing-bubble span {
+    width: 6px;
+    height: 6px;
+    background-color: #94a3b8;
+    border-radius: 50%;
+    animation: premiumBlink 1.4s infinite ease-in-out both;
+}
+
+.typing-bubble span:nth-child(1) { animation-delay: -0.32s; }
+.typing-bubble span:nth-child(2) { animation-delay: -0.16s; }
+
+@keyframes premiumBlink {
+    0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+    40% { transform: scale(1.1); opacity: 1; }
+}
+
+.calculator-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+
+.calculator-content {
+    background: #ffffff;
+    padding: 36px;
+    border-radius: 24px;
+    position: relative;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+#close-calculator {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    font-size: 24px;
+    background: none;
+    border: none;
+    color: #94a3b8;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+#close-calculator:hover {
+    color: #ef4444;
+}
