@@ -166,52 +166,64 @@ if (minimizeChat) {
 }
 
 // ==========================================================================
-// PREMIUM PERSISTENT LANGUAGE HEADER (MOVED TO TOP RIGHT CONTROLS)
+// UNIFIED FIXED-HEADER LANGUAGE SWITCHER SYNC LOGIC
 // ==========================================================================
-function renderPremiumLanguageHeader() {
-    document.querySelectorAll(".premium-lang-bar").forEach(el => el.remove());
+function updateLanguageUI() {
+    const btnEn = document.getElementById("lang-en");
+    const btnHi = document.getElementById("lang-hi");
 
-    const langBar = document.createElement("div");
-    langBar.className = "premium-lang-bar";
+    if (currentLanguage === "en") {
+        if (btnEn) btnEn.classList.add("active-lang");
+        if (btnHi) btnHi.classList.remove("active-lang");
+    } else {
+        if (btnHi) btnHi.classList.add("active-lang");
+        if (btnEn) btnEn.classList.remove("active-lang");
+    }
+}
 
-    const btnEn = document.createElement("button");
-    btnEn.innerHTML = "EN";
-    btnEn.className = `lang-toggle-btn ${currentLanguage === 'en' ? 'active-lang' : ''}`;
-    btnEn.onclick = (e) => {
-        e.preventDefault();
-        if (currentLanguage !== "en") {
-            currentLanguage = "en";
-            initializeWelcomeGreeting();
-        }
-    };
+// Target the single fixed instance elements from your index.html file cleanly
+document.getElementById("lang-en")?.addEventListener("click", (e) => {
+    e.preventDefault();
+    if (currentLanguage !== "en") {
+        currentLanguage = "en";
+        updateLanguageUI();
+        updateHorizontalTabsText();
+        initializeWelcomeGreeting();
+    }
+});
 
-    const btnHi = document.createElement("button");
-    btnHi.innerHTML = "हिं";
-    btnHi.className = `lang-toggle-btn ${currentLanguage === 'hi' ? 'active-lang' : ''}`;
-    btnHi.onclick = (e) => {
-        e.preventDefault();
-        if (currentLanguage !== "hi") {
-            currentLanguage = "hi";
-            initializeWelcomeGreeting();
-        }
-    };
+document.getElementById("lang-hi")?.addEventListener("click", (e) => {
+    e.preventDefault();
+    if (currentLanguage !== "hi") {
+        currentLanguage = "hi";
+        updateLanguageUI();
+        updateHorizontalTabsText();
+        initializeWelcomeGreeting();
+    }
+});
 
-    langBar.appendChild(btnEn);
-    langBar.appendChild(btnHi);
+// Updates the horizontal tab button labels on language shift dynamically
+function updateHorizontalTabsText() {
+    const tab1 = document.getElementById("tab-cost-calc");
+    const tab2 = document.getElementById("tab-savings");
+    const tab3 = document.getElementById("tab-subsidy");
+    const tab4 = document.getElementById("tab-survey");
 
-    if (chatbotContainer) {
-        let controlsContainer = chatbotContainer.querySelector(".chat-header-controls");
-        if (!controlsContainer && minimizeChat) {
-            controlsContainer = minimizeChat.parentElement;
-        }
-        if (controlsContainer) {
-            controlsContainer.insertBefore(langBar, controlsContainer.firstChild);
-        }
+    if (currentLanguage === "en") {
+        if (tab1) tab1.innerHTML = "💰 Cost Calc";
+        if (tab2) tab2.innerHTML = "📈 Savings";
+        if (tab3) tab3.innerHTML = "📋 Subsidy";
+        if (tab4) tab4.innerHTML = "🗓️ Book Survey";
+    } else {
+        if (tab1) tab1.innerHTML = "💰 लागत Calc";
+        if (tab2) tab2.innerHTML = "📈 बचत गणना";
+        if (tab3) tab3.innerHTML = "📋 सब्सिडी";
+        if (tab4) tab4.innerHTML = "🗓️ सर्वे बुक करें";
     }
 }
 
 // ==========================================================================
-// WELCOME INITIALIZER WITH EXTERNAL SIDE-ALIGNED CIRCULAR AVATAR
+// WELCOME INITIALIZER
 // ==========================================================================
 function initializeWelcomeGreeting() {
     currentFlow = null;
@@ -225,46 +237,47 @@ function initializeWelcomeGreeting() {
 
     if (chatBox) chatBox.innerHTML = "";
 
-    // Load top header language switchers
-    renderPremiumLanguageHeader();
+    // Sync active CSS state toggles across the header buttons
+    updateLanguageUI();
 
-    // Structuring container wrapper for side avatar placement
-    const messageRow = document.createElement("div");
-    messageRow.className = "bot-message-wrapper";
-
-    // Create the outer layout circle for the avatar
-    const logoContainer = document.createElement("div");
-    logoContainer.className = "company-logo-sidebar";
-
-    const logoImg = document.createElement("img");
-    logoImg.src = "logo.jpg";
-    logoImg.alt = "Soltech Energy Logo";
-    logoImg.className = "chat-sidebar-logo";
-    logoImg.onerror = function() { logoContainer.style.display = "none"; };
-
-    logoContainer.appendChild(logoImg);
-    messageRow.appendChild(logoContainer);
-
-    // Dynamic clean text message bubble
+    // Premium Architecture Bot Greeting Card
     const botMessageDiv = document.createElement("div");
     botMessageDiv.className = "bot-message intro-card";
+    botMessageDiv.style.marginTop = "10px";
 
     const messageContentDiv = document.createElement("div");
     messageContentDiv.className = "message-content";
 
+    const logoContainer = document.createElement("div");
+    logoContainer.className = "company-logo-container";
+    logoContainer.style.marginBottom = "12px";
+    logoContainer.style.display = "flex";
+    logoContainer.style.alignItems = "center";
+
+    const logoImg = document.createElement("img");
+    logoImg.src = "logo.jpg";
+    logoImg.alt = "Soltech Energy Logo";
+    logoImg.className = "chat-company-logo";
+    logoImg.style.maxHeight = "40px";
+    logoImg.style.width = "auto";
+    logoImg.style.objectFit = "contain";
+    logoImg.onerror = function() { logoContainer.style.display = "none"; };
+
+    logoContainer.appendChild(logoImg);
+    messageContentDiv.appendChild(logoContainer);
+
     const textInstructions = document.createElement("span");
     textInstructions.innerHTML = `
-        <span class="welcome-title" style="font-size: 14px; font-weight: 700; color: #0f172a; display: block;">${STRINGS[currentLanguage].welcomeTitle}</span>
-        <div class="welcome-divider" style="height: 2px; width: 30px; background: #ff6b00; margin: 8px 0; border-radius: 2px;"></div>
-        <p class="welcome-desc" style="margin: 0; line-height: 1.5; font-size: 13px;">${STRINGS[currentLanguage].welcomeDesc}</p>
+        <span class="welcome-title" style="font-size: 16px; font-weight: 700; color: #1a252f; display: block;">${STRINGS[currentLanguage].welcomeTitle}</span>
+        <div class="welcome-divider" style="height: 2px; width: 40px; background: #2e7d32; margin: 10px 0; border-radius: 2px;"></div>
+        <p class="welcome-desc" style="margin: 0; line-height: 1.5;">${STRINGS[currentLanguage].welcomeDesc}</p>
     `;
     
     messageContentDiv.appendChild(textInstructions);
     botMessageDiv.appendChild(messageContentDiv);
-    messageRow.appendChild(botMessageDiv);
-    
-    if (chatBox) chatBox.appendChild(messageRow);
+    if (chatBox) chatBox.appendChild(botMessageDiv);
 
+    // Dynamic vertical menu elements inside chatbox text line are rendered here
     injectActionMenuButtons(MENUS[currentLanguage].main, false);
     scrollBottom();
     saveChat();
@@ -581,8 +594,6 @@ Unlock full case study portfolios and trigger automated engineering calculations
 // GATED LEAD SYSTEM INTERACTION MANAGEMENT
 // ==========================================================================
 function injectGatedActionCTAs() {
-    document.querySelectorAll(".quick-actions-wrapper").forEach(el => el.remove());
-
     const wrap = document.createElement("div");
     wrap.className = "quick-actions-wrapper";
 
@@ -690,30 +701,17 @@ function submitLeadForm() {
 // RENDERING ELEMENT UTILITIES
 // ==========================================================================
 function addBotMessage(text, isMenuOptionClick) {
-    const messageRow = document.createElement("div");
-    messageRow.className = "bot-message-wrapper";
-
-    const logoContainer = document.createElement("div");
-    logoContainer.className = "company-logo-sidebar";
-
-    const logoImg = document.createElement("img");
-    logoImg.src = "logo.jpg";
-    logoImg.alt = "Soltech Logo";
-    logoImg.className = "chat-sidebar-logo";
-    logoImg.onerror = function() { logoContainer.style.display = "none"; };
-
-    logoContainer.appendChild(logoImg);
-    messageRow.appendChild(logoContainer);
-
     const div = document.createElement("div");
     div.className = "bot-message";
     div.innerHTML = `<div class="message-content">${text}</div>`;
-    
-    messageRow.appendChild(div);
-    if (chatBox) chatBox.appendChild(messageRow);
+    if (chatBox) chatBox.appendChild(div);
     scrollBottom();
     saveChat();
 }
+
+// Global scope access wrapper to trigger sub-header horizontal element routes safely
+window.startFlow = startFlow;
+window.triggerGatedWall = triggerGatedWall;
 
 function addUserMessage(text) {
     const div = document.createElement("div");
@@ -823,11 +821,13 @@ function loadChat() {
     let chat = localStorage.getItem("Soltech_chat");
     if (chat) {
         if (chatBox) chatBox.innerHTML = chat;
-        renderPremiumLanguageHeader(); 
+        updateLanguageUI(); 
+        updateHorizontalTabsText();
     } else {
+        updateHorizontalTabsText();
         initializeWelcomeGreeting();
     }
 }
 
-// Initialize on execution sequence
+// Initialize execution sequence
 loadChat();
