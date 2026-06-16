@@ -1,670 +1,500 @@
-// ==========================================================================
-// Soltech Energy Chatbot Engine
-// chatbot.js [STRUCTURALLY RECONCILED & FIXED]
-// ==========================================================================
+Analyzing image_06700b.jpg, we can pinpoint exactly why some elements still look raw or layout-broken despite our previous structural adjustments.
 
-const chatToggle = document.getElementById("chat-toggle");
-const chatbotContainer = document.getElementById("chatbot-container");
-const minimizeChat = document.getElementById("minimize-chat");
-const refreshChat = document.getElementById("refresh-chat");
-const chatBox = document.getElementById("chat-box");
-const userInput = document.getElementById("user-input");
-const sendBtn = document.getElementById("send-btn");
-const footerWhitespaceCta = document.getElementById("footer-whatsapp-cta");
+### 🔎 Layout Discrepancies in image_06700b.jpg:
 
-// State Tracking Parameters
-let currentFlow = null;
-let currentStep = 0;
-let flowData = {};
+1. **The Ghost WhatsApp Button Border:** The "CONNECT VIA WHATSAPP" container at the bottom has lost its background, rendering as a raw unstyled anchor tag text with a default browser border hugging the input box.
+2. **Double Action Buttons Conflict:** The layout shows **two different styles** of utility action pills competing right under each other: the top horizontal small row (`Cost Calc`, `Savings`) and the bottom larger white button elements (`Get a Solar Cost Estimate`, `Calculate Savings`).
+3. **Header Element Overlap:** The online status indicator text ("Online") is dropping down and pushing outside the layout, which is unbalancing the structural alignment of the control headers on the right side.
 
-const CRM_SETTINGS = {
-    WhatsAppNumber: "918239573979",
-    InitialHiMessage: "Hi! I want to check solar details for my property.",
-    DefaultLeadLocation: "Jaipur",
-    LeadStorageWebhook: "http://localhost:5000/api/leads"
-};
+The complete code update below integrates all classes securely, smooths out the header constraints, styles *both* variations of the quick action pills identically to keep your visual rhythm uniform, and repairs the floating WhatsApp action container.
 
-const MAIN_HOMEPAGE_ACTIONS = ["Get a Solar Cost Estimate", "Calculate Savings", "Residential Solar", "Commercial Solar", "Solar for Industries", "Request a Site Visit", "Financing & Subsidies", "Talk to an Expert"];
+```css
+/* ==========================================================================
+   Soltech Energy Premium Chatbot Stylesheet - COMPLETE VISUAL REFINEMENT
+   ========================================================================== */
 
-const KEYWORD_OPTIONS = ["Subsidy Info", "Net Metering", "Residential Setup", "Commercial Setup", "Maintenance & AMC", "Warranty & Life", "Weather Safety", "Connect Live"];
-
-// =====================================
-// WINDOW MANAGEMENT
-// =====================================
-if (chatToggle) {
-    chatToggle.addEventListener("click", () => {
-        chatbotContainer.classList.toggle("open");
-    });
+:root {
+    --soltech-primary: #1a252f;       /* Deep Slate / Trust & Engineering */
+    --soltech-accent: #f39c12;        /* Solar Gold / Sunlight Capture */
+    --soltech-accent-hover: #e67e22;  /* Deep Amber Transition */
+    --soltech-success: #27ae60;       /* High-Yield / Subsidy Gains */
+    --soltech-bg-light: #f8f9fa;      /* Premium Cool Grey Ice White */
+    --soltech-card-bg: #ffffff;       /* Pure White Elevated Surfaces */
+    --soltech-text-main: #2c3e50;     /* Slate Dark Text Body */
+    --soltech-text-muted: #7f8c8d;    /* Muted Engineering Spec Gray */
+    --soltech-radius-lg: 16px;        /* Smooth Rounded Structural Corners */
+    --soltech-radius-sm: 8px;
+    --soltech-shadow: 0 12px 40px rgba(0, 0, 0, 0.12); /* Atmospheric Depth */
+    --soltech-transition: cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-if (minimizeChat) {
-    minimizeChat.addEventListener("click", () => {
-        chatbotContainer.classList.remove("open");
-    });
+/* --- Core Floating Widget Toggle Button --- */
+#chat-toggle {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 65px;
+    height: 65px;
+    background: linear-gradient(135deg, var(--soltech-primary), #2c3e50);
+    color: #ffffff;
+    border-radius: 50%;
+    box-shadow: 0 6px 20px rgba(26, 37, 47, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    z-index: 9999;
+    transition: all 0.4s var(--soltech-transition);
 }
 
-// ==========================================================================
-// DEFAULT WELCOME INITIALIZER & BACK FUNCTION
-// ==========================================================================
-function initializeWelcomeGreeting() {
-    currentFlow = null;
-    currentStep = 0;
-    flowData = {};
-
-    const progressNode = document.getElementById("lead-progress");
-    if (progressNode) {
-        progressNode.classList.add("hidden");
-    }
-
-    // Safely clearing the box clean
-    chatBox.innerHTML = "";
-
-    // Build the outer message container securely
-    const botMessageDiv = document.createElement("div");
-    botMessageDiv.className = "bot-message";
-
-    const messageContentDiv = document.createElement("div");
-    messageContentDiv.className = "message-content";
-
-    // Build the logo block safely
-    const logoContainer = document.createElement("div");
-    logoContainer.className = "company-logo-container";
-    logoContainer.style.marginBottom = "12px";
-    logoContainer.style.display = "flex";
-    logoContainer.style.alignItems = "center";
-
-    const logoImg = document.createElement("img");
-    logoImg.src = "logo.jpg";
-    logoImg.alt = "Soltech Energy Logo";
-    logoImg.className = "chat-company-logo";
-    logoImg.style.maxHeight = "40px";
-    logoImg.style.width = "auto";
-    logoImg.style.objectFit = "contain";
-    logoImg.onerror = function() { logoContainer.style.display = "none"; };
-
-    logoContainer.appendChild(logoImg);
-    messageContentDiv.appendChild(logoContainer);
-
-    // Add text instructions safely via innerHTML to process formatting tags
-    const textInstructions = document.createElement("span");
-    textInstructions.innerHTML = `
-        <strong>Welcome! I'm your Solar Assistant. How can I help you today?</strong>
-        <br><br>
-        We are Jaipur's premier solar engineering firm, designing high-yield systems for residential rooftops and commercial enterprises.
-        <br><br>
-        🤖 Solar system costs vary continuously based on your roof space, shadows, and shifting JVVNL net-metering regulations. Feel free to use our quick calculators below!
-    `;
-    
-    messageContentDiv.appendChild(textInstructions);
-    botMessageDiv.appendChild(messageContentDiv);
-    chatBox.appendChild(botMessageDiv);
-
-    injectActionMenuButtons(MAIN_HOMEPAGE_ACTIONS, false);
-    scrollBottom();
-    saveChat();
+#chat-toggle:hover {
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 10px 25px rgba(243, 156, 18, 0.4);
+    background: linear-gradient(135deg, var(--soltech-accent), var(--soltech-accent-hover));
 }
 
-function returnToMainMenu() {
-    addUserMessage("↩️ Back to Main Menu");
-    showTyping();
-    setTimeout(() => {
-        hideTyping();
-        initializeWelcomeGreeting();
-    }, 500);
+/* --- Main Framework Window Container --- */
+#chatbot-container {
+    position: fixed;
+    bottom: 110px;
+    right: 30px;
+    width: min(460px, calc(100vw - 40px));
+    height: min(720px, 85vh);
+    background: var(--soltech-bg-light);
+    border-radius: var(--soltech-radius-lg);
+    box-shadow: var(--soltech-shadow);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 9998;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+    pointer-events: none;
+    transition: all 0.4s var(--soltech-transition);
 }
 
-if (refreshChat) {
-    refreshChat.addEventListener("click", () => {
-        localStorage.removeItem("Soltech_chat");
-        initializeWelcomeGreeting();
-    });
+#chatbot-container.open {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
 }
 
-// ==========================================================================
-// SEQUENTIAL STEP FLOWS HANDLING ENGINE
-// ==========================================================================
-function startFlow(flowName) {
-    currentFlow = flowName;
-    currentStep = 1;
-    flowData = {};
-
-    const progressNode = document.getElementById("lead-progress");
-    if (progressNode) progressNode.classList.remove("hidden");
-    updateProgressBar(1, 6);
-
-    if (flowName === "ESTIMATOR") {
-        addBotMessage("1️⃣ <strong>What type of property are you looking to solarize?</strong>", false);
-        injectActionMenuButtons(["Home", "Commercial Building", "Factory/Industry", "School/Institution"], true);
-    } else if (flowName === "FINANCING") {
-        updateProgressBar(1, 3);
-        addBotMessage("1️⃣ <strong>Please specify your project deployment type:</strong>", false);
-        injectActionMenuButtons(["Residential Rooftop", "Commercial Enterprise", "Industrial Facility"], true);
-    } else if (flowName === "CI_QUALIFY") {
-        updateProgressBar(1, 5);
-        addBotMessage("1️⃣ <strong>What is your specific industry or business sector type?</strong>", false);
-        injectActionMenuButtons(["Manufacturing", "Textiles", "Cold Storage", "Warehousing", "Other Commercial"], true);
-    } else if (flowName === "SITE_VISIT") {
-        updateProgressBar(1, 2);
-        addBotMessage("🗓️ <strong>Let's schedule your structural deployment evaluation. Please enter your 6-digit Pincode:</strong>", false);
-        injectActionMenuButtons([], true);
-    }
+/* --- Upgraded Header Block Component --- */
+.chat-header {
+    background: linear-gradient(135deg, var(--soltech-primary), #111a24);
+    color: #ffffff;
+    padding: 18px 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    flex-shrink: 0;
 }
 
-function handleFlowStep(userInputText) {
-    if (userInputText.includes("Main Menu")) return;
-
-    showTyping();
-    setTimeout(() => {
-        hideTyping();
-        
-        // FLOW A: SOLAR COST ESTIMATOR
-        if (currentFlow === "ESTIMATOR") {
-            if (currentStep === 1) {
-                flowData.propertyType = userInputText;
-                currentStep = 2;
-                updateProgressBar(2, 6);
-                addBotMessage("2️⃣ <strong>Please enter your Jaipur's 6 digit pincode (e.g., 302018)</strong>", false);
-                injectActionMenuButtons([], true);
-            } else if (currentStep === 2) {
-                const pincodeRegex = /^[1-9][0-9]{5}$/;
-                if (!pincodeRegex.test(userInputText.trim())) {
-                    addBotMessage("⚠️ <strong>Invalid Format:</strong> Please enter a valid 6-digit Jaipur Pincode (e.g., 302018) to accurately calculate baseline logistics.", false);
-                    injectActionMenuButtons([], true);
-                    return;
-                }
-                flowData.pincode = userInputText.trim();
-                currentStep = 3;
-                updateProgressBar(3, 6);
-                addBotMessage("3️⃣ <strong>Select your average monthly electricity bill bracket:</strong>", false);
-                injectActionMenuButtons(["< ₹2,000", "₹2,000–₹5,000", "₹5,000–₹10,000", "₹10,000+"], true);
-            } else if (currentStep === 3) {
-                flowData.monthlyBill = userInputText;
-                currentStep = 4;
-                updateProgressBar(4, 6);
-                addBotMessage("4️⃣ <strong>What type of roof structure is available?</strong>", false);
-                injectActionMenuButtons(["RCC Roof", "Metal Shed", "Ground Mounted", "Not Sure"], true);
-            } else if (currentStep === 4) {
-                flowData.roofType = userInputText;
-                currentStep = 5;
-                updateProgressBar(5, 6);
-                addBotMessage("5️⃣ <strong>What is the approximate shadow-free roof area available?</strong>", false);
-                injectActionMenuButtons(["<500 sq ft", "500–1000 sq ft", "1000–5000 sq ft", "5000+ sq ft"], true);
-            } else if (currentStep === 5) {
-                flowData.roofArea = userInputText;
-                currentStep = 6;
-                updateProgressBar(6, 6);
-                addBotMessage("6️⃣ <strong>Do you own the property?</strong>", false);
-                injectActionMenuButtons(["Yes", "No"], true);
-            } else if (currentStep === 6) {
-                flowData.ownership = userInputText;
-                if (document.getElementById("lead-progress")) {
-                    document.getElementById("lead-progress").classList.add("hidden");
-                }
-                renderEstimatorResults();
-            }
-        }
-        
-        // FLOW B: FINANCING ASSISTANT
-        else if (currentFlow === "FINANCING") {
-            if (currentStep === 1) {
-                flowData.projectType = userInputText;
-                currentStep = 2;
-                updateProgressBar(2, 3);
-                addBotMessage("2️⃣ <strong>What is your projected installation budget range?</strong>", false);
-                injectActionMenuButtons(["Under ₹3 Lakhs", "₹3 Lakhs to ₹7 Lakhs", "Above ₹7 Lakhs"], true);
-            } else if (currentStep === 2) {
-                flowData.budget = userInputText;
-                currentStep = 3;
-                updateProgressBar(3, 3);
-                addBotMessage("3️⃣ <strong>Which financial deployment asset model are you looking to check?</strong>", false);
-                injectActionMenuButtons(["EMI", "Loan", "CAPEX", "OPEX/PPA"], true);
-            } else if (currentStep === 3) {
-                flowData.modelChoice = userInputText;
-                if (document.getElementById("lead-progress")) {
-                    document.getElementById("lead-progress").classList.add("hidden");
-                }
-                renderFinancingOutputs();
-            }
-        }
-
-        // FLOW C: C&I LEAD QUALIFICATION
-        else if (currentFlow === "CI_QUALIFY") {
-            if (currentStep === 1) {
-                flowData.industryType = userInputText;
-                currentStep = 2;
-                updateProgressBar(2, 5);
-                addBotMessage("2️⃣ <strong>What is your sanctioned connected load in kW?</strong>", false);
-                injectActionMenuButtons([], true);
-            } else if (currentStep === 2) {
-                flowData.connectedLoad = userInputText;
-                currentStep = 3;
-                updateProgressBar(3, 5);
-                addBotMessage("3️⃣ <strong>What is your typical monthly electricity expense corporate bracket?</strong>", false);
-                injectActionMenuButtons(["₹50,000–₹1 Lakh", "₹1 Lakh–₹5 Lakhs", "₹5 Lakhs+"], true);
-            } else if (currentStep === 3) {
-                flowData.monthlyExpense = userInputText;
-                currentStep = 4;
-                updateProgressBar(4, 5);
-                addBotMessage("4️⃣ <strong>What is the total estimated factory or roof area available?</strong>", false);
-                injectActionMenuButtons(["1,000–5,000 sq ft", "5,000–10,000 sq ft", "10,000+ sq ft"], true);
-            } else if (currentStep === 4) {
-                flowData.roofArea = userInputText;
-                currentStep = 5;
-                updateProgressBar(5, 5);
-                addBotMessage("5️⃣ <strong>How many independent production facilities do you operate?</strong>", false);
-                injectActionMenuButtons([], true);
-            } else if (currentStep === 5) {
-                flowData.facilityCount = userInputText;
-                if (document.getElementById("lead-progress")) {
-                    document.getElementById("lead-progress").classList.add("hidden");
-                }
-                renderCIResults();
-            }
-        }
-
-        // FLOW D: SITE VISIT
-        else if (currentFlow === "SITE_VISIT") {
-            if (currentStep === 1) {
-                const pincodeRegex = /^[1-9][0-9]{5}$/;
-                if (!pincodeRegex.test(userInputText.trim())) {
-                    addBotMessage("⚠️ <strong>Invalid Format:</strong> Please enter a valid 6-digit site Pincode to coordinate engineering schedules.", false);
-                    injectActionMenuButtons([], true);
-                    return;
-                }
-                flowData.pincode = userInputText.trim();
-                triggerGatedWall("Book Site Survey Plan");
-            }
-        }
-    }, 600);
+.chat-header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
-// ==========================================================================
-// CORE CALCULATIONS ENGINE
-// ==========================================================================
-function renderEstimatorResults() {
-    let sizeKw = 3; 
-    let baseCost = 180000; 
-    let subsidy = 78000; 
-    let annualGen = 4380; 
-    let monthlySavings = 3000;
-
-    if (flowData.monthlyBill && flowData.monthlyBill.includes("< ₹2,000")) {
-        sizeKw = 2; baseCost = 130000; subsidy = 60000; annualGen = 2920; monthlySavings = 1600;
-    } else if (flowData.monthlyBill && flowData.monthlyBill.includes("₹2,000–₹5,000")) {
-        sizeKw = 4; baseCost = 240000; subsidy = 78000; annualGen = 5840; monthlySavings = 4000;
-    } else if (flowData.monthlyBill && flowData.monthlyBill.includes("₹5,000–₹10,000")) {
-        sizeKw = 7; baseCost = 410000; subsidy = 78000; annualGen = 10220; monthlySavings = 7500;
-    } else if (flowData.monthlyBill && flowData.monthlyBill.includes("₹10,000+")) {
-        sizeKw = 10; baseCost = 550000; subsidy = 78000; annualGen = 14600; monthlySavings = 11000;
-    }
-
-    if (flowData.roofArea && flowData.roofArea.includes("<500 sq ft") && sizeKw > 4) {
-        addBotMessage(`⚠️ <strong>Roof Constraints Identified:</strong> Your consumption requires a ${sizeKw}kW system, but your area fits up to 4kW. Our team will optimize placement using satellite mapping.`, false);
-        sizeKw = 4;
-    }
-
-    let netCost = baseCost - subsidy;
-    let paybackYears = (netCost / (monthlySavings * 12)).toFixed(1);
-
-    let p = netCost;
-    let r = 7.99 / 12 / 100;
-    let n = 36;
-    let emiResult = Math.round((p * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1));
-
-    let outputHtml = `
-📊 <strong>Your Custom Soltech System Design Blueprint:</strong><br><br>
-• <strong>Target Coverage Pincode:</strong> ${flowData.pincode || "N/A"}<br>
-• <strong>Recommended System Size:</strong> ${sizeKw} kWp<br>
-• <strong>Estimated Project Cost (Gross):</strong> ₹${baseCost.toLocaleString()}<br>
-• <strong>Government Subsidy Benefit:</strong> -₹${subsidy.toLocaleString()}<br>
-• <strong style="color: #2e7d32;">Net Cost Investment:</strong> ₹${netCost.toLocaleString()}<br>
-• <strong>Expected Annual Generation:</strong> ${annualGen} Units (kWh)<br>
-• <strong>Monthly Savings Estimate:</strong> ₹${monthlySavings.toLocaleString()}<br>
-• <strong>Payback Period:</strong> ~${paybackYears} Years<br>
-• <strong>Typical EMI Baseline (7.99% Rate over 36M):</strong> ₹${emiResult.toLocaleString()}/month<br><br>
-Would you like to unlock your detailed structural engineering proposal brochure or speak to our loan counter expert?
-`;
-
-    addBotMessage(outputHtml, false);
-    injectGatedActionCTAs();
+.chat-header-avatar {
+    width: 38px;
+    height: 38px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1.5px solid var(--soltech-accent);
+    color: var(--soltech-accent);
+    font-size: 18px;
 }
 
-function renderFinancingOutputs() {
-    let outputHtml = `
-💳 <strong>Soltech & Solar Ladder Loan Engine Matrix:</strong><br><br>
-• <strong>Base Interest Rate:</strong> Starts at <strong>7.99%</strong> per annum.<br>
-• <strong>Available Loan Tenures:</strong> Flexible options ranging from 6 Months to 5 Years (6M, 1Y, 2Y, 3Y, 4Y, 5Y).<br>
-• <strong>Special Promotional Tranches:</strong> Interest-free (0% Interest) options available for up to 6 months.<br><br>
-📋 <strong>Official Required Documents Checklist (Soltech Flow):</strong><br>
-• <strong>Common Base Requirements:</strong> PAN Card, Aadhaar Card (Front/Back), Last 3 Months' Electricity Bill, 1-Year Bank Statement, Passport Photo, Applicant Email & Phone Number, and a Detailed Solar Proposal.<br>
-• <strong>For Salaried Employees:</strong> 3 Months' Salary Slips.<br>
-• <strong>For Self-Employed:</strong> 2 Years of Income Tax Returns (ITR) along with Business Proof (GST Certificate or Udyam Registration).<br><br>
-To book a live system demo and download the technical loan structure brochure, tap below to verify your details.
-`;
-    addBotMessage(outputHtml, false);
-    injectGatedActionCTAs();
+.chat-header-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
 }
 
-function renderCIResults() {
-    let impliedLoad = parseFloat(flowData.connectedLoad) || 50;
-    let potentialSize = Math.round(impliedLoad * 0.8);
-    let annualSavingsEst = potentialSize * 1450 * 8.5;
-    let carbonSavedTons = (potentialSize * 1450 * 0.00082).toFixed(1);
-
-    let outputHtml = `
-🏭 <strong>Corporate C&I Asset Feasibility Estimates:</strong><br><br>
-• <strong>Potential System Size Allocation:</strong> Up to ${potentialSize} kWp grid-tied asset installation.<br>
-• <strong>Annual Savings Estimate:</strong> Approx ₹${Math.round(annualSavingsEst).toLocaleString()} per annum.<br>
-• <strong>Accelerated Depreciation Asset Benefit:</strong> Up to 40% taxable write-off allowances in Year 1 allocation profiles.<br>
-• <strong>Carbon Reduction Estimate:</strong> Net reduction of <strong>${carbonSavedTons} Metric Tons of CO2</strong> annually.<br><br>
-Unlock full case study portfolios and trigger automated engineering calculations by submitting your verification logs.
-`;
-    addBotMessage(outputHtml, false);
-    injectGatedActionCTAs();
+.chat-header-info h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    line-height: 1.2;
 }
 
-// ==========================================================================
-// GATED LEAD SYSTEM INTERFACE DESIGN
-// ==========================================================================
-function injectGatedActionCTAs() {
-    document.querySelectorAll(".gated-wrapper-panel").forEach(el => el.remove());
-    const wrapper = document.createElement("div");
-    wrapper.className = "gated-wrapper-panel";
-
-    const btnConsult = document.createElement("button");
-    btnConsult.className = "quick-btn functional-action-btn";
-    btnConsult.innerHTML = "📅 Book a Free Demo / Site Survey";
-    btnConsult.onclick = () => triggerGatedWall("Book a Free System Demo");
-
-    const btnBrochure = document.createElement("button");
-    btnBrochure.className = "quick-btn functional-action-btn";
-    btnBrochure.innerHTML = "📥 Download Technical Brochure";
-    btnBrochure.onclick = () => triggerGatedWall("Download Technical Brochure");
-
-    const btnWhatsApp = document.createElement("button");
-    btnWhatsApp.className = "quick-btn functional-action-btn wa-direct-btn";
-    btnWhatsApp.innerHTML = "<i class='fab fa-whatsapp'></i> CONNECT VIA WHATSAPP";
-    btnWhatsApp.onclick = () => launchWhatsAppLeadGen();
-
-    const btnHome = document.createElement("button");
-    btnHome.className = "quick-btn back-btn";
-    btnHome.innerHTML = "<i class='fas fa-arrow-left'></i> Back to Main Menu";
-    btnHome.onclick = () => initializeWelcomeGreeting();
-
-    wrapper.appendChild(btnConsult);
-    wrapper.appendChild(btnBrochure);
-    wrapper.appendChild(btnWhatsApp);
-    wrapper.appendChild(btnHome);
-    chatBox.appendChild(wrapper);
-    scrollBottom();
+/* Fixed positioning overlap bug for online indicator text fields */
+.chat-header-info span, 
+.chat-header-info p,
+#chatbot-container .online-status {
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 11px !important;
+    color: var(--soltech-success) !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    font-weight: 500 !important;
+    background: transparent !important;
+    border: none !important;
 }
 
-// ==========================================================================
-// USER-FRIENDLY VERIFICATION FORM GENERATOR
-// ==========================================================================
-function triggerGatedWall(targetActionGoal) {
-    document.querySelectorAll(".gated-wrapper-panel").forEach(el => el.remove());
-    document.querySelectorAll(".quick-actions-wrapper").forEach(el => el.remove());
-    document.querySelectorAll(".lead-form-card").forEach(el => el.remove());
-
-    const formContainer = document.createElement("div");
-    formContainer.className = "lead-form-card";
-
-    formContainer.innerHTML = `
-        <strong>📋 Identity Verification Required:</strong>
-        <p>Please provide your details to continue.</p>
-        <input type="text" class="lead-name" placeholder="Your Name *">
-        <input type="tel" class="lead-phone" placeholder="Phone Number *">
-        <input type="text" class="lead-company" placeholder="Company Name (Optional)">
-        <button class="verify-btn">Verify & Continue</button>
-        <button type="button" class="exit-form-btn">↩️ Cancel & Return to Main Menu</button>
-    `;
-
-    chatBox.appendChild(formContainer);
-    scrollBottom();
-
-    const cancelBtn = formContainer.querySelector(".exit-form-btn");
-    cancelBtn.addEventListener("click", function(e) {
-        e.preventDefault();
-        formContainer.remove();
-        currentFlow = null;
-        currentStep = 0;
-        flowData = {};
-        initializeWelcomeGreeting();
-    });
-
-    const submitBtn = formContainer.querySelector(".verify-btn");
-    submitBtn.addEventListener("click", function(e) {
-        e.preventDefault();
-        const nameVal = formContainer.querySelector(".lead-name").value.trim();
-        const phoneVal = formContainer.querySelector(".lead-phone").value.trim();
-        const companyVal = formContainer.querySelector(".lead-company").value.trim();
-
-        if (!nameVal || !phoneVal) {
-            alert("Name and Phone Number are required.");
-            return;
-        }
-
-        flowData.leadName = nameVal;
-        flowData.leadPhone = phoneVal;
-        flowData.leadCompany = companyVal || "Individual/Residential";
-        flowData.actionContextTarget = targetActionGoal;
-
-        formContainer.remove();
-        processCompletedLeadCaptured();
-    });
+.chat-header-info span::before {
+    content: "●";
+    font-size: 9px;
+    animation: pulse-green 2s infinite;
 }
 
-async function processCompletedLeadCaptured() {
-    showTyping();
-    const leadPayload = {
-        name: flowData.leadName,
-        phone: flowData.leadPhone,
-        company: flowData.leadCompany || "Individual/Residential",
-        context: flowData.actionContextTarget,
-        pincode: flowData.pincode || "000000",
-        location: flowData.pincode || CRM_SETTINGS.DefaultLeadLocation,
-        timestamp: new Date().toISOString()
-    };
-
-    try {
-        await fetch(CRM_SETTINGS.LeadStorageWebhook, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(leadPayload)
-        });
-    } catch(e) {
-        console.log("Local standalone cache buffer committed.");
-    }
-
-    setTimeout(() => {
-        hideTyping();
-        addBotMessage(`✅ <strong>Thank you, ${flowData.leadName}.</strong> Your request has been processed.`, false);
-        
-        if (flowData.actionContextTarget && flowData.actionContextTarget.includes("Brochure")) {
-            addBotMessage(`🎉 <strong>Access Granted:</strong> <a href="#" onclick="alert('Starting brochure download...'); return false;" class="download-link">Click here to download the file</a>.`, false);
-        } else {
-            addBotMessage(`📞 Our engineering team will connect with you shortly at <strong>${flowData.leadPhone}</strong>.`, false);
-        }
-        
-        setTimeout(() => { initializeWelcomeGreeting(); }, 4000);
-    }, 800);
+.chat-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.7);
 }
 
-// ==========================================================================
-// TEXT PROCESSING ENGINE WITH LOGICAL OVERRIDES
-// ==========================================================================
-function processMessage(userText) {
-    const cleanText = userText.trim();
-    if (!cleanText) return;
-
-    if (cleanText === "↩️ Back to Main Menu" || cleanText.toLowerCase() === "back" || cleanText.toLowerCase() === "menu") {
-        initializeWelcomeGreeting();
-        return;
-    }
-
-    if (cleanText === "Get a Solar Cost Estimate" || cleanText === "Cost Calculator" || cleanText === "⚡ Cost Calc") {
-        startFlow("ESTIMATOR"); return;
-    }
-    if (cleanText === "Calculate Savings" || cleanText === "Savings Calculator" || cleanText === "📈 Savings") {
-        startFlow("ESTIMATOR"); return;
-    }
-    if (cleanText === "Financing & Subsidies" || cleanText === "Subsidy Info" || cleanText === "Subsidy Checker" || cleanText === "📋 Subsidy") {
-        startFlow("FINANCING"); return;
-    }
-    if (cleanText === "Residential Solar") {
-        startFlow("ESTIMATOR"); return;
-    }
-    if (cleanText === "Commercial Solar" || cleanText === "Solar for Industries" || cleanText === "Industrial Solar") {
-        startFlow("CI_QUALIFY"); return;
-    }
-    if (cleanText === "Request a Site Visit" || cleanText === "Book Site Visit" || cleanText === "Book Site Survey" || cleanText === "📅 Book Survey") {
-        startFlow("SITE_VISIT"); return;
-    }
-    if (cleanText === "Talk to an Expert" || cleanText === "Connect Live") {
-        launchWhatsAppLeadGen(); return;
-    }
-
-    if (currentFlow !== null) {
-        handleFlowStep(cleanText);
-        return;
-    }
-
-    showTyping();
-    setTimeout(() => {
-        hideTyping();
-        let targetResponse = `🤖 For custom engineering schematics, precise Soltech project breakdowns, or fast JVVNL approvals, connect with our desk directly via the options below:`;
-        addBotMessage(targetResponse, false);
-        injectGatedActionCTAs();
-    }, 500);
+.chat-header-actions i,
+.chat-header-actions span,
+.chat-header-actions button {
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    transition: color 0.2s;
 }
 
-// ==========================================================================
-// WHATSAPP ROUTING & WIDGET MANIPULATIONS
-// ==========================================================================
-function launchWhatsAppLeadGen() {
-    const waBaseURL = "https://wa.me/";
-    const waFullLink = `${waBaseURL}${CRM_SETTINGS.WhatsAppNumber}/?text=${encodeURIComponent(CRM_SETTINGS.InitialHiMessage)}`;
-    notifyCRMofWhatsAppClick(flowData.pincode || CRM_SETTINGS.DefaultLeadLocation, "Chatbot_Interactive_Widget");
-    window.open(waFullLink, '_blank');
+.chat-header-actions i:hover {
+    color: var(--soltech-accent);
 }
 
-async function notifyCRMofWhatsAppClick(locationTag, sourceTag) {
-    try {
-        const leadPayload = { source: sourceTag, location_tag: locationTag, timestamp: new Date().toISOString() };
-        await fetch(CRM_SETTINGS.LeadStorageWebhook, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(leadPayload) });
-    } catch (error) {}
+/* --- Premium Language Selection Header Anchor --- */
+.premium-lang-bar {
+    background: #ffffff;
+    display: flex !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 10px 16px;
+    gap: 10px;
+    flex-shrink: 0;
 }
 
-function sendMessage() {
-    if (!userInput) return;
-    const message = userInput.value.trim();
-    if (!message) return;
-    addUserMessage(message);
-    userInput.value = "";
-    processMessage(message);
+.lang-toggle-btn {
+    flex: 1;
+    background: var(--soltech-bg-light);
+    border: 1px solid rgba(0,0,0,0.06);
+    padding: 10px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--soltech-text-main);
+    border-radius: var(--soltech-radius-sm);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all 0.25s ease;
 }
 
-function injectActionMenuButtons(buttonLabelList, includeBackButton = false) {
-    document.querySelectorAll(".quick-actions-wrapper").forEach(el => el.remove());
-    if (buttonLabelList.length === 0 && !includeBackButton) return;
-
-    const wrapper = document.createElement("div");
-    wrapper.className = "quick-actions-wrapper";
-
-    buttonLabelList.forEach(textLabel => {
-        const btn = document.createElement("button");
-        btn.className = "quick-btn";
-        btn.innerText = textLabel;
-        
-        btn.onclick = (e) => {
-            e.preventDefault();
-            addUserMessage(textLabel);
-            processMessage(textLabel);
-        };
-        wrapper.appendChild(btn);
-    });
-
-    if (includeBackButton) {
-        const backBtn = document.createElement("button");
-        backBtn.className = "quick-btn back-btn";
-        backBtn.innerHTML = "<i class='fas fa-arrow-left'></i> Main Menu";
-        backBtn.onclick = (e) => {
-            e.preventDefault();
-            returnToMainMenu();
-        };
-        wrapper.appendChild(backBtn);
-    }
-
-    chatBox.appendChild(wrapper);
-    scrollBottom();
+.lang-toggle-btn:hover {
+    background: #eaecee;
 }
 
-function updateProgressBar(step, total) {
-    const fill = document.getElementById("progress-bar-fill");
-    if (fill) fill.style.width = `${Math.round((step / total) * 100)}%`;
+.lang-toggle-btn.active-lang {
+    background: rgba(243, 156, 18, 0.1);
+    border-color: rgba(243, 156, 18, 0.4);
+    color: var(--soltech-accent-hover);
 }
 
-function addUserMessage(text) {
-    const div = document.createElement("div");
-    div.className = "user-message";
-    div.innerHTML = `<div class="message-content">${text}</div>`;
-    chatBox.appendChild(div);
-    document.querySelectorAll(".quick-actions-wrapper").forEach(el => el.remove());
-    scrollBottom();
+/* Global Clean Patch to suppress unstyled native buttons leakage inside containers */
+#chat-box > button:not([class*="btn"]),
+.chat-header + div:not(.premium-lang-bar):not(#lead-progress) {
+    display: none !important;
 }
 
-function addBotMessage(text, displayButtons = true) {
-    const div = document.createElement("div");
-    div.className = "bot-message";
-    div.innerHTML = `<div class="message-content">${text}</div>`;
-    chatBox.appendChild(div);
-    if (displayButtons) {
-        injectActionMenuButtons(KEYWORD_OPTIONS, true);
-    } else {
-        scrollBottom();
-    }
-    saveChat();
+/* --- Unified Global Quick Action Button Matrix (Top Strip & Message Content) --- */
+.quick-actions-wrapper,
+.chat-buttons-container {
+    display: flex !important;
+    flex-direction: row !important;
+    overflow-x: auto !important;
+    white-space: nowrap !important;
+    padding: 12px 16px !important;
+    gap: 10px !important;
+    background: #ffffff !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
+    flex-shrink: 0;
 }
 
-function showTyping() {
-    const ti = document.getElementById("typing-indicator");
-    if (ti) ti.classList.remove("hidden");
+/* Handle custom instances where buttons render directly inside conversational logs */
+.bot-message .quick-actions-wrapper,
+.bot-message .chat-buttons-container {
+    background: transparent !important;
+    padding: 8px 0 0 0 !important;
+    border-bottom: none !important;
 }
 
-function hideTyping() {
-    const ti = document.getElementById("typing-indicator");
-    if (ti) ti.classList.add("hidden");
+/* Smooth custom scrollbars for interactive scrolling panels */
+.quick-actions-wrapper::-webkit-scrollbar,
+.chat-buttons-container::-webkit-scrollbar {
+    height: 4px;
+}
+.quick-actions-wrapper::-webkit-scrollbar-thumb,
+.chat-buttons-container::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.08);
+    border-radius: 4px;
 }
 
-window.initializeWelcomeGreeting = initializeWelcomeGreeting;
-function scrollBottom() { if (chatBox) chatBox.scrollTop = chatBox.scrollHeight; }
-function saveChat() { if (chatBox) localStorage.setItem("Soltech_chat", chatBox.innerHTML); }
+/* MASTER REFINEMENT: Normalizes both types of interactive query pills */
+.quick-btn,
+.quick-actions-wrapper button,
+.chat-buttons-container button,
+#chat-box .quick-btn {
+    background: #ffffff !important;
+    color: var(--soltech-text-main) !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    padding: 0 16px !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    border-radius: 30px !important;
+    cursor: pointer !important;
+    min-height: 38px !important;
+    height: 38px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+    box-sizing: border-box !important;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.02) !important;
+    text-decoration: none !important;
+    transition: all 0.25s var(--soltech-transition) !important;
+}
 
-function loadChat() {
-    let chat = localStorage.getItem("Soltech_chat");
-    if (chat) {
-        chatBox.innerHTML = chat;
-    } else {
-        initializeWelcomeGreeting();
+.quick-btn:hover,
+.quick-actions-wrapper button:hover,
+.chat-buttons-container button:hover {
+    background: var(--soltech-primary) !important;
+    color: #ffffff !important;
+    border-color: var(--soltech-primary) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08) !important;
+}
+
+/* System Action Modifiers */
+.back-btn {
+    background: transparent !important;
+    color: #c0392b !important;
+    border: 1px dashed rgba(192, 57, 43, 0.4) !important;
+}
+.back-btn:hover {
+    background: #c0392b !important;
+    color: #ffffff !important;
+}
+
+/* --- Messaging Box Frame & Custom Scrollbars --- */
+#chat-box {
+    flex: 1;
+    padding: 24px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    scroll-behavior: smooth;
+    background: var(--soltech-bg-light);
+}
+
+#chat-box::-webkit-scrollbar {
+    width: 6px;
+}
+#chat-box::-webkit-scrollbar-track {
+    background: transparent;
+}
+#chat-box::-webkit-scrollbar-thumb {
+    background: rgba(127, 140, 141, 0.3);
+    border-radius: 10px;
+}
+
+/* --- Dialogue Conversational Card Containers --- */
+.bot-message, .user-message {
+    max-width: 90%;
+    display: flex;
+    flex-direction: column;
+    animation: fade-up 0.35s var(--soltech-transition);
+}
+
+.bot-message { align-self: flex-start; }
+.user-message { align-self: flex-end; }
+
+.bot-message .message-content {
+    background: var(--soltech-card-bg);
+    color: var(--soltech-text-main);
+    border-radius: 4px var(--soltech-radius-lg) var(--soltech-radius-lg) var(--soltech-radius-lg);
+    padding: 16px 18px;
+    font-size: 14.5px;
+    line-height: 1.6;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.015);
+    border: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+.user-message .message-content {
+    background: linear-gradient(135deg, var(--soltech-primary), #2c3e50);
+    color: #ffffff;
+    border-radius: var(--soltech-radius-lg) 4px var(--soltech-radius-lg) var(--soltech-radius-lg);
+    padding: 14px 18px;
+    font-size: 14.5px;
+    line-height: 1.5;
+}
+
+/* Premium Interactive Welcome Card Highlight */
+.intro-card .message-content {
+    border-left: 4px solid var(--soltech-accent);
+    background: linear-gradient(135deg, rgba(243, 156, 18, 0.04), #ffffff) !important;
+}
+
+.intro-card img {
+    max-width: 110px;
+    height: auto;
+    margin-bottom: 12px;
+    display: block;
+}
+
+/* --- REPAIRED: Clean High-Visibility WhatsApp Action Trigger --- */
+.wa-direct-btn,
+a[href*="wa.me"],
+a[href*="whatsapp.com"],
+#chat-box button[class*="whatsapp"],
+#chat-box a[class*="whatsapp"] {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    background: #25d366 !important;
+    color: #ffffff !important;
+    text-decoration: none !important;
+    padding: 12px 20px !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    border-radius: var(--soltech-radius-sm) !important;
+    margin: 8px 0 !important;
+    border: none !important;
+    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2) !important;
+    align-self: flex-start !important; /* Locks button box shape from shifting outward */
+    box-sizing: border-box !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.wa-direct-btn:hover, a[href*="wa.me"]:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 6px 16px rgba(37, 211, 102, 0.35) !important;
+    background: #20ba5a !important;
+}
+
+/* --- Premium Dynamic Modules --- */
+.savings-card {
+    background: linear-gradient(135deg, var(--soltech-success), #2ecc71);
+    color: #ffffff !important;
+    border-radius: 14px;
+    padding: 18px;
+    box-shadow: 0 6px 18px rgba(39, 174, 96, 0.25);
+    border: none !important;
+}
+
+.subsidy-badge {
+    background: rgba(39, 174, 96, 0.1);
+    color: var(--soltech-success);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+    display: inline-block;
+    font-size: 12px;
+}
+
+/* --- Footer Controls & Input Processing Architecture --- */
+.chat-footer {
+    background: #ffffff;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    flex-shrink: 0;
+}
+
+#user-input {
+    flex: 1;
+    border: none;
+    padding: 10px 4px;
+    font-size: 14px;
+    color: var(--soltech-text-main);
+    background: transparent;
+    resize: none;
+    max-height: 60px;
+}
+
+#user-input:focus {
+    outline: none;
+}
+
+#send-btn {
+    background: var(--soltech-primary);
+    border: none;
+    color: #ffffff;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+#send-btn:hover {
+    background: var(--soltech-accent);
+}
+
+/* Progress Tracker Bar */
+#lead-progress {
+    height: 4px;
+    background: #e1e4e6;
+    width: 100%;
+    position: relative;
+    flex-shrink: 0;
+}
+
+#progress-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--soltech-accent), var(--soltech-success));
+    transition: width 0.4s ease;
+}
+
+@keyframes fade-up {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse-green {
+    0% { transform: scale(0.95); opacity: 0.5; }
+    50% { transform: scale(1.1); opacity: 1; }
+    100% { transform: scale(0.95); opacity: 0.5; }
+}
+
+.hidden { display: none !important; }
+
+/* --- Mobile Device Layout Rules --- */
+@media (max-width: 480px) {
+    #chatbot-container {
+        bottom: 0;
+        right: 0;
+        width: 100vw;
+        height: 100vh;
+        max-height: 100vh;
+        border-radius: 0;
     }
 }
 
-document.addEventListener("DOMContentLoaded", function() {
-    if (footerWhitespaceCta) footerWhitespaceCta.addEventListener("click", launchWhatsAppLeadGen);
-    if (sendBtn) sendBtn.addEventListener("click", sendMessage);
-    if (userInput) {
-        userInput.addEventListener("keypress", (e) => {
-            if (e.key === "Enter") sendMessage();
-        });
-    }
-
-    document.querySelectorAll(".persistent-tab-item").forEach(tab => {
-        tab.addEventListener("click", (e) => {
-            const label = e.currentTarget.getAttribute("data-intent");
-            addUserMessage(label);
-            processMessage(label);
-        });
-    });
-    loadChat();
-});
+```
