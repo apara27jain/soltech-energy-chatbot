@@ -479,7 +479,6 @@ function triggerGatedWall(targetActionGoal) {
             formContainer.remove();
             processCompletedLeadCaptured();
         });
-    }
 }
 
 async function processCompletedLeadCaptured() {
