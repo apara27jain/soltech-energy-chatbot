@@ -10,8 +10,7 @@ const refreshChat = document.getElementById("refresh-chat");
 const chatBox = document.getElementById("chat-box");
 const userInput = document.getElementById("user-input");
 const sendBtn = document.getElementById("send-btn");
-const footerWhitespaceCta = document.getElementById("footer-whatsafp-cta");
-
+const footerWhitespaceCta = document.getElementById("footer-whatsapp-cta");
 // State Tracking Parameters
 let currentFlow = null;
 let currentStep = 0;
@@ -34,7 +33,6 @@ const KEYWORD_OPTIONS = ["Subsidy Info", "Net Metering", "Residential Setup", "C
 if (chatToggle) {
     chatToggle.addEventListener("click", () => {
         chatbotContainer.classList.toggle("open");
-        }
     });
 }
 
@@ -53,8 +51,8 @@ function initializeWelcomeGreeting() {
     flowData = {};
 
     const progressNode = document.getElementById("lead-progress");
-    if (progressNode) progressNode.classList.add("hidden");
-
+    if (progressNode) {
+        progressNode.classList.add("hidden");
     }
 
     // Safely clearing the box clean
