@@ -1,4 +1,3 @@
-
 // ==========================================================================
 // Soltech Energy Chatbot Engine
 // chatbot.js [COMPLETE PREMIUM BILINGUAL ENGINE - ENGLISH & HINDI]
@@ -91,7 +90,7 @@ const STRINGS = {
         leadSuccess: "✅ <strong>धन्यवाद, {name}।</strong> आपका अनुरोध सत्यापित कर दिया गया है और सॉलटेक द्वारा संसाधित किया जा रहा है।",
         accessGranted: "🎉 <strong>अनुमति मिली:</strong> <a href='#' onclick=\"alert('सॉलटेक तकनीकी ब्रोशर डाउनलोड शुरू हो रहा है...'); return false;\" class='download-link'>ब्रोशर फ़ाइल डाउनलोड करने के लिए यहाँ क्लिक करें</a>.",
         teamConnect: "📞 हमारी engineering टीम आपके लाइव सिस्टम डेमो के लिए जल्द ही आपसे <strong>{phone}</strong> पर संपर्क करेगी।",
-        fallbackResponse: "🤖 कस्टम इंजीनियरिंग योजनाओं, सटीक सॉलटेक प्रोजेक्ट विवरण या तेज़ JVVNL स्वीकृतियों के लिए, नीचे दिए गए विकल्पों के माध्यम से सीधे हमारे डेस्क से जुड़ें:",
+        fallbackResponse: "🤖  कस्टम इंजीनियरिंग योजनाओं, सटीक सॉलटेक प्रोजेक्ट विवरण या तेज़ JVVNL स्वीकृतियों के लिए, नीचे दिए गए विकल्पों के माध्यम से सीधे हमारे डेस्क से जुड़ें:",
         btnDemo: "📅 मुफ्त डेमो / साइट सर्वेक्षण बुक करें",
         btnBrochure: "📥 तकनीकी ब्रोशर डाउनलोड करें",
         btnWhatsApp: "<i class='fab fa-whatsapp'></i> व्हाट्सएप विशेषज्ञ डेस्क",
@@ -167,7 +166,7 @@ if (minimizeChat) {
 }
 
 // ==========================================================================
-// PREMIUM PERSISTENT LANGUAGE HEADER
+// PREMIUM PERSISTENT LANGUAGE HEADER (MOVED BESIDE CONTROLS ON RIGHT)
 // ==========================================================================
 function renderPremiumLanguageHeader() {
     document.querySelectorAll(".premium-lang-bar").forEach(el => el.remove());
@@ -176,7 +175,7 @@ function renderPremiumLanguageHeader() {
     langBar.className = "premium-lang-bar";
 
     const btnEn = document.createElement("button");
-    btnEn.innerHTML = "English <span>🇬🇧</span>";
+    btnEn.innerHTML = "EN";
     btnEn.className = `lang-toggle-btn ${currentLanguage === 'en' ? 'active-lang' : ''}`;
     btnEn.onclick = (e) => {
         e.preventDefault();
@@ -187,7 +186,7 @@ function renderPremiumLanguageHeader() {
     };
 
     const btnHi = document.createElement("button");
-    btnHi.innerHTML = "हिंदी <span>🇮🇳</span>";
+    btnHi.innerHTML = "हिं";
     btnHi.className = `lang-toggle-btn ${currentLanguage === 'hi' ? 'active-lang' : ''}`;
     btnHi.onclick = (e) => {
         e.preventDefault();
@@ -201,17 +200,18 @@ function renderPremiumLanguageHeader() {
     langBar.appendChild(btnHi);
 
     if (chatbotContainer) {
-        const chatHeader = chatbotContainer.querySelector(".chat-header") || chatbotContainer.firstElementChild;
-        if (chatHeader === chatbotContainer.firstElementChild) {
-            chatbotContainer.insertBefore(langBar, chatHeader.nextSibling);
-        } else {
-            chatHeader.after(langBar);
+        let controlsContainer = chatbotContainer.querySelector(".chat-header-controls");
+        if (!controlsContainer && minimizeChat) {
+            controlsContainer = minimizeChat.parentElement;
+        }
+        if (controlsContainer) {
+            controlsContainer.insertBefore(langBar, controlsContainer.firstChild);
         }
     }
 }
 
 // ==========================================================================
-// WELCOME INITIALIZER WITH PERSISTENT SWITCHER
+// WELCOME INITIALIZER WITH SEPARATE SIDE-ALIGNED LOGO
 // ==========================================================================
 function initializeWelcomeGreeting() {
     currentFlow = null;
@@ -225,45 +225,45 @@ function initializeWelcomeGreeting() {
 
     if (chatBox) chatBox.innerHTML = "";
 
-    // Render global persistent top bar
+    // Load inline-header translation nodes
     renderPremiumLanguageHeader();
 
-    // Premium Architecture Bot Greeting Card
-    const botMessageDiv = document.createElement("div");
-    botMessageDiv.className = "bot-message intro-card";
-    botMessageDiv.style.marginTop = "10px";
+    // Structural Wrapper Row for Logo next to the Message Bubble
+    const messageRow = document.createElement("div");
+    messageRow.className = "bot-message-wrapper";
 
-    const messageContentDiv = document.createElement("div");
-    messageContentDiv.className = "message-content";
-
+    // Independent Side Logo Container
     const logoContainer = document.createElement("div");
-    logoContainer.className = "company-logo-container";
-    logoContainer.style.marginBottom = "12px";
-    logoContainer.style.display = "flex";
-    logoContainer.style.alignItems = "center";
+    logoContainer.className = "company-logo-sidebar";
 
     const logoImg = document.createElement("img");
     logoImg.src = "logo.jpg";
     logoImg.alt = "Soltech Energy Logo";
-    logoImg.className = "chat-company-logo";
-    logoImg.style.maxHeight = "40px";
-    logoImg.style.width = "auto";
-    logoImg.style.objectFit = "contain";
+    logoImg.className = "chat-sidebar-logo";
     logoImg.onerror = function() { logoContainer.style.display = "none"; };
 
     logoContainer.appendChild(logoImg);
-    messageContentDiv.appendChild(logoContainer);
+    messageRow.appendChild(logoContainer);
+
+    // Bot message text bubble container (No inside logo overlay)
+    const botMessageDiv = document.createElement("div");
+    botMessageDiv.className = "bot-message intro-card";
+
+    const messageContentDiv = document.createElement("div");
+    messageContentDiv.className = "message-content";
 
     const textInstructions = document.createElement("span");
     textInstructions.innerHTML = `
-        <span class="welcome-title" style="font-size: 16px; font-weight: 700; color: #1a252f; display: block;">${STRINGS[currentLanguage].welcomeTitle}</span>
-        <div class="welcome-divider" style="height: 2px; width: 40px; background: #2e7d32; margin: 10px 0; border-radius: 2px;"></div>
-        <p class="welcome-desc" style="margin: 0; line-height: 1.5;">${STRINGS[currentLanguage].welcomeDesc}</p>
+        <span class="welcome-title" style="font-size: 14px; font-weight: 700; color: #0f172a; display: block;">${STRINGS[currentLanguage].welcomeTitle}</span>
+        <div class="welcome-divider" style="height: 2px; width: 30px; background: #ff6b00; margin: 8px 0; border-radius: 2px;"></div>
+        <p class="welcome-desc" style="margin: 0; line-height: 1.5; font-size: 13px;">${STRINGS[currentLanguage].welcomeDesc}</p>
     `;
     
     messageContentDiv.appendChild(textInstructions);
     botMessageDiv.appendChild(messageContentDiv);
-    if (chatBox) chatBox.appendChild(botMessageDiv);
+    messageRow.appendChild(botMessageDiv);
+    
+    if (chatBox) chatBox.appendChild(messageRow);
 
     injectActionMenuButtons(MENUS[currentLanguage].main, false);
     scrollBottom();
@@ -581,6 +581,8 @@ Unlock full case study portfolios and trigger automated engineering calculations
 // GATED LEAD SYSTEM INTERACTION MANAGEMENT
 // ==========================================================================
 function injectGatedActionCTAs() {
+    document.querySelectorAll(".quick-actions-wrapper").forEach(el => el.remove());
+
     const wrap = document.createElement("div");
     wrap.className = "quick-actions-wrapper";
 
@@ -688,10 +690,27 @@ function submitLeadForm() {
 // RENDERING ELEMENT UTILITIES
 // ==========================================================================
 function addBotMessage(text, isMenuOptionClick) {
+    const messageRow = document.createElement("div");
+    messageRow.className = "bot-message-wrapper";
+
+    const logoContainer = document.createElement("div");
+    logoContainer.className = "company-logo-sidebar";
+
+    const logoImg = document.createElement("img");
+    logoImg.src = "logo.jpg";
+    logoImg.alt = "Soltech Logo";
+    logoImg.className = "chat-sidebar-logo";
+    logoImg.onerror = function() { logoContainer.style.display = "none"; };
+
+    logoContainer.appendChild(logoImg);
+    messageRow.appendChild(logoContainer);
+
     const div = document.createElement("div");
     div.className = "bot-message";
     div.innerHTML = `<div class="message-content">${text}</div>`;
-    if (chatBox) chatBox.appendChild(div);
+    
+    messageRow.appendChild(div);
+    if (chatBox) chatBox.appendChild(messageRow);
     scrollBottom();
     saveChat();
 }
