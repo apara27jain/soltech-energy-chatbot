@@ -168,6 +168,9 @@ if (minimizeChat) {
 // ==========================================================================
 // DEFAULT WELCOME INITIALIZER WITH LANGUAGE TOGGLE
 // ==========================================================================
+// ==========================================================================
+// UPDATED WELCOME INITIALIZER WITH FAIL-SAFE LANGUAGE TOGGLE
+// ==========================================================================
 function initializeWelcomeGreeting() {
     currentFlow = null;
     currentStep = 0;
@@ -180,35 +183,66 @@ function initializeWelcomeGreeting() {
 
     if (chatBox) chatBox.innerHTML = "";
 
-    // Inject Language Switcher Header Tab
+    // 1. Create the Language Switcher Wrapper
     const langContainer = document.createElement("div");
     langContainer.className = "lang-switcher-container";
+    // Inline styles acting as a fail-safe against missing or broken CSS
     langContainer.style.display = "flex";
     langContainer.style.justifyContent = "flex-end";
-    langContainer.style.padding = "5px 10px";
+    langContainer.style.padding = "8px 12px";
     langContainer.style.gap = "8px";
+    langContainer.style.borderBottom = "1px solid #eee";
+    langContainer.style.backgroundColor = "#f9f9f9";
 
+    // 2. Build English Button
     const btnEn = document.createElement("button");
     btnEn.innerText = "English 🇬🇧";
     btnEn.className = `lang-btn ${currentLanguage === 'en' ? 'active' : ''}`;
-    btnEn.style.fontSize = "11px";
+    btnEn.style.fontSize = "12px";
+    btnEn.style.padding = "4px 8px";
     btnEn.style.cursor = "pointer";
-    btnEn.onclick = () => { currentLanguage = "en"; initializeWelcomeGreeting(); };
+    btnEn.style.border = "1px solid #ccc";
+    btnEn.style.borderRadius = "4px";
+    btnEn.style.backgroundColor = currentLanguage === 'en' ? '#e0e0e0' : '#ffffff';
+    btnEn.style.fontWeight = currentLanguage === 'en' ? 'bold' : 'normal';
+    btnEn.onclick = (e) => { 
+        e.preventDefault();
+        currentLanguage = "en"; 
+        initializeWelcomeGreeting(); 
+    };
 
+    // 3. Build Hindi Button
     const btnHi = document.createElement("button");
     btnHi.innerText = "हिंदी 🇮🇳";
     btnHi.className = `lang-btn ${currentLanguage === 'hi' ? 'active' : ''}`;
-    btnHi.style.fontSize = "11px";
+    btnHi.style.fontSize = "12px";
+    btnHi.style.padding = "4px 8px";
     btnHi.style.cursor = "pointer";
-    btnHi.onclick = () => { currentLanguage = "hi"; initializeWelcomeGreeting(); };
+    btnHi.style.border = "1px solid #ccc";
+    btnHi.style.borderRadius = "4px";
+    btnHi.style.backgroundColor = currentLanguage === 'hi' ? '#e0e0e0' : '#ffffff';
+    btnHi.style.fontWeight = currentLanguage === 'hi' ? 'bold' : 'normal';
+    btnHi.onclick = (e) => { 
+        e.preventDefault();
+        currentLanguage = "hi"; 
+        initializeWelcomeGreeting(); 
+    };
 
     langContainer.appendChild(btnEn);
     langContainer.appendChild(btnHi);
-    if (chatBox) chatBox.appendChild(langContainer);
 
-    // Bot message architecture
+    // 4. Fallback Placement: Inject above the chat box if chatBox inside HTML isn't responding
+    if (chatBox) {
+        chatBox.appendChild(langContainer);
+    } else {
+        const container = document.getElementById("chatbot-container");
+        if (container) container.insertBefore(langContainer, container.firstChild);
+    }
+
+    // 5. Build Welcoming Bot Message Architecture
     const botMessageDiv = document.createElement("div");
     botMessageDiv.className = "bot-message";
+    botMessageDiv.style.marginTop = "10px";
 
     const messageContentDiv = document.createElement("div");
     messageContentDiv.className = "message-content";
