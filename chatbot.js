@@ -545,7 +545,7 @@ To book a live system demo and download the technical loan structure brochure, t
 `;
     } else {
         outputHtml = `
-💳 <strong>सॉलटेक और सोलर लैडर लोन मैट्रिक्स:</strong><br><br>
+📋 <strong>सॉलटेक और सोलर लैडर लोन मैट्रिक्स:</strong><br><br>
 • <strong>आधार ब्याज दर:</strong> सालाना <strong>7.99%</strong> से शुरू।<br>
 • <strong>उपलब्ध ऋण अवधि:</strong> 6 महीने से 5 वर्ष तक के लचीले विकल्प।<br>
 • <strong>विशेष प्रोमोशनल ऑफर:</strong> 6 महीने तक ब्याज मुक्त (0% ब्याज) विकल्प उपलब्ध हैं।<br><br>
