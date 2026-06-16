@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Soltech Energy Premium Chatbot Stylesheet - COMPLETE REPAIR PATCH
+   Soltech Energy Premium Chatbot Stylesheet - COMPLETE VISUAL REFINEMENT
    ========================================================================== */
 
 :root {
@@ -17,7 +17,7 @@
     --soltech-transition: cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-/* --- Core Floating Widget Button --- */
+/* --- Core Floating Widget Toggle Button --- */
 #chat-toggle {
     position: fixed;
     bottom: 30px;
@@ -44,7 +44,7 @@
     background: linear-gradient(135deg, var(--soltech-accent), var(--soltech-accent-hover));
 }
 
-/* --- Main Framework Container --- */
+/* --- Main Framework Window Container --- */
 #chatbot-container {
     position: fixed;
     bottom: 110px;
@@ -72,7 +72,7 @@
     pointer-events: auto;
 }
 
-/* --- Header Component --- */
+/* --- Upgraded Header Block Component --- */
 .chat-header {
     background: linear-gradient(135deg, var(--soltech-primary), #111a24);
     color: #ffffff;
@@ -103,20 +103,34 @@
     font-size: 18px;
 }
 
+.chat-header-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
 .chat-header-info h3 {
     margin: 0;
     font-size: 16px;
     font-weight: 600;
     letter-spacing: 0.3px;
+    line-height: 1.2;
 }
 
-.chat-header-info span {
-    font-size: 11px;
-    color: var(--soltech-success);
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    font-weight: 500;
+/* Fixed positioning overlap bug for online indicator text fields */
+.chat-header-info span, 
+.chat-header-info p,
+#chatbot-container .online-status {
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 11px !important;
+    color: var(--soltech-success) !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    font-weight: 500 !important;
+    background: transparent !important;
+    border: none !important;
 }
 
 .chat-header-info span::before {
@@ -127,13 +141,19 @@
 
 .chat-header-actions {
     display: flex;
+    align-items: center;
     gap: 14px;
     font-size: 16px;
     color: rgba(255, 255, 255, 0.7);
 }
 
-.chat-header-actions i {
+.chat-header-actions i,
+.chat-header-actions span,
+.chat-header-actions button {
     cursor: pointer;
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
     transition: color 0.2s;
 }
 
@@ -141,14 +161,10 @@
     color: var(--soltech-accent);
 }
 
-/* ==========================================================================
-   CRITICAL FIX: MASTER LANGUAGE TOGGLE OVERRIDES
-   ========================================================================== */
-
-/* 1. Style the absolute primary toggle container directly below header */
+/* --- Premium Language Selection Header Anchor --- */
 .premium-lang-bar {
     background: #ffffff;
-    display: flex !important; /* Force layout validation */
+    display: flex !important;
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     padding: 10px 16px;
     gap: 10px;
@@ -182,103 +198,92 @@
     color: var(--soltech-accent-hover);
 }
 
-/* 2. COMPLETELY ERASE THE DUPLICATED UNSTYLED LIGHTWEIGHT BUTTON LEAKS */
-/* Targeted removal via CSS layout trees to kill raw native buttons popping up inside components */
-#chat-box div:first-child button,
-#chat-box button,
-.chat-header + div:not(.premium-lang-bar),
-[class*="lang-selection"],
-[class*="language-picker"] {
+/* Global Clean Patch to suppress unstyled native buttons leakage inside containers */
+#chat-box > button:not([class*="btn"]),
+.chat-header + div:not(.premium-lang-bar):not(#lead-progress) {
     display: none !important;
 }
 
-/* Re-allow quick actions to run seamlessly */
-#chat-box .quick-actions-wrapper button,
-#chat-box .quick-btn {
-    display: inline-flex !important;
-}
-
-/* ========================================================================== */
-
-/* --- Step Flow Progress Bar Container --- */
-#lead-progress {
-    height: 4px;
-    background: #e1e4e6;
-    width: 100%;
-    position: relative;
+/* --- Unified Global Quick Action Button Matrix (Top Strip & Message Content) --- */
+.quick-actions-wrapper,
+.chat-buttons-container {
+    display: flex !important;
+    flex-direction: row !important;
+    overflow-x: auto !important;
+    white-space: nowrap !important;
+    padding: 12px 16px !important;
+    gap: 10px !important;
+    background: #ffffff !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
     flex-shrink: 0;
 }
 
-#progress-bar-fill {
-    height: 100%;
-    width: 0%;
-    background: linear-gradient(90deg, var(--soltech-accent), var(--soltech-success));
-    transition: width 0.4s ease;
+/* Handle custom instances where buttons render directly inside conversational logs */
+.bot-message .quick-actions-wrapper,
+.bot-message .chat-buttons-container {
+    background: transparent !important;
+    padding: 8px 0 0 0 !important;
+    border-bottom: none !important;
 }
 
-/* --- Horizontal Action Matrix Bar --- */
-.quick-actions-wrapper {
-    display: flex;
-    flex-direction: row;
-    overflow-x: auto;
-    white-space: nowrap;
-    padding: 12px 16px;
-    gap: 10px;
-    background: #ffffff;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-    flex-shrink: 0;
-}
-
-/* Clean Custom Scrollbar for Quick Actions horizontally */
-.quick-actions-wrapper::-webkit-scrollbar {
+/* Smooth custom scrollbars for interactive scrolling panels */
+.quick-actions-wrapper::-webkit-scrollbar,
+.chat-buttons-container::-webkit-scrollbar {
     height: 4px;
 }
-.quick-actions-wrapper::-webkit-scrollbar-track {
-    background: transparent;
-}
-.quick-actions-wrapper::-webkit-scrollbar-thumb {
+.quick-actions-wrapper::-webkit-scrollbar-thumb,
+.chat-buttons-container::-webkit-scrollbar-thumb {
     background: rgba(0, 0, 0, 0.08);
     border-radius: 4px;
 }
 
-.quick-btn {
-    background: var(--soltech-bg-light);
-    color: var(--soltech-text-main);
-    border: 1px solid rgba(0, 0, 0, 0.06);
-    padding: 0 18px;
-    font-size: 13px;
-    font-weight: 600;
-    border-radius: 20px;
-    cursor: pointer;
-    min-height: 38px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    box-sizing: border-box;
-    transition: all 0.2s var(--soltech-transition);
+/* MASTER REFINEMENT: Normalizes both types of interactive query pills */
+.quick-btn,
+.quick-actions-wrapper button,
+.chat-buttons-container button,
+#chat-box .quick-btn {
+    background: #ffffff !important;
+    color: var(--soltech-text-main) !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    padding: 0 16px !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    border-radius: 30px !important;
+    cursor: pointer !important;
+    min-height: 38px !important;
+    height: 38px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+    box-sizing: border-box !important;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.02) !important;
+    text-decoration: none !important;
+    transition: all 0.25s var(--soltech-transition) !important;
 }
 
-.quick-btn:hover {
-    background: var(--soltech-primary);
-    color: #ffffff;
-    border-color: var(--soltech-primary);
+.quick-btn:hover,
+.quick-actions-wrapper button:hover,
+.chat-buttons-container button:hover {
+    background: var(--soltech-primary) !important;
+    color: #ffffff !important;
+    border-color: var(--soltech-primary) !important;
     transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08) !important;
 }
 
-/* Functional Accent Overrides */
+/* System Action Modifiers */
 .back-btn {
-    background: transparent;
-    color: #c0392b;
-    border: 1px dashed rgba(192, 57, 43, 0.4);
+    background: transparent !important;
+    color: #c0392b !important;
+    border: 1px dashed rgba(192, 57, 43, 0.4) !important;
 }
 .back-btn:hover {
-    background: #c0392b;
-    border-color: #c0392b;
-    color: #ffffff;
+    background: #c0392b !important;
+    color: #ffffff !important;
 }
 
-/* --- Messaging Box Frame & Custom Scrollbar --- */
+/* --- Messaging Box Frame & Custom Scrollbars --- */
 #chat-box {
     flex: 1;
     padding: 24px;
@@ -300,11 +305,8 @@
     background: rgba(127, 140, 141, 0.3);
     border-radius: 10px;
 }
-#chat-box::-webkit-scrollbar-thumb:hover {
-    background: rgba(127, 140, 141, 0.6);
-}
 
-/* --- Dialogue Conversational Cards --- */
+/* --- Dialogue Conversational Card Containers --- */
 .bot-message, .user-message {
     max-width: 90%;
     display: flex;
@@ -324,7 +326,6 @@
     line-height: 1.6;
     box-shadow: 0 2px 12px rgba(0,0,0,0.015);
     border: 1px solid rgba(0, 0, 0, 0.03);
-    transition: transform 0.2s ease;
 }
 
 .user-message .message-content {
@@ -334,52 +335,53 @@
     padding: 14px 18px;
     font-size: 14.5px;
     line-height: 1.5;
-    transition: transform 0.2s ease;
 }
 
-.bot-message .message-content:hover,
-.user-message .message-content:hover {
-    transform: translateY(-1px);
-}
-
-/* Ambient Light Branding Infusion on Intro Card */
+/* Premium Interactive Welcome Card Highlight */
 .intro-card .message-content {
     border-left: 4px solid var(--soltech-accent);
     background: linear-gradient(135deg, rgba(243, 156, 18, 0.04), #ffffff) !important;
 }
 
 .intro-card img {
-    max-width: 120px;
+    max-width: 110px;
     height: auto;
-    margin-bottom: 14px;
+    margin-bottom: 12px;
     display: block;
 }
 
-/* --- Isolated WhatsApp CTA Button Layout --- */
-.wa-direct-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    background: #25d366;
+/* --- REPAIRED: Clean High-Visibility WhatsApp Action Trigger --- */
+.wa-direct-btn,
+a[href*="wa.me"],
+a[href*="whatsapp.com"],
+#chat-box button[class*="whatsapp"],
+#chat-box a[class*="whatsapp"] {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    background: #25d366 !important;
     color: #ffffff !important;
-    text-decoration: none;
-    padding: 12px 20px;
-    font-weight: 600;
-    font-size: 14px;
-    border-radius: var(--soltech-radius-sm);
-    margin-top: 8px;
-    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2);
-    align-self: flex-start; /* Restricts button from taking full width of container */
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    text-decoration: none !important;
+    padding: 12px 20px !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    border-radius: var(--soltech-radius-sm) !important;
+    margin: 8px 0 !important;
+    border: none !important;
+    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2) !important;
+    align-self: flex-start !important; /* Locks button box shape from shifting outward */
+    box-sizing: border-box !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease !important;
 }
 
-.wa-direct-btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 6px 16px rgba(37, 211, 102, 0.35);
+.wa-direct-btn:hover, a[href*="wa.me"]:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 6px 16px rgba(37, 211, 102, 0.35) !important;
+    background: #20ba5a !important;
 }
 
-/* --- Premium Specific Highlight Elements --- */
+/* --- Premium Dynamic Modules --- */
 .savings-card {
     background: linear-gradient(135deg, var(--soltech-success), #2ecc71);
     color: #ffffff !important;
@@ -399,7 +401,7 @@
     font-size: 12px;
 }
 
-/* --- Input Controller Footer Bar --- */
+/* --- Footer Controls & Input Processing Architecture --- */
 .chat-footer {
     background: #ffffff;
     padding: 14px 18px;
@@ -413,7 +415,7 @@
 #user-input {
     flex: 1;
     border: none;
-    padding: 12px;
+    padding: 10px 4px;
     font-size: 14px;
     color: var(--soltech-text-main);
     background: transparent;
@@ -443,37 +445,25 @@
     background: var(--soltech-accent);
 }
 
-/* --- Typing Indicator Animation Elements --- */
-#chat-typing-indicator {
-    align-self: flex-start;
-    display: flex;
-    gap: 4px;
-    padding: 12px 18px;
-    background: var(--soltech-card-bg);
-    border-radius: 20px;
-    border: 1px solid rgba(0,0,0,0.03);
+/* Progress Tracker Bar */
+#lead-progress {
+    height: 4px;
+    background: #e1e4e6;
+    width: 100%;
+    position: relative;
+    flex-shrink: 0;
 }
 
-.typing-dot {
-    width: 6px;
-    height: 6px;
-    background: var(--soltech-text-muted);
-    border-radius: 50%;
-    animation: bounce-dot 1.4s infinite ease-in-out both;
+#progress-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--soltech-accent), var(--soltech-success));
+    transition: width 0.4s ease;
 }
 
-.typing-dot:nth-child(1) { animation-delay: -0.32s; }
-.typing-dot:nth-child(2) { animation-delay: -0.16s; }
-
-/* --- Animations & Utilities --- */
 @keyframes fade-up {
     from { opacity: 0; transform: translateY(8px); }
     to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes bounce-dot {
-    0%, 80%, 100% { transform: scale(0); }
-    40% { transform: scale(1.0); }
 }
 
 @keyframes pulse-green {
@@ -484,7 +474,7 @@
 
 .hidden { display: none !important; }
 
-/* --- Mobile Breakpoint Overrides --- */
+/* --- Mobile Device Layout Rules --- */
 @media (max-width: 480px) {
     #chatbot-container {
         bottom: 0;
