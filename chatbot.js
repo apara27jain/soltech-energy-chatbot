@@ -1,6 +1,6 @@
 // ==========================================================================
 // Soltech Energy Chatbot Engine
-// chatbot.js [BILINGUAL ENGINE - ENGLISH & HINDI]
+// chatbot.js [COMPLETE PREMIUM BILINGUAL ENGINE - ENGLISH & HINDI]
 // ==========================================================================
 
 const chatToggle = document.getElementById("chat-toggle");
@@ -89,7 +89,7 @@ const STRINGS = {
         reqAlert: "नाम और फ़ोन नंबर दर्ज करना अनिवार्य है।",
         leadSuccess: "✅ <strong>धन्यवाद, {name}।</strong> आपका अनुरोध सत्यापित कर दिया गया है और सॉलटेक द्वारा संसाधित किया जा रहा है।",
         accessGranted: "🎉 <strong>अनुमति मिली:</strong> <a href='#' onclick=\"alert('सॉलटेक तकनीकी ब्रोशर डाउनलोड शुरू हो रहा है...'); return false;\" class='download-link'>ब्रोशर फ़ाइल डाउनलोड करने के लिए यहाँ क्लिक करें</a>.",
-        teamConnect: "📞 हमारी इंजीनियरिंग टीम आपके लाइव सिस्टम डेमो के लिए जल्द ही आपसे <strong>{phone}</strong> पर संपर्क करेगी।",
+        teamConnect: "📞 हमारी engineering टीम आपके लाइव सिस्टम डेमो के लिए जल्द ही आपसे <strong>{phone}</strong> पर संपर्क करेगी।",
         fallbackResponse: "🤖 कस्टम इंजीनियरिंग योजनाओं, सटीक सॉलटेक प्रोजेक्ट विवरण या तेज़ JVVNL स्वीकृतियों के लिए, नीचे दिए गए विकल्पों के माध्यम से सीधे हमारे डेस्क से जुड़ें:",
         btnDemo: "📅 मुफ्त डेमो / साइट सर्वेक्षण बुक करें",
         btnBrochure: "📥 तकनीकी ब्रोशर डाउनलोड करें",
@@ -166,10 +166,51 @@ if (minimizeChat) {
 }
 
 // ==========================================================================
-// DEFAULT WELCOME INITIALIZER WITH LANGUAGE TOGGLE
+// PREMIUM PERSISTENT LANGUAGE HEADER
 // ==========================================================================
+function renderPremiumLanguageHeader() {
+    document.querySelectorAll(".premium-lang-bar").forEach(el => el.remove());
+
+    const langBar = document.createElement("div");
+    langBar.className = "premium-lang-bar";
+
+    const btnEn = document.createElement("button");
+    btnEn.innerHTML = "English <span>🇬🇧</span>";
+    btnEn.className = `lang-toggle-btn ${currentLanguage === 'en' ? 'active-lang' : ''}`;
+    btnEn.onclick = (e) => {
+        e.preventDefault();
+        if (currentLanguage !== "en") {
+            currentLanguage = "en";
+            initializeWelcomeGreeting();
+        }
+    };
+
+    const btnHi = document.createElement("button");
+    btnHi.innerHTML = "हिंदी <span>🇮🇳</span>";
+    btnHi.className = `lang-toggle-btn ${currentLanguage === 'hi' ? 'active-lang' : ''}`;
+    btnHi.onclick = (e) => {
+        e.preventDefault();
+        if (currentLanguage !== "hi") {
+            currentLanguage = "hi";
+            initializeWelcomeGreeting();
+        }
+    };
+
+    langBar.appendChild(btnEn);
+    langBar.appendChild(btnHi);
+
+    if (chatbotContainer) {
+        const chatHeader = chatbotContainer.querySelector(".chat-header") || chatbotContainer.firstElementChild;
+        if (chatHeader === chatbotContainer.firstElementChild) {
+            chatbotContainer.insertBefore(langBar, chatHeader.nextSibling);
+        } else {
+            chatHeader.after(langBar);
+        }
+    }
+}
+
 // ==========================================================================
-// UPDATED WELCOME INITIALIZER WITH FAIL-SAFE LANGUAGE TOGGLE
+// WELCOME INITIALIZER WITH PERSISTENT SWITCHER
 // ==========================================================================
 function initializeWelcomeGreeting() {
     currentFlow = null;
@@ -183,65 +224,12 @@ function initializeWelcomeGreeting() {
 
     if (chatBox) chatBox.innerHTML = "";
 
-    // 1. Create the Language Switcher Wrapper
-    const langContainer = document.createElement("div");
-    langContainer.className = "lang-switcher-container";
-    // Inline styles acting as a fail-safe against missing or broken CSS
-    langContainer.style.display = "flex";
-    langContainer.style.justifyContent = "flex-end";
-    langContainer.style.padding = "8px 12px";
-    langContainer.style.gap = "8px";
-    langContainer.style.borderBottom = "1px solid #eee";
-    langContainer.style.backgroundColor = "#f9f9f9";
+    // Render global persistent top bar
+    renderPremiumLanguageHeader();
 
-    // 2. Build English Button
-    const btnEn = document.createElement("button");
-    btnEn.innerText = "English 🇬🇧";
-    btnEn.className = `lang-btn ${currentLanguage === 'en' ? 'active' : ''}`;
-    btnEn.style.fontSize = "12px";
-    btnEn.style.padding = "4px 8px";
-    btnEn.style.cursor = "pointer";
-    btnEn.style.border = "1px solid #ccc";
-    btnEn.style.borderRadius = "4px";
-    btnEn.style.backgroundColor = currentLanguage === 'en' ? '#e0e0e0' : '#ffffff';
-    btnEn.style.fontWeight = currentLanguage === 'en' ? 'bold' : 'normal';
-    btnEn.onclick = (e) => { 
-        e.preventDefault();
-        currentLanguage = "en"; 
-        initializeWelcomeGreeting(); 
-    };
-
-    // 3. Build Hindi Button
-    const btnHi = document.createElement("button");
-    btnHi.innerText = "हिंदी 🇮🇳";
-    btnHi.className = `lang-btn ${currentLanguage === 'hi' ? 'active' : ''}`;
-    btnHi.style.fontSize = "12px";
-    btnHi.style.padding = "4px 8px";
-    btnHi.style.cursor = "pointer";
-    btnHi.style.border = "1px solid #ccc";
-    btnHi.style.borderRadius = "4px";
-    btnHi.style.backgroundColor = currentLanguage === 'hi' ? '#e0e0e0' : '#ffffff';
-    btnHi.style.fontWeight = currentLanguage === 'hi' ? 'bold' : 'normal';
-    btnHi.onclick = (e) => { 
-        e.preventDefault();
-        currentLanguage = "hi"; 
-        initializeWelcomeGreeting(); 
-    };
-
-    langContainer.appendChild(btnEn);
-    langContainer.appendChild(btnHi);
-
-    // 4. Fallback Placement: Inject above the chat box if chatBox inside HTML isn't responding
-    if (chatBox) {
-        chatBox.appendChild(langContainer);
-    } else {
-        const container = document.getElementById("chatbot-container");
-        if (container) container.insertBefore(langContainer, container.firstChild);
-    }
-
-    // 5. Build Welcoming Bot Message Architecture
+    // Premium Architecture Bot Greeting Card
     const botMessageDiv = document.createElement("div");
-    botMessageDiv.className = "bot-message";
+    botMessageDiv.className = "bot-message intro-card";
     botMessageDiv.style.marginTop = "10px";
 
     const messageContentDiv = document.createElement("div");
@@ -267,9 +255,9 @@ function initializeWelcomeGreeting() {
 
     const textInstructions = document.createElement("span");
     textInstructions.innerHTML = `
-        <strong>${STRINGS[currentLanguage].welcomeTitle}</strong>
-        <br><br>
-        ${STRINGS[currentLanguage].welcomeDesc}
+        <span class="welcome-title" style="font-size: 16px; font-weight: 700; color: #1a252f; display: block;">${STRINGS[currentLanguage].welcomeTitle}</span>
+        <div class="welcome-divider" style="height: 2px; width: 40px; background: #2e7d32; margin: 10px 0; border-radius: 2px;"></div>
+        <p class="welcome-desc" style="margin: 0; line-height: 1.5;">${STRINGS[currentLanguage].welcomeDesc}</p>
     `;
     
     messageContentDiv.appendChild(textInstructions);
@@ -543,7 +531,7 @@ To book a live system demo and download the technical loan structure brochure, t
 `;
     } else {
         outputHtml = `
-💳 <strong>सॉलटेक और सोलर लैडर लोन इंजन मैट्रिक्स:</strong><br><br>
+💳 <strong>सॉलटेक और सोलर लैडर लोन मैट्रिक्स:</strong><br><br>
 • <strong>आधार ब्याज दर:</strong> सालाना <strong>7.99%</strong> से शुरू।<br>
 • <strong>उपलब्ध ऋण अवधि:</strong> 6 महीने से 5 वर्ष तक के लचीले विकल्प।<br>
 • <strong>विशेष प्रोमोशनल ऑफर:</strong> 6 महीने तक ब्याज मुक्त (0% ब्याज) विकल्प उपलब्ध हैं।<br><br>
@@ -589,263 +577,122 @@ Unlock full case study portfolios and trigger automated engineering calculations
 }
 
 // ==========================================================================
-// GATED LEAD SYSTEM INTERFACE DESIGN
+// GATED LEAD SYSTEM INTERACTION MANAGEMENT
 // ==========================================================================
 function injectGatedActionCTAs() {
-    document.querySelectorAll(".gated-wrapper-panel").forEach(el => el.remove());
-    const wrapper = document.createElement("div");
-    wrapper.className = "gated-wrapper-panel";
+    const wrap = document.createElement("div");
+    wrap.className = "quick-actions-wrapper";
 
-    const btnConsult = document.createElement("button");
-    btnConsult.className = "quick-btn functional-action-btn";
-    btnConsult.innerHTML = STRINGS[currentLanguage].btnDemo;
-    btnConsult.onclick = () => triggerGatedWall(currentLanguage === "en" ? "Book a Free System Demo" : "मुफ्त सिस्टम डेमो बुक करें");
+    const d = document.createElement("button");
+    d.className = "quick-btn";
+    d.innerHTML = STRINGS[currentLanguage].btnDemo;
+    d.onclick = () => triggerGatedWall("Free Site Demo Request");
 
-    const btnBrochure = document.createElement("button");
-    btnBrochure.className = "quick-btn functional-action-btn";
-    btnBrochure.innerHTML = STRINGS[currentLanguage].btnBrochure;
-    btnBrochure.onclick = () => triggerGatedWall(currentLanguage === "en" ? "Download Technical Brochure" : "तकनीकी ब्रोशर डाउनलोड करें");
+    const b = document.createElement("button");
+    b.className = "quick-btn";
+    b.innerHTML = STRINGS[currentLanguage].btnBrochure;
+    b.onclick = () => triggerGatedWall("Technical Brochure Download");
 
-    const btnWhatsApp = document.createElement("button");
-    btnWhatsApp.className = "quick-btn functional-action-btn wa-direct-btn";
-    btnWhatsApp.innerHTML = STRINGS[currentLanguage].btnWhatsApp;
-    btnWhatsApp.onclick = () => launchWhatsAppLeadGen();
-
-    const btnHome = document.createElement("button");
-    btnHome.className = "quick-btn back-btn";
-    btnHome.innerHTML = STRINGS[currentLanguage].mainMenuBtn;
-    btnHome.onclick = () => initializeWelcomeGreeting();
-
-    wrapper.appendChild(btnConsult);
-    wrapper.appendChild(btnBrochure);
-    wrapper.appendChild(btnWhatsApp);
-    wrapper.appendChild(btnHome);
-    if (chatBox) chatBox.appendChild(wrapper);
-    scrollBottom();
-}
-
-function closeLeadFormAndReturnHome() {
-    document.querySelectorAll(".lead-form-card").forEach(el => el.remove());
-    document.querySelectorAll(".gated-wrapper-panel").forEach(el => el.remove());
-    document.querySelectorAll(".quick-actions-wrapper").forEach(el => el.remove());
-
-    const progressNode = document.getElementById("lead-progress");
-    if (progressNode) progressNode.classList.add("hidden");
-
-    currentFlow = null;
-    currentStep = 0;
-    flowData = {};
-
-    initializeWelcomeGreeting();
-    scrollBottom();
-}
-
-// ==========================================================================
-// VERIFICATION FORM GENERATOR
-// ==========================================================================
-function triggerGatedWall(targetActionGoal) {
-    document.querySelectorAll(".gated-wrapper-panel").forEach(el => el.remove());
-    document.querySelectorAll(".quick-actions-wrapper").forEach(el => el.remove());
-    document.querySelectorAll(".lead-form-card").forEach(el => el.remove());
-
-    const formContainer = document.createElement("div");
-    formContainer.className = "lead-form-card";
-    
-    formContainer.innerHTML = `
-        <strong>${STRINGS[currentLanguage].gatedTitle}</strong>
-        <p>${STRINGS[currentLanguage].gatedDesc}</p>
-        
-        <input type="text" id="leadName" placeholder="${STRINGS[currentLanguage].placeholderName}" required>
-        <input type="tel" id="leadPhone" placeholder="${STRINGS[currentLanguage].placeholderPhone}" required>
-        <input type="text" id="leadCompany" placeholder="${STRINGS[currentLanguage].placeholderCompany}">
-        
-        <button id="submitGatedLeadBtn" class="verify-btn">${STRINGS[currentLanguage].btnVerify}</button>
-        
-        <button id="exitFormBtn" class="exit-form-btn">
-            ${STRINGS[currentLanguage].btnCancel}
-        </button>
-    `;
-
-    if (chatBox) chatBox.appendChild(formContainer);
-    scrollBottom();
-    
-    const exitBtn = formContainer.querySelector("#exitFormBtn");
-    if (exitBtn) {
-        exitBtn.addEventListener("click", function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-            closeLeadFormAndReturnHome();
-        });
-    }
-
-    const submitBtn = formContainer.querySelector("#submitGatedLeadBtn");
-    if (submitBtn) {
-        submitBtn.addEventListener("click", function (e) {
-            e.preventDefault();
-            const nameVal = document.getElementById("leadName").value.trim();
-            const phoneVal = document.getElementById("leadPhone").value.trim();
-            const companyVal = document.getElementById("leadCompany").value.trim();
-            
-            if (!nameVal || !phoneVal) {
-                alert(STRINGS[currentLanguage].reqAlert);
-                return;
-            }
-            
-            flowData.leadName = nameVal;
-            flowData.leadPhone = phoneVal;
-            flowData.leadCompany = companyVal || "Individual/Residential";
-            flowData.actionContextTarget = targetActionGoal;
-            
-            formContainer.remove();
-            processCompletedLeadCaptured();
-        });
-    }
-}
-
-async function processCompletedLeadCaptured() {
-    showTyping();
-    const leadPayload = {
-        name: flowData.leadName,
-        phone: flowData.leadPhone,
-        company: flowData.leadCompany || "Individual/Residential",
-        context: flowData.actionContextTarget,
-        pincode: flowData.pincode || "000000",
-        location: flowData.pincode || CRM_SETTINGS.DefaultLeadLocation,
-        timestamp: new Date().toISOString()
+    const w = document.createElement("button");
+    w.className = "quick-btn wa-direct-btn";
+    w.innerHTML = STRINGS[currentLanguage].btnWhatsApp;
+    w.onclick = () => {
+        window.open(`https://wa.me/${CRM_SETTINGS.WhatsAppNumber}?text=${encodeURIComponent(CRM_SETTINGS.InitialHiMessage)}`, "_blank");
     };
 
-    try {
-        await fetch(CRM_SETTINGS.LeadStorageWebhook, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(leadPayload)
-        });
-    } catch(e) {
-        console.log("Local buffer standalone committed.");
-    }
+    const main = document.createElement("button");
+    main.className = "quick-btn back-btn";
+    main.innerHTML = STRINGS[currentLanguage].mainMenuBtn;
+    main.onclick = () => returnToMainMenu();
 
-    setTimeout(() => {
-        hideTyping();
-        
-        let successMsg = STRINGS[currentLanguage].leadSuccess.replace("{name}", flowData.leadName);
-        addBotMessage(successMsg, false);
-        
-        if (flowData.actionContextTarget && (flowData.actionContextTarget.includes("Brochure") || flowData.actionContextTarget.includes("ब्रोशर"))) {
-            addBotMessage(STRINGS[currentLanguage].accessGranted, false);
-        } else {
-            let connectMsg = STRINGS[currentLanguage].teamConnect.replace("{phone}", flowData.leadPhone);
-            addBotMessage(connectMsg, false);
-        }
-        
-        setTimeout(() => { initializeWelcomeGreeting(); }, 5000);
-    }, 800);
-}
-
-// ==========================================================================
-// TEXT PROCESSING ENGINE WITH BILINGUAL LOGICAL OVERRIDES
-// ==========================================================================
-function processMessage(userText) {
-    const cleanText = userText.trim();
-    if (!cleanText) return;
-
-    if (cleanText === "↩️ Back to Main Menu" || cleanText === "↩️ मुख्य मेनू पर वापस जाएं" || cleanText.toLowerCase() === "back" || cleanText.toLowerCase() === "menu") {
-        initializeWelcomeGreeting();
-        return;
-    }
-
-    // Checking exact match hooks for both Hindi and English
-    if (cleanText === "Get a Solar Cost Estimate" || cleanText === "Calculate Savings" || cleanText === "Residential Solar" ||
-        cleanText === "सोलर लागत का अनुमान लगाएं" || cleanText === "बचत की गणना करें" || cleanText === "आवासीय सोलर") {
-        startFlow("ESTIMATOR"); return;
-    }
-    if (cleanText === "Financing & Subsidies" || cleanText === "वित्तीय सहायता और सब्सिडी") {
-        startFlow("FINANCING"); return;
-    }
-    if (cleanText === "Commercial Solar" || cleanText === "Solar for Industries" || cleanText === "वाणिज्यिक सोलर" || cleanText === "उद्योगों के लिए सोलर") {
-        startFlow("CI_QUALIFY"); return;
-    }
-    if (cleanText === "Request a Site Visit" || cleanText === "साइट विज़िट का अनुरोध करें") {
-        startFlow("SITE_VISIT"); return;
-    }
-    if (cleanText === "Talk to an Expert" || cleanText === "विशेषज्ञ से बात करें") {
-        launchWhatsAppLeadGen(); return;
-    }
-
-    if (currentFlow !== null) {
-        handleFlowStep(cleanText);
-        return;
-    }
-
-    showTyping();
-    setTimeout(() => {
-        hideTyping();
-        addBotMessage(STRINGS[currentLanguage].fallbackResponse, false);
-        injectGatedActionCTAs();
-    }, 500);
-}
-
-// ==========================================================================
-// WHATSAPP ROUTING & UTILITIES
-// ==========================================================================
-function launchWhatsAppLeadGen() {
-    const waBaseURL = "https://wa.me/";
-    const waFullLink = `${waBaseURL}${CRM_SETTINGS.WhatsAppNumber}/?text=${encodeURIComponent(CRM_SETTINGS.InitialHiMessage)}`;
-    notifyCRMofWhatsAppClick(flowData.pincode || CRM_SETTINGS.DefaultLeadLocation, "Chatbot_Interactive_Widget");
-    window.open(waFullLink, '_blank');
-}
-
-async function notifyCRMofWhatsAppClick(locationTag, sourceTag) {
-    try {
-        const leadPayload = { source: sourceTag, location_tag: locationTag, timestamp: new Date().toISOString() };
-        await fetch(CRM_SETTINGS.LeadStorageWebhook, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(leadPayload) });
-    } catch (error) {}
-}
-
-function sendMessage() {
-    if (!userInput) return;
-    const message = userInput.value.trim();
-    if (!message) return;
-    addUserMessage(message);
-    userInput.value = "";
-    processMessage(message);
-}
-
-function injectActionMenuButtons(buttonLabelList, includeBackButton = false) {
-    document.querySelectorAll(".quick-actions-wrapper").forEach(el => el.remove());
-    const wrapper = document.createElement("div");
-    wrapper.className = "quick-actions-wrapper";
-
-    buttonLabelList.forEach(textLabel => {
-        const btn = document.createElement("button");
-        btn.className = "quick-btn";
-        btn.innerText = textLabel;
-        
-        btn.onclick = (e) => {
-            e.preventDefault();
-            addUserMessage(textLabel);
-            processMessage(textLabel);
-        };
-        wrapper.appendChild(btn);
-    });
-
-    if (includeBackButton) {
-        const backBtn = document.createElement("button");
-        backBtn.className = "quick-btn back-btn";
-        backBtn.innerHTML = STRINGS[currentLanguage].mainMenuBtn;
-        backBtn.onclick = (e) => {
-            e.preventDefault();
-            returnToMainMenu();
-        };
-        wrapper.appendChild(backBtn);
-    }
-
-    if (chatBox) chatBox.appendChild(wrapper);
+    wrap.appendChild(d);
+    wrap.appendChild(b);
+    wrap.appendChild(w);
+    wrap.appendChild(main);
+    if (chatBox) chatBox.appendChild(wrap);
     scrollBottom();
 }
 
-function updateProgressBar(step, total) {
-    const fill = document.getElementById("progress-fill");
-    if (fill) fill.style.width = `${Math.round((step / total) * 100)}%`;
+function triggerGatedWall(actionContextName) {
+    flowData.pendingContextAction = actionContextName;
+
+    const card = document.createElement("div");
+    card.className = "bot-message lead-form-card";
+
+    card.innerHTML = `
+        <div class="message-content">
+            <strong>${STRINGS[currentLanguage].gatedTitle}</strong><br>
+            <small style="color:#7f8c8d; display:block; margin:4px 0 10px 0;">${STRINGS[currentLanguage].gatedDesc} (${actionContextName})</small>
+            <input type="text" id="gated-name" placeholder="${STRINGS[currentLanguage].placeholderName}" autocomplete="off" />
+            <input type="tel" id="gated-phone" placeholder="${STRINGS[currentLanguage].placeholderPhone}" autocomplete="off" style="margin-top:8px;" />
+            <input type="text" id="gated-company" placeholder="${STRINGS[currentLanguage].placeholderCompany}" autocomplete="off" style="margin-top:8px;" />
+            <div style="display:flex; gap:8px; margin-top:12px;">
+                <button class="verify-btn" onclick="submitLeadForm()" style="flex:1;">${STRINGS[currentLanguage].btnVerify}</button>
+                <button class="quick-btn back-btn" onclick="returnToMainMenu()" style="margin:0; font-size:12px;">${STRINGS[currentLanguage].btnCancel}</button>
+            </div>
+        </div>
+    `;
+
+    if (chatBox) chatBox.appendChild(card);
+    scrollBottom();
+}
+
+function submitLeadForm() {
+    const nameVal = document.getElementById("gated-name")?.value.trim();
+    const phoneVal = document.getElementById("gated-phone")?.value.trim();
+    const companyVal = document.getElementById("gated-company")?.value.trim();
+
+    if (!nameVal || !phoneVal) {
+        alert(STRINGS[currentLanguage].reqAlert);
+        return;
+    }
+
+    flowData.clientName = nameVal;
+    flowData.clientPhone = phoneVal;
+    flowData.clientCompany = companyVal || "N/A";
+
+    const payload = {
+        name: flowData.clientName,
+        phone: flowData.clientPhone,
+        company: flowData.clientCompany,
+        pincode: flowData.pincode || CRM_SETTINGS.DefaultLeadLocation,
+        system_size_kw: flowData.propertyType || "Undetermined",
+        action_context: flowData.pendingContextAction,
+        language: currentLanguage
+    };
+
+    // Fire webhook background data storage
+    fetch(CRM_SETTINGS.LeadStorageWebhook, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+    }).catch(err => console.log("Data cached locally. Network log bypass active."));
+
+    // Success response parsing
+    document.querySelectorAll(".lead-form-card").forEach(el => el.remove());
+    
+    const confirmationText = STRINGS[currentLanguage].leadSuccess.replace("{name}", flowData.clientName) + 
+        "<br><br>" + STRINGS[currentLanguage].accessGranted + 
+        "<br><br>" + STRINGS[currentLanguage].teamConnect.replace("{phone}", flowData.clientPhone);
+
+    addBotMessage(confirmationText, false);
+    
+    setTimeout(() => {
+        addBotMessage(STRINGS[currentLanguage].fallbackResponse, false);
+        injectGatedActionCTAs();
+    }, 1500);
+}
+
+// ==========================================================================
+// RENDERING ELEMENT UTILITIES
+// ==========================================================================
+function addBotMessage(text, isMenuOptionClick) {
+    const div = document.createElement("div");
+    div.className = "bot-message";
+    div.innerHTML = `<div class="message-content">${text}</div>`;
+    if (chatBox) chatBox.appendChild(div);
+    scrollBottom();
+    saveChat();
 }
 
 function addUserMessage(text) {
@@ -853,65 +700,114 @@ function addUserMessage(text) {
     div.className = "user-message";
     div.innerHTML = `<div class="message-content">${text}</div>`;
     if (chatBox) chatBox.appendChild(div);
-    document.querySelectorAll(".quick-actions-wrapper").forEach(el => el.remove());
     scrollBottom();
-}
-
-function addBotMessage(text, displayButtons = true) {
-    const div = document.createElement("div");
-    div.className = "bot-message";
-    div.innerHTML = `<div class="message-content">${text}</div>`;
-    if (chatBox) chatBox.appendChild(div);
-    if (displayButtons) {
-        injectActionMenuButtons(MENUS[currentLanguage].keywords, true);
-    } else {
-        scrollBottom();
-    }
     saveChat();
 }
 
+function injectActionMenuButtons(optionsArray, isFlowActive) {
+    document.querySelectorAll(".quick-actions-wrapper").forEach(el => el.remove());
+
+    const wrapper = document.createElement("div");
+    wrapper.className = "quick-actions-wrapper";
+
+    optionsArray.forEach(opt => {
+        const btn = document.createElement("button");
+        btn.className = "quick-btn";
+        btn.innerText = opt;
+        btn.onclick = () => {
+            addUserMessage(opt);
+            wrapper.remove();
+            
+            if (!isFlowActive) {
+                // Route generic landing entries
+                if (opt.includes("Estimate") || opt.includes("लागत का अनुमान")) startFlow("ESTIMATOR");
+                else if (opt.includes("Savings") || opt.includes("बचत की गणना")) startFlow("ESTIMATOR");
+                else if (opt.includes("Residential") || opt.includes("आवासीय")) startFlow("ESTIMATOR");
+                else if (opt.includes("Commercial") || opt.includes("वाणिज्यिक")) startFlow("CI_QUALIFY");
+                else if (opt.includes("Industries") || opt.includes("उद्योगों")) startFlow("CI_QUALIFY");
+                else if (opt.includes("Visit") || opt.includes("विज़िट")) startFlow("SITE_VISIT");
+                else if (opt.includes("Financing") || opt.includes("वित्तीय")) startFlow("FINANCING");
+                else triggerGatedWall("Direct Expert Consultation Request");
+            } else {
+                handleFlowStep(opt);
+            }
+        };
+        wrapper.appendChild(btn);
+    });
+
+    // Append main menu baseline escape key if deep inside a configuration path
+    if (isFlowActive) {
+        const back = document.createElement("button");
+        back.className = "quick-btn back-btn";
+        back.innerHTML = STRINGS[currentLanguage].mainMenuBtn;
+        back.onclick = () => returnToMainMenu();
+        wrapper.appendChild(back);
+    }
+
+    if (chatBox) chatBox.appendChild(wrapper);
+    scrollBottom();
+}
+
+function updateProgressBar(step, total) {
+    const bar = document.getElementById("progress-bar-fill");
+    if (bar) {
+        const percentage = Math.round((step / total) * 100);
+        bar.style.width = `${percentage}%`;
+    }
+}
+
 function showTyping() {
-    const ti = document.getElementById("typing-indicator");
-    if (ti) ti.classList.remove("hidden");
+    const activeIndicator = document.getElementById("chat-typing-indicator");
+    if (activeIndicator) activeIndicator.classList.remove("hidden");
+    scrollBottom();
 }
 
 function hideTyping() {
-    const ti = document.getElementById("typing-indicator");
-    if (ti) ti.classList.add("hidden");
+    const activeIndicator = document.getElementById("chat-typing-indicator");
+    if (activeIndicator) activeIndicator.classList.add("hidden");
 }
 
-window.initializeWelcomeGreeting = initializeWelcomeGreeting;
-function scrollBottom() { if (chatBox) chatBox.scrollTop = chatBox.scrollHeight; }
-function saveChat() { if (chatBox) localStorage.setItem("Soltech_chat", chatBox.innerHTML); }
+function scrollBottom() {
+    if (chatBox) chatBox.scrollTop = chatBox.scrollHeight;
+}
 
+function saveChat() {
+    if (chatBox) localStorage.setItem("Soltech_chat", chatBox.innerHTML);
+}
+
+// User text bar event submission parsing
+if (sendBtn && userInput) {
+    const handleInput = () => {
+        const text = userInput.value.trim();
+        if (!text) return;
+        userInput.value = "";
+        addUserMessage(text);
+        
+        if (currentFlow) {
+            handleFlowStep(text);
+        } else {
+            showTyping();
+            setTimeout(() => {
+                hideTyping();
+                addBotMessage(STRINGS[currentLanguage].fallbackResponse, false);
+                injectGatedActionCTAs();
+            }, 800);
+        }
+    };
+    sendBtn.addEventListener("click", handleInput);
+    userInput.addEventListener("keypress", (e) => { if (e.key === "Enter") handleInput(); });
+}
+
+// Initialization Entry Core Load check
 function loadChat() {
     let chat = localStorage.getItem("Soltech_chat");
     if (chat) {
-        if (chat.includes('logo.png')) {
-            chat = chat.replace(/logo.png/g, 'logo.jpg');
-            localStorage.setItem("Soltech_chat", chat);
-        }
         if (chatBox) chatBox.innerHTML = chat;
+        renderPremiumLanguageHeader(); 
     } else {
         initializeWelcomeGreeting();
     }
 }
 
-document.addEventListener("DOMContentLoaded", function() {
-    if (footerWhitespaceCta) footerWhitespaceCta.addEventListener("click", launchWhatsAppLeadGen);
-    if (sendBtn) sendBtn.addEventListener("click", sendMessage);
-    if (userInput) {
-        userInput.addEventListener("keypress", (e) => {
-            if (e.key === "Enter") sendMessage();
-        });
-    }
-
-    document.querySelectorAll(".persistent-tab-item").forEach(tab => {
-        tab.addEventListener("click", (e) => {
-            const label = e.currentTarget.getAttribute("data-intent");
-            addUserMessage(label);
-            processMessage(label);
-        });
-    });
-    loadChat();
-});
+// Initialize on execution sequence
+loadChat();
