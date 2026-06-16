@@ -20,47 +20,57 @@
     </button>
 
     <div id="chatbot-container" class="chatbot-container">
-<div id="chatbot-container" class="chatbot-container">
-    
-    <div class="chat-header">
-        <div class="header-info">
-            <img src="logo.jpg" alt="Soltech Logo" class="chat-company-logo">
-            <div>
-                <h4>Soltech Assistant</h4>
-                <span class="status-indicator">Online</span>
+        
+        <div class="chat-header">
+            <div class="header-info">
+                <span class="welcome-title" style="font-size: 14px; font-weight: 600;">Soltech Energy Assistant</span>
+                <span class="status-indicator" style="font-size: 11px; display: flex; align-items: center; gap: 4px; margin-top: 2px;">
+                    <span style="width: 6px; height: 6px; background-color: #34d399; border-radius: 50%; display: inline-block;"></span> Online
+                </span>
+            </div>
+            <div class="header-actions">
+                <div class="lang-switcher">
+                    <button id="lang-en" class="lang-btn active-lang">EN</button>
+                    <button id="lang-hi" class="lang-btn">हि</button>
+                </div>
+                <button id="refresh-chat" style="background: none; border: none; color: white; cursor: pointer; margin-left: 8px;"><i class="fas fa-sync-alt"></i></button>
+                <button id="minimize-chat" style="background: none; border: none; color: white; cursor: pointer; margin-left: 8px;"><i class="fas fa-minus"></i></button>
             </div>
         </div>
-        <div class="header-actions">
-            <div class="lang-switcher">
-                <button id="lang-en" class="lang-btn active">EN</button>
-                <button id="lang-hi" class="lang-btn">हि</button>
+
+        <div id="lead-progress" class="lead-progress hidden">
+            <div id="progress-bar-fill"></div>
+        </div>
+
+        <div class="horizontal-tabs-nav">
+            <button id="tab-cost-calc" class="tab-nav-btn" onclick="startFlow('ESTIMATOR')">💰 Cost Calc</button>
+            <button id="tab-savings" class="tab-nav-btn" onclick="startFlow('ESTIMATOR')">📈 Savings</button>
+            <button id="tab-subsidy" class="tab-nav-btn" onclick="triggerGatedWall('Subsidy Info')">📋 Subsidy</button>
+            <button id="tab-survey" class="tab-nav-btn" onclick="startFlow('SITE_VISIT')">🗓️ Book Survey</button>
+        </div>
+
+        <div id="chat-box" class="chat-box"></div>
+
+        <div id="chat-typing-indicator" class="typing-indicator-wrapper hidden">
+            <div class="typing-bubble">
+                <span></span>
+                <span></span>
+                <span></span>
             </div>
-            <button id="refresh-chat"><i class="fas fa-sync-alt"></i></button>
-            <button id="minimize-chat"><i class="fas fa-minus"></i></button>
-        </div>
-    </div>
-
-    <div class="horizontal-tabs-nav">
-        <button class="tab-nav-btn" onclick="startFlow('ESTIMATOR')">💰 Cost Calc</button>
-        <button class="tab-nav-btn" onclick="startFlow('ESTIMATOR')">📈 Savings</button>
-        <button class="tab-nav-btn" onclick="triggerGatedWall('Subsidy Info')">📋 Subsidy</button>
-        <button class="tab-nav-btn" onclick="startFlow('SITE_VISIT')">🗓️ Book Survey</button>
-    </div>
-
-    <div id="chat-box" class="chat-box">
         </div>
 
-    <div class="chat-footer">
-        <button id="footer-whatsapp-cta" class="whatsapp-btn">CONNECT VIA WHATSAPP</button>
-        <div class="input-container">
-            <input type="text" id="user-input" placeholder="Type your solar query here...">
-            <button id="send-btn"><i class="fas fa-paper-plane"></i></button>
+        <div class="chat-footer">
+            <button id="footer-whatsapp-cta" class="whatsapp-footer-cta">
+                <i class="fab fa-whatsapp"></i> CONNECT VIA WHATSAPP
+            </button>
+            <div class="typing-row">
+                <input type="text" id="user-input" placeholder="Type your solar inquiry here..." autocomplete="off">
+                <button id="send-btn"><i class="fas fa-paper-plane"></i></button>
+            </div>
         </div>
+
     </div>
-</div>
 
-    <script src="intents.js"></script>
-    <script src="chatbot.js"></script>
-
+    <script src="chatbot (3).js"></script>
 </body>
 </html>
