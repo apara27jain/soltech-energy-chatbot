@@ -1,281 +1,288 @@
 /* ==========================================================================
-   SOLTECH SUPREME PREMIUM CHATBOT MATRIX - UNIVERSAL BUG RESOLUTION
+   Soltech Energy - Ultra-Premium Modernized Chatbot Layout Custom Overhaul
    ========================================================================== */
 
-/* Enforce absolute layout containment across all rendering engines */
-#chatbot-container, #chat-toggle-container,
-#chatbot-container *, #chat-toggle-container * {
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --primary-blue: #0f172a; /* Ultra-dark slate premium blue */
+    --light-bg: #f8fafc;
+    --text-dark: #334155;
+    --border-color: #e2e8f0;
+    --accent-orange: linear-gradient(135deg, #ff6b00 0%, #e65c00 100%); /* Premium fluid gradient orange */
+    --btn-blue: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    --premium-glass: rgba(255, 255, 255, 0.92); /* Increased opacity slightly to secure content readability */
+}
+
+/* Structural Reset to enforce consistency across all browsers */
+#chatbot-container, #chatbot-container * {
     box-sizing: border-box !important;
     margin: 0;
     padding: 0;
-    font-family: 'Poppins', -apple-system, sans-serif;
 }
 
-:root {
-    --soltech-dark: #0f172a;
-    --soltech-accent: #f39c12;
-    --soltech-accent-hover: #e67e22;
-    --soltech-success: #10b981;
-    --soltech-success-hover: #059669;
-    --soltech-bg-light: #f8fafc;
-    --soltech-card-bg: #ffffff;
-    --soltech-text-main: #1e293b;
-    --soltech-text-muted: #64748b;
-    --soltech-radius-lg: 20px;
-    --soltech-radius-md: 12px;
-    --soltech-radius-sm: 6px;
-    --soltech-shadow: 0 20px 40px rgba(15, 23, 42, 0.15);
-    --soltech-elastic: cubic-bezier(0.34, 1.56, 0.64, 1);
+.hidden {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
 }
 
-/* ==========================================================================
-   AMPLIFIED PREMIUM LAUNCHER & DYNAMIC MICRO-ANNOUNCEMENT PLATFORM
-   ========================================================================== */
-#chat-toggle-container {
+/* ──────────────────────────────────────────────────────────────────────────
+   FLOATING ACTION TOGGLE BUTTON
+   ────────────────────────────────────────────────────────────────────────── */
+.chat-toggle {
     position: fixed;
-    bottom: 30px;
-    right: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    z-index: 9998;
-}
-
-/* Big Luxury Interactive Launcher Button */
-#chat-toggle {
-    width: 70px; /* Enhanced, noticeable command profile */
-    height: 70px;
-    background: linear-gradient(135deg, var(--soltech-dark), #1e293b);
+    bottom: 25px;
+    right: 25px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
-    box-shadow: 0 10px 28px rgba(15, 23, 42, 0.3);
-    border: 2px solid rgba(255, 255, 255, 0.1);
+    background: var(--accent-orange);
+    color: #ffffff;
+    border: none;
+    font-size: 24px;
     cursor: pointer;
+    box-shadow: 0 8px 24px rgba(230, 92, 0, 0.3);
+    z-index: 100001 !important; 
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 26px;
-    color: #ffffff;
-    transition: transform 0.3s var(--soltech-elastic), box-shadow 0.3s ease, background 0.3s ease;
-    position: relative;
+    animation: iconEntrance 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards, 
+               iconAttention 1.5s ease-in-out infinite 2.5s;
+               
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-/* Premium Hover Effect */
-#chat-toggle:hover {
-    transform: scale(1.1) rotate(8deg);
-    background: linear-gradient(135deg, #1e293b, var(--soltech-dark));
-    box-shadow: 0 14px 32px rgba(15, 23, 42, 0.4);
+.chat-toggle:hover {
+    transform: scale(1.15) rotate(15deg) !important;
+    box-shadow: 0 14px 32px rgba(230, 92, 0, 0.5) !important;
 }
 
-/* Embedded Pulsing Luxury Glow Ring */
-#chat-toggle::after {
-    content: '';
-    position: absolute;
-    top: -2px; left: -2px; right: -2px; bottom: -2px;
-    border-radius: 50%;
-    border: 3px solid var(--soltech-accent);
-    opacity: 0;
-    pointer-events: none;
+@keyframes iconEntrance {
+    0% {
+        transform: scale(0) translateY(100px) rotate(-45deg);
+        opacity: 0;
+    }
+    70% {
+        transform: scale(1.15) translateY(-5px) rotate(10deg);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1) translateY(0) rotate(0deg);
+        opacity: 1;
+    }
 }
 
-/* Popout Alert Micro-Interaction Class (Triggered via JS) */
-#chat-toggle.popout-alert {
-    animation: goldPulse 1.8s ease-in-out infinite alternate;
-}
-#chat-toggle.popout-alert::after {
-    animation: pingRing 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
-}
-
-/* Floating High-End Proactive Tooltip */
-#chat-launcher-tooltip {
-    position: absolute;
-    right: 85px;
-    background: #ffffff;
-    color: var(--soltech-text-main);
-    padding: 12px 18px;
-    border-radius: var(--soltech-radius-md);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    border: 1px solid rgba(15, 23, 42, 0.08);
-    font-size: 13px;
-    font-weight: 600;
-    white-space: nowrap;
-    opacity: 0;
-    transform: translateX(15px);
-    pointer-events: none;
-    transition: opacity 0.4s var(--soltech-elastic), transform 0.4s var(--soltech-elastic);
-}
-#chat-launcher-tooltip.visible {
-    opacity: 1;
-    transform: translateX(0);
-}
-#chat-launcher-tooltip::after {
-    content: '';
-    position: absolute;
-    right: -6px;
-    top: 50%;
-    transform: translateY(-50%) rotate(45deg);
-    width: 12px;
-    height: 12px;
-    background: #ffffff;
-    border-right: 1px solid rgba(15, 23, 42, 0.08);
-    border-top: 1px solid rgba(15, 23, 42, 0.08);
+@keyframes iconAttention {
+    0%, 100% {
+        transform: scale(1) rotate(0deg);
+        box-shadow: 0 8px 24px rgba(230, 92, 0, 0.3);
+    }
+    8% {
+        transform: scale(1.14) translateY(-6px) rotate(-10deg);
+        box-shadow: 0 16px 32px rgba(230, 92, 0, 0.45);
+    }
+    14% {
+        transform: scale(1.14) translateY(-6px) rotate(12deg);
+    }
+    20% {
+        transform: scale(1.14) translateY(-6px) rotate(-6deg);
+    }
+    26% {
+        transform: scale(1.14) translateY(-6px) rotate(4deg);
+    }
+    32% {
+        transform: scale(1) translateY(0) rotate(0deg);
+        box-shadow: 0 8px 24px rgba(230, 92, 0, 0.3);
+    }
 }
 
-/* Notification Badge Profile */
 .notification-dot {
     position: absolute;
     top: 2px;
     right: 2px;
-    width: 14px;
-    height: 14px;
-    background: #ef4444;
+    width: 12px;
+    height: 12px;
+    background-color: #ef4444;
     border-radius: 50%;
     border: 2px solid #ffffff;
 }
 
-/* ==========================================================================
-   MAIN CHATBOT CONTROLLER WINDOW
-   ========================================================================== */
+/* ────────────────────────────────────────────────────────────────────────
+   MODERN CHATBOT WINDOW CONTAINER
+──────────────────────────────────────────────────────────────────────── */
 .chatbot-container {
     position: fixed;
-    bottom: 115px;
-    right: 30px;
-    width: 380px; 
-    max-width: calc(100vw - 40px);
-    height: 640px;
-    max-height: 75vh;
-    background: var(--soltech-card-bg);
-    border-radius: var(--soltech-radius-lg);
-    box-shadow: var(--soltech-shadow);
-    border: 1px solid rgba(15, 23, 42, 0.08);
+    bottom: 105px; 
+    right: 25px;
+    width: 380px;
+    height: 600px; /* Enhanced height profile to keep inner elements cleanly grouped */
+    max-width: calc(100vw - 50px);
+    max-height: calc(100vh - 140px);
+    background: var(--premium-glass);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(15, 23, 42, 0.12);
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* Strict layout orientation to block disappearing elements */
     overflow: hidden;
-    z-index: 9999;
+    z-index: 100000 !important; 
+    transform: translateY(40px) scale(0.85);
     opacity: 0;
-    transform: translateY(30px) scale(0.92);
     pointer-events: none;
-    transition: opacity 0.4s var(--soltech-elastic), transform 0.4s var(--soltech-elastic);
+    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    font-family: 'Poppins', sans-serif;
 }
 
 .chatbot-container.open {
-    opacity: 1;
+    opacity: 1 !important;
+    visibility: visible !important;
     transform: translateY(0) scale(1);
     pointer-events: auto;
 }
 
-/* --- Fixed Header: Resolving Button Overlap Loopholes --- */
+/* ── LUXURY HEADER ALIGNMENT RULES ── */
 .chat-header {
-    background: var(--soltech-dark);
-    color: #ffffff;
+    background: linear-gradient(135deg, var(--primary-blue), #1e293b) !important;
+    color: #ffffff !important;
     padding: 14px 18px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     height: 68px;
-    flex-shrink: 0;
+    flex-shrink: 0; /* Strict protection line against content-collapse bugs */
 }
 
 .header-left {
-    display: flex;
-    align-items: center;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
     gap: 12px;
-    min-width: 0; /* Prevents overflow squishing */
+    min-width: 0; /* Permits truncation defense */
 }
 
 .bot-avatar {
+    font-size: 16px;
+    background: rgba(255, 255, 255, 0.1);
     width: 36px;
     height: 36px;
-    background: rgba(255, 255, 255, 0.08);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1.5px solid var(--soltech-accent);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     flex-shrink: 0;
 }
 
-.header-titles h3 {
+.bot-avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.header-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-header h3 {
+    margin: 0 !important;
+    color: #ffffff !important;
     font-size: 14px;
     font-weight: 600;
-    letter-spacing: -0.2px;
-    color: #ffffff;
+    letter-spacing: 0.3px;
+    line-height: 1.2;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.header-titles .status {
+.status {
     font-size: 11px;
-    color: #10b981;
+    color: #34d399 !important;
     display: flex;
     align-items: center;
     gap: 5px;
+    margin-top: 2px;
     font-weight: 500;
 }
 
-.online-indicator-dot {
-    width: 7px;
-    height: 7px;
-    background-color: #10b981;
+.status::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: #34d399;
     border-radius: 50%;
     display: inline-block;
+    box-shadow: 0 0 8px #34d399;
 }
 
-/* Clean Operations Container: Eliminates overlapping button collisions */
+/* ── REENGINEERED OPERATIONAL HEADER CONTROLS ── */
 .header-actions {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 4px;
     flex-shrink: 0;
 }
 
-/* Luxury Segmented Language Toggle Pill */
+/* Luxury Segmented Language Toggle Pill Framework */
 .lang-switcher-pill {
     display: flex;
     background: rgba(255, 255, 255, 0.12);
     padding: 2px;
     border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin-right: 6px;
 }
 
 .lang-btn {
-    background: transparent;
-    border: none;
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 10px;
-    font-weight: 700;
-    padding: 4px 10px;
-    border-radius: 14px;
-    cursor: pointer;
-    transition: all 0.25s ease;
+    background: transparent !important;
+    border: none !important;
+    color: rgba(255, 255, 255, 0.65) !important;
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    padding: 4px 10px !important;
+    border-radius: 14px !important;
+    cursor: pointer !important;
+    box-shadow: none !important;
+    transform: none !important;
+    transition: all 0.2s ease !important;
 }
 
 .lang-btn.active {
-    background: #ffffff;
-    color: var(--soltech-dark);
-    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    background: #ffffff !important;
+    color: var(--primary-blue) !important;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15) !important;
 }
 
 .header-actions button {
-    background: transparent;
-    border: none;
-    color: rgba(255, 255, 255, 0.65);
+    background: none !important;
+    border: none !important;
+    color: #ffffff !important;
     cursor: pointer;
     font-size: 15px;
     padding: 6px;
     border-radius: 8px;
-    display: flex;
+    opacity: 0.75;
+    transition: all 0.2s ease;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.2s ease;
 }
 
 .header-actions button:hover {
-    color: #ffffff;
+    opacity: 1;
     background: rgba(255, 255, 255, 0.1);
 }
 
-/* --- Persistent Navigation Utility Grid --- */
+/* ── PERSISTENT SUBMENU UTILITY NAVIGATION GRID ── */
 .persistent-tabs-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -294,268 +301,351 @@
     font-size: 10.5px;
     font-weight: 600;
     text-align: center;
-    color: var(--soltech-text-main);
+    color: var(--text-dark);
     border: 1px solid rgba(15, 23, 42, 0.05);
     transition: all 0.2s ease;
 }
 
 .persistent-tab-item:hover {
-    background: var(--soltech-dark);
+    background: var(--primary-blue);
     color: #ffffff !important;
-    transform: translateY(-1px);
 }
 
-/* --- Core Dialogue History Box Stream --- */
+/* ──────────────────────────────────────────────────────────────────────────
+   CHATPLAY WORKSPACE & MESSAGE BUBBLES
+   ────────────────────────────────────────────────────────────────────────── */
 .chat-box {
     flex: 1;
-    padding: 20px;
+    padding: 18px;
     overflow-y: auto;
-    overflow-x: hidden;
+    background-color: rgba(248, 250, 252, 0.7);
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    background: var(--soltech-bg-light);
-    scroll-behavior: smooth;
+    gap: 14px;
 }
 
-/* Dialogue Bubble Framework */
 .bot-message, .user-message {
-    max-width: 82%;
     display: flex;
     flex-direction: column;
+    max-width: 82%;
+    animation: bubbleSlideIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
+
 .bot-message { align-self: flex-start; }
 .user-message { align-self: flex-end; }
 
-.bot-message .message-content {
-    background: #ffffff;
-    color: var(--soltech-text-main);
+@keyframes bubbleSlideIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.message-content {
     padding: 12px 16px;
-    border-radius: 4px var(--soltech-radius-md) var(--soltech-radius-md) var(--soltech-radius-md);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
-    border: 1px solid rgba(15, 23, 42, 0.05);
     font-size: 13.5px;
     line-height: 1.5;
+}
+
+.bot-message .message-content {
+    background-color: #ffffff;
+    color: var(--text-dark);
+    border-radius: 4px 18px 18px 18px;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.02);
+    border: 1px solid rgba(226, 232, 240, 0.8);
 }
 
 .user-message .message-content {
-    background: var(--soltech-dark);
+    background: var(--btn-blue);
     color: #ffffff;
-    padding: 12px 16px;
-    border-radius: var(--soltech-radius-md) 4px var(--soltech-radius-md) var(--soltech-radius-md);
-    font-size: 13.5px;
-    line-height: 1.5;
-    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.1);
+    border-radius: 18px 18px 4px 18px;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.12);
+}
+
+/* ── PROTECTION STYLES FOR INNER BRAND LOGO LOGIC ── */
+.company-logo-container {
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
 }
 
 .chat-company-logo {
-    display: block;
     max-height: 32px;
     width: auto;
-    margin-bottom: 8px;
+    object-fit: contain;
 }
 
-/* ==========================================================================
-   THE FLOATING SUGGESTION DECK ENGINE - NO MORE BROKEN SCROLLS
-   ========================================================================== */
+/* ── SAFE FLOATING ACTION ACTION SUGGESTIONS WRAPPER ── */
 .quick-actions-wrapper {
     display: flex !important;
     flex-direction: row !important;
     flex-wrap: wrap !important;
     justify-content: flex-start !important;
-    gap: 8px !important;
-    padding: 4px 0 8px 0 !important;
+    gap: 6px !important;
+    padding: 2px 0 6px 0 !important;
     width: 100% !important;
     background: transparent !important;
 }
 
-/* Premium Adaptive Chips Inside Wrapper Panel */
+/* ──────────────────────────────────────────────────────────────────────────
+   ✨ SOLTECH BRAND MATCH: QUICK ACTION BUTTON HOVER EFFECTS
+   ────────────────────────────────────────────────────────────────────────── */
 .quick-btn, .quick-actions-wrapper button {
-    background: #ffffff !important;
-    color: var(--soltech-text-main) !important;
-    border: 1px solid #cbd5e1 !important;
+    background-color: #ffffff !important;
+    border: 1px solid #cbd5e1 !important; /* Smooth grey neutral border by default */
+    color: #475569 !important;            /* Slate grey text by default */
     padding: 7px 14px !important;
+    border-radius: 30px !important;
     font-size: 12px !important;
     font-weight: 500 !important;
-    border-radius: 20px !important;
     cursor: pointer !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    transition: all 0.2s var(--soltech-elastic) !important;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.02) !important;
+    transition: all 0.23s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02) !important;
 }
 
 .quick-btn:hover, .quick-actions-wrapper button:hover {
-    background: var(--soltech-dark) !important;
-    border-color: var(--soltech-dark) !important;
-    color: #ffffff !important;
+    background-color: var(--primary-blue) !important;  
+    border-color: var(--primary-blue) !important;      
+    color: #ffffff !important;             /* Premium bright contrast shift */
     transform: translateY(-2px) !important;
-    box-shadow: 0 4px 10px rgba(15, 23, 42, 0.15) !important;
+    box-shadow: 0 6px 14px rgba(15, 23, 42, 0.15) !important;
 }
 
-.back-btn {
-    color: #ef4444 !important;
-    border: 1px dashed rgba(239, 68, 68, 0.4) !important;
+/* Tactile click-down animation */
+.quick-btn:active, .quick-actions-wrapper button:active {
+    transform: translateY(1px) !important;
+    box-shadow: 0 2px 4px rgba(15, 23, 42, 0.04) !important;
 }
-.back-btn:hover {
-    background: #ef4444 !important;
+
+/* Premium persistent behavior for specific main call-to-actions */
+.quick-btn.orange-quote-btn {
+    background: var(--accent-orange) !important;
     color: #ffffff !important;
-    border-color: #ef4444 !important;
+    border: none !important;
+    font-weight: 600 !important;
 }
 
-/* ==========================================================================
-   CONSOLIDATED FOOTER & TYPING SYSTEM
-   ========================================================================== */
+.quick-btn.orange-quote-btn:hover {
+    background: var(--primary-blue) !important; 
+    border-color: var(--primary-blue) !important;      
+    color: #ffffff !important;             
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 14px rgba(15, 23, 42, 0.15) !important;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   ⚡ ACCESS-OPTIMIZED WHATSAPP BANNER + TYPING ROW STYLING
+   ────────────────────────────────────────────────────────────────────────── */
 .chat-input-container {
-    background: #ffffff;
-    padding: 12px 16px;
-    border-top: 1px solid #e2e8f0;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    flex-shrink: 0;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    background-color: #ffffff !important; /* Premium unified card fill background */
+    padding: 14px 16px !important;
+    border-top: 1px solid #e2e8f0 !important;
+    box-sizing: border-box !important;
+    flex-shrink: 0; /* Defends console container alignment */
 }
 
-/* WhatsApp Conversion Layout CTA */
+/* Primary High-Conversion WhatsApp Button Banner */
 .whatsapp-footer-cta {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    background: var(--soltech-success);
-    color: #ffffff;
-    border: none;
-    padding: 11px;
-    font-weight: 700;
-    font-size: 12.5px;
-    border-radius: var(--soltech-radius-md);
-    width: 100%;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15);
+    width: 100% !important;
+    height: 42px !important; /* Balanced, thumb-friendly tap height */
+    background: #25D366 !important; /* Authentic vibrant WhatsApp Green */
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 8px !important;
+    font-size: 12.5px !important;
+    font-weight: 700 !important; /* High prominence bold lettering */
+    letter-spacing: 0.3px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.18) !important; /* Soft green ambient shadow */
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
+/* Dynamic Hover Effects for the WhatsApp CTA */
 .whatsapp-footer-cta:hover {
-    background: var(--soltech-success-hover);
-    transform: translateY(-1px);
-    box-shadow: 0 6px 16px rgba(16, 185, 129, 0.25);
+    background: #20ba5a !important; /* Darkens slightly on hover */
+    box-shadow: 0 6px 16px rgba(37, 211, 102, 0.3) !important;
+    transform: translateY(-1px) !important;
 }
 
-/* High-End Clean Typing Bar Enclosure Module */
+.whatsapp-footer-cta:active {
+    transform: translateY(1px) !important; /* Tactile compression when clicked */
+    box-shadow: 0 2px 6px rgba(37, 211, 102, 0.1) !important;
+}
+
+.whatsapp-footer-cta i {
+    font-size: 15px !important;
+}
+
+/* Manual Text Typing Input Area Row Wrapper Layout */
 .typing-row {
-    display: flex;
-    align-items: center;
-    background: #f1f5f9;
-    border-radius: 24px;
-    padding: 4px 6px 4px 16px;
-    border: 1px solid #e2e8f0;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    display: flex !important;
+    align-items: center !important;
+    width: 100% !important;
+    gap: 8px !important;
+    background: #f1f5f9 !important; /* Pill background wrapper styling */
+    border-radius: 24px !important;
+    padding: 4px 6px 4px 14px !important;
+    border: 1px solid #e2e8f0 !important;
+    box-sizing: border-box !important;
 }
 
 .typing-row:focus-within {
-    border-color: var(--soltech-dark);
-    background: #ffffff;
-    box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.05);
+    border-color: #2563eb !important;
+    background: #ffffff !important;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.06) !important;
 }
 
-.typing-row input {
-    flex: 1;
-    border: none;
-    background: transparent;
-    font-size: 13px;
-    outline: none;
-    height: 38px;
-    color: var(--soltech-text-main);
+/* Input Field Box Styling */
+.typing-row input[type="text"] {
+    flex: 1 !important;
+    padding: 0 !important;
+    border: none !important; 
+    border-radius: 0 !important;
+    font-size: 13.5px !important;
+    color: var(--primary-blue) !important;
+    background-color: transparent !important;
+    outline: none !important;
+    height: 36px !important;
+    box-shadow: none !important;
 }
 
-/* Send Button Configuration */
-#send-btn {
-    background: var(--soltech-dark);
-    border: none;
-    color: #ffffff;
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s ease;
+/* Traditional Send Button Layout */
+.typing-row button {
+    background: var(--primary-blue) !important; /* Sleek dark slate premium identity background */
+    color: #ffffff !important;
+    border: none !important;
+    width: 32px !important;
+    height: 32px !important;
+    padding: 0 !important;
+    border-radius: 50% !important; /* Upgraded to a clean round action button circle */
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.2s ease !important;
+    flex-shrink: 0;
 }
 
-#send-btn:hover {
-    background: var(--soltech-accent);
+.typing-row button:hover {
+    background: #1e293b !important; 
     transform: scale(1.05);
 }
 
-/* --- Progress Tracking Framework --- */
+.typing-row button i {
+    font-size: 13px !important;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   INPUT UTILITIES & CONTROL PANEL
+   ────────────────────────────────────────────────────────────────────────── */
 .lead-progress {
     padding: 8px 16px;
-    background: #ffffff;
-    border-bottom: 1px solid #e2e8f0;
+    background-color: #ffffff;
+    border-bottom: 1px solid var(--border-color);
+    flex-shrink: 0;
 }
+
 .progress-bar {
     width: 100%;
     height: 5px;
-    background: #e2e8f0;
+    background-color: #e2e8f0;
     border-radius: 10px;
     overflow: hidden;
     margin-bottom: 4px;
 }
+
 #progress-fill {
-    height: 100%;
     width: 0%;
-    background: var(--soltech-accent);
-    transition: width 0.3s ease;
+    height: 100%;
+    background: linear-gradient(90deg, #10b981, #34d399);
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
 .lead-progress small {
-    font-size: 10px;
-    color: var(--soltech-text-muted);
+    font-size: 10.5px;
+    color: #64748b;
     font-weight: 500;
 }
 
-/* --- Animated Professional Typing Indicator --- */
 .typing-indicator {
+    padding: 4px 16px;
     align-self: flex-start;
-    background: #ffffff;
-    padding: 12px 16px;
-    border-radius: 4px var(--soltech-radius-md) var(--soltech-radius-md) var(--soltech-radius-md);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.02);
-    border: 1px solid rgba(15, 23, 42, 0.05);
 }
+
 .typing-bubble {
+    background-color: #ffffff;
+    padding: 10px 14px;
+    border-radius: 4px 16px 16px 16px;
+    border: 1px solid var(--border-color);
     display: flex;
-    align-items: center;
-    gap: 4px;
-    height: 12px;
+    gap: 5px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.02);
 }
+
 .typing-bubble span {
     width: 6px;
     height: 6px;
-    background: var(--soltech-text-muted);
+    background-color: #94a3b8;
     border-radius: 50%;
-    animation: bounceTyping 1.4s infinite ease-in-out both;
+    animation: premiumBlink 1.4s infinite ease-in-out both;
 }
+
 .typing-bubble span:nth-child(1) { animation-delay: -0.32s; }
 .typing-bubble span:nth-child(2) { animation-delay: -0.16s; }
 
-/* ==========================================================================
-   ANIMATION KEYFRAMES MATRIX
-   ========================================================================== */
-@keyframes goldPulse {
-    0% { transform: scale(1); box-shadow: 0 10px 28px rgba(15, 23, 42, 0.3); }
-    100% { transform: scale(1.12); box-shadow: 0 0 0 14px rgba(243, 156, 18, 0.18), 0 14px 34px rgba(15, 23, 42, 0.4); }
+@keyframes premiumBlink {
+    0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+    40% { transform: scale(1.1); opacity: 1; }
 }
 
-@keyframes pingRing {
-    0% { transform: scale(1); opacity: 0.8; }
-    100% { transform: scale(1.4); opacity: 0; }
+/* Modals Setup Framework Layout */
+.calculator-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 200000;
 }
 
-@keyframes bounceTyping {
-    0%, 80%, 100% { transform: scale(0); }
-    40% { transform: scale(1.0); }
+.calculator-content {
+    background: #ffffff;
+    padding: 36px;
+    border-radius: 24px;
+    position: relative;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.8);
 }
 
-.hidden { display: none !important; }
+#close-calculator {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    font-size: 24px;
+    background: none;
+    border: none;
+    color: #94a3b8;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+#close-calculator:hover {
+    color: #ef4444;
+}
