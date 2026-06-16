@@ -1,23 +1,23 @@
 /* ==========================================================================
-   Soltech Energy Premium Chatbot Stylesheet - FIX PATCH
+   Soltech Energy Premium Chatbot Stylesheet - COMPLETE REPAIR PATCH
    ========================================================================== */
 
 :root {
-    --soltech-primary: #1a252f;
-    --soltech-accent: #f39c12;
-    --soltech-accent-hover: #e67e22;
-    --soltech-success: #27ae60;
-    --soltech-bg-light: #f8f9fa;
-    --soltech-card-bg: #ffffff;
-    --soltech-text-main: #2c3e50;
-    --soltech-text-muted: #7f8c8d;
-    --soltech-radius-lg: 16px;
+    --soltech-primary: #1a252f;       /* Deep Slate / Trust & Engineering */
+    --soltech-accent: #f39c12;        /* Solar Gold / Sunlight Capture */
+    --soltech-accent-hover: #e67e22;  /* Deep Amber Transition */
+    --soltech-success: #27ae60;       /* High-Yield / Subsidy Gains */
+    --soltech-bg-light: #f8f9fa;      /* Premium Cool Grey Ice White */
+    --soltech-card-bg: #ffffff;       /* Pure White Elevated Surfaces */
+    --soltech-text-main: #2c3e50;     /* Slate Dark Text Body */
+    --soltech-text-muted: #7f8c8d;    /* Muted Engineering Spec Gray */
+    --soltech-radius-lg: 16px;        /* Smooth Rounded Structural Corners */
     --soltech-radius-sm: 8px;
-    --soltech-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+    --soltech-shadow: 0 12px 40px rgba(0, 0, 0, 0.12); /* Atmospheric Depth */
     --soltech-transition: cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-/* --- Floating Widget Button --- */
+/* --- Core Floating Widget Button --- */
 #chat-toggle {
     position: fixed;
     bottom: 30px;
@@ -119,22 +119,48 @@
     font-weight: 500;
 }
 
-/* --- Clean Language Selection Bar (Top Anchor) --- */
+.chat-header-info span::before {
+    content: "●";
+    font-size: 9px;
+    animation: pulse-green 2s infinite;
+}
+
+.chat-header-actions {
+    display: flex;
+    gap: 14px;
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.chat-header-actions i {
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.chat-header-actions i:hover {
+    color: var(--soltech-accent);
+}
+
+/* ==========================================================================
+   CRITICAL FIX: MASTER LANGUAGE TOGGLE OVERRIDES
+   ========================================================================== */
+
+/* 1. Style the absolute primary toggle container directly below header */
 .premium-lang-bar {
     background: #ffffff;
-    display: flex;
+    display: flex !important; /* Force layout validation */
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-    padding: 8px 12px;
-    gap: 8px;
+    padding: 10px 16px;
+    gap: 10px;
     flex-shrink: 0;
 }
 
 .lang-toggle-btn {
     flex: 1;
     background: var(--soltech-bg-light);
-    border: 1px solid rgba(0,0,0,0.05);
-    padding: 8px 12px;
-    font-size: 12px;
+    border: 1px solid rgba(0,0,0,0.06);
+    padding: 10px 14px;
+    font-size: 13px;
     font-weight: 600;
     color: var(--soltech-text-main);
     border-radius: var(--soltech-radius-sm);
@@ -143,19 +169,51 @@
     align-items: center;
     justify-content: center;
     gap: 6px;
-    transition: all 0.3s ease;
+    transition: all 0.25s ease;
+}
+
+.lang-toggle-btn:hover {
+    background: #eaecee;
 }
 
 .lang-toggle-btn.active-lang {
     background: rgba(243, 156, 18, 0.1);
-    border-color: rgba(243, 156, 18, 0.3);
+    border-color: rgba(243, 156, 18, 0.4);
     color: var(--soltech-accent-hover);
 }
 
-/* FIX: Suppress or hide the duplicated raw inline unstyled button structures from leakage */
-.chat-header + div button, 
-#chat-box button[class*="lang"] {
+/* 2. COMPLETELY ERASE THE DUPLICATED UNSTYLED LIGHTWEIGHT BUTTON LEAKS */
+/* Targeted removal via CSS layout trees to kill raw native buttons popping up inside components */
+#chat-box div:first-child button,
+#chat-box button,
+.chat-header + div:not(.premium-lang-bar),
+[class*="lang-selection"],
+[class*="language-picker"] {
     display: none !important;
+}
+
+/* Re-allow quick actions to run seamlessly */
+#chat-box .quick-actions-wrapper button,
+#chat-box .quick-btn {
+    display: inline-flex !important;
+}
+
+/* ========================================================================== */
+
+/* --- Step Flow Progress Bar Container --- */
+#lead-progress {
+    height: 4px;
+    background: #e1e4e6;
+    width: 100%;
+    position: relative;
+    flex-shrink: 0;
+}
+
+#progress-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--soltech-accent), var(--soltech-success));
+    transition: width 0.4s ease;
 }
 
 /* --- Horizontal Action Matrix Bar --- */
@@ -164,19 +222,22 @@
     flex-direction: row;
     overflow-x: auto;
     white-space: nowrap;
-    padding: 10px 16px;
+    padding: 12px 16px;
     gap: 10px;
     background: #ffffff;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     flex-shrink: 0;
 }
 
-/* Smooth out the horizontal scroll indicators */
+/* Clean Custom Scrollbar for Quick Actions horizontally */
 .quick-actions-wrapper::-webkit-scrollbar {
     height: 4px;
 }
+.quick-actions-wrapper::-webkit-scrollbar-track {
+    background: transparent;
+}
 .quick-actions-wrapper::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.1);
+    background: rgba(0, 0, 0, 0.08);
     border-radius: 4px;
 }
 
@@ -184,16 +245,17 @@
     background: var(--soltech-bg-light);
     color: var(--soltech-text-main);
     border: 1px solid rgba(0, 0, 0, 0.06);
-    padding: 0 16px;
+    padding: 0 18px;
     font-size: 13px;
     font-weight: 600;
     border-radius: 20px;
     cursor: pointer;
-    min-height: 36px;
+    min-height: 38px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    box-sizing: border-box;
     transition: all 0.2s var(--soltech-transition);
 }
 
@@ -201,6 +263,19 @@
     background: var(--soltech-primary);
     color: #ffffff;
     border-color: var(--soltech-primary);
+    transform: translateY(-1px);
+}
+
+/* Functional Accent Overrides */
+.back-btn {
+    background: transparent;
+    color: #c0392b;
+    border: 1px dashed rgba(192, 57, 43, 0.4);
+}
+.back-btn:hover {
+    background: #c0392b;
+    border-color: #c0392b;
+    color: #ffffff;
 }
 
 /* --- Messaging Box Frame & Custom Scrollbar --- */
@@ -212,6 +287,7 @@
     flex-direction: column;
     gap: 20px;
     scroll-behavior: smooth;
+    background: var(--soltech-bg-light);
 }
 
 #chat-box::-webkit-scrollbar {
@@ -223,6 +299,9 @@
 #chat-box::-webkit-scrollbar-thumb {
     background: rgba(127, 140, 141, 0.3);
     border-radius: 10px;
+}
+#chat-box::-webkit-scrollbar-thumb:hover {
+    background: rgba(127, 140, 141, 0.6);
 }
 
 /* --- Dialogue Conversational Cards --- */
@@ -245,6 +324,7 @@
     line-height: 1.6;
     box-shadow: 0 2px 12px rgba(0,0,0,0.015);
     border: 1px solid rgba(0, 0, 0, 0.03);
+    transition: transform 0.2s ease;
 }
 
 .user-message .message-content {
@@ -254,21 +334,28 @@
     padding: 14px 18px;
     font-size: 14.5px;
     line-height: 1.5;
+    transition: transform 0.2s ease;
 }
 
-/* Branded Welcome Message Setup */
+.bot-message .message-content:hover,
+.user-message .message-content:hover {
+    transform: translateY(-1px);
+}
+
+/* Ambient Light Branding Infusion on Intro Card */
 .intro-card .message-content {
     border-left: 4px solid var(--soltech-accent);
-    background: linear-gradient(135deg, rgba(243, 156, 18, 0.04), #ffffff);
+    background: linear-gradient(135deg, rgba(243, 156, 18, 0.04), #ffffff) !important;
 }
 
 .intro-card img {
-    max-width: 110px;
-    margin-bottom: 12px;
+    max-width: 120px;
+    height: auto;
+    margin-bottom: 14px;
     display: block;
 }
 
-/* --- FIX: Isolated, Clean WhatsApp Button Styling --- */
+/* --- Isolated WhatsApp CTA Button Layout --- */
 .wa-direct-btn {
     display: inline-flex;
     align-items: center;
@@ -281,9 +368,9 @@
     font-weight: 600;
     font-size: 14px;
     border-radius: var(--soltech-radius-sm);
-    margin-top: 6px;
+    margin-top: 8px;
     box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2);
-    align-self: flex-start; /* FIX: Prevents container blowing out full-width */
+    align-self: flex-start; /* Restricts button from taking full width of container */
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -292,7 +379,27 @@
     box-shadow: 0 6px 16px rgba(37, 211, 102, 0.35);
 }
 
-/* --- Input Bar Controller Footer --- */
+/* --- Premium Specific Highlight Elements --- */
+.savings-card {
+    background: linear-gradient(135deg, var(--soltech-success), #2ecc71);
+    color: #ffffff !important;
+    border-radius: 14px;
+    padding: 18px;
+    box-shadow: 0 6px 18px rgba(39, 174, 96, 0.25);
+    border: none !important;
+}
+
+.subsidy-badge {
+    background: rgba(39, 174, 96, 0.1);
+    color: var(--soltech-success);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+    display: inline-block;
+    font-size: 12px;
+}
+
+/* --- Input Controller Footer Bar --- */
 .chat-footer {
     background: #ffffff;
     padding: 14px 18px;
@@ -306,7 +413,7 @@
 #user-input {
     flex: 1;
     border: none;
-    padding: 10px 4px;
+    padding: 12px;
     font-size: 14px;
     color: var(--soltech-text-main);
     background: transparent;
@@ -322,8 +429,8 @@
     background: var(--soltech-primary);
     border: none;
     color: #ffffff;
-    width: 36px;
-    height: 36px;
+    width: 38px;
+    height: 38px;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -336,12 +443,48 @@
     background: var(--soltech-accent);
 }
 
+/* --- Typing Indicator Animation Elements --- */
+#chat-typing-indicator {
+    align-self: flex-start;
+    display: flex;
+    gap: 4px;
+    padding: 12px 18px;
+    background: var(--soltech-card-bg);
+    border-radius: 20px;
+    border: 1px solid rgba(0,0,0,0.03);
+}
+
+.typing-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--soltech-text-muted);
+    border-radius: 50%;
+    animation: bounce-dot 1.4s infinite ease-in-out both;
+}
+
+.typing-dot:nth-child(1) { animation-delay: -0.32s; }
+.typing-dot:nth-child(2) { animation-delay: -0.16s; }
+
+/* --- Animations & Utilities --- */
 @keyframes fade-up {
     from { opacity: 0; transform: translateY(8px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* --- Mobile Responsiveness --- */
+@keyframes bounce-dot {
+    0%, 80%, 100% { transform: scale(0); }
+    40% { transform: scale(1.0); }
+}
+
+@keyframes pulse-green {
+    0% { transform: scale(0.95); opacity: 0.5; }
+    50% { transform: scale(1.1); opacity: 1; }
+    100% { transform: scale(0.95); opacity: 0.5; }
+}
+
+.hidden { display: none !important; }
+
+/* --- Mobile Breakpoint Overrides --- */
 @media (max-width: 480px) {
     #chatbot-container {
         bottom: 0;
