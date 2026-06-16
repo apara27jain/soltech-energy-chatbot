@@ -407,66 +407,107 @@ function injectGatedActionCTAs() {
 // ======================================================
 // GLOBAL FORM CLEANUP & RETURN HOME
 // ======================================================
+
 function closeLeadFormAndReturnHome() {
 
-    // Remove all dynamic forms
-    document.querySelectorAll(".lead-form-card").forEach(el => {
-        el.remove();
-    });
+    document.querySelectorAll(".lead-form-card").forEach(el => el.remove());
 
-    // Remove CTA buttons
-    document.querySelectorAll(".gated-wrapper-panel").forEach(el => {
-        el.remove();
-    });
+    document.querySelectorAll(".gated-wrapper-panel").forEach(el => el.remove());
 
-    // Remove quick action buttons
-    document.querySelectorAll(".quick-actions-wrapper").forEach(el => {
-        el.remove();
-    });
+    document.querySelectorAll(".quick-actions-wrapper").forEach(el => el.remove());
 
-    // Hide progress bar
-    const progressNode = document.getElementById("lead-progress");
-    if (progressNode) {
-        progressNode.classList.add("hidden");
-    }
-
-    // Reset chatbot state
     currentFlow = null;
     currentStep = 0;
     flowData = {};
 
-    // Rebuild welcome screen
-    initializeWelcomeGreeting();
+    const progressNode = document.getElementById("lead-progress");
 
-    scrollBottom();
+    if (progressNode) {
+        progressNode.classList.add("hidden");
+    }
+
+    initializeWelcomeGreeting();
 }
 
 function triggerGatedWall(targetActionGoal) {
+
+    // Remove previous forms and buttons
     document.querySelectorAll(".gated-wrapper-panel").forEach(el => el.remove());
     document.querySelectorAll(".quick-actions-wrapper").forEach(el => el.remove());
     document.querySelectorAll(".lead-form-card").forEach(el => el.remove());
 
-    // Secure DOM Creation Strategy prevents breaking out of template literals
     const formContainer = document.createElement("div");
     formContainer.className = "lead-form-card";
-    
+
     formContainer.innerHTML = `
         <strong>📋 Identity Verification Required:</strong>
-        <p>Please provide your name and phone number to unlock automated files or book your live tracking design:</p>
-        
-        <input type="text" id="leadName" placeholder="Your Name *" required>
-        <input type="tel" id="leadPhone" placeholder="Phone Number *" required>
-        <input type="text" id="leadCompany" placeholder="Company Name (Optional)">
-        
-        <button id="submitGatedLeadBtn" class="verify-btn">Verify to Access</button>
-        
-        <button id="exitFormBtn" class="exit-form-btn">
+        <p>Please provide your details to continue.</p>
+
+        <input type="text" class="lead-name" placeholder="Your Name *">
+        <input type="tel" class="lead-phone" placeholder="Phone Number *">
+        <input type="text" class="lead-company" placeholder="Company Name (Optional)">
+
+        <button class="verify-btn">
+            Verify to Access
+        </button>
+
+        <button type="button" class="exit-form-btn">
             ↩️ Cancel & Return to Main Menu
         </button>
     `;
 
     chatBox.appendChild(formContainer);
     scrollBottom();
+
+    // Cancel Button
+    const cancelBtn = formContainer.querySelector(".exit-form-btn");
+
+    cancelBtn.addEventListener("click", function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        formContainer.remove();
+
+        currentFlow = null;
+        currentStep = 0;
+        flowData = {};
+
+        initializeWelcomeGreeting();
+    });
+
+    // Submit Button
+    const submitBtn = formContainer.querySelector(".verify-btn");
+
+    submitBtn.addEventListener("click", function(e) {
+
+        e.preventDefault();
+
+        const nameVal =
+            formContainer.querySelector(".lead-name").value.trim();
+
+        const phoneVal =
+            formContainer.querySelector(".lead-phone").value.trim();
+
+        const companyVal =
+            formContainer.querySelector(".lead-company").value.trim();
+
+        if (!nameVal || !phoneVal) {
+            alert("Name and Phone Number are required.");
+            return;
+        }
+
+        flowData.leadName = nameVal;
+        flowData.leadPhone = phoneVal;
+        flowData.leadCompany =
+            companyVal || "Individual/Residential";
+
+        flowData.actionContextTarget = targetActionGoal;
+
+        formContainer.remove();
+
+        processCompletedLeadCaptured();
+    });
+}
     
 document.querySelectorAll(".lead-form-card").forEach((card, index) => {
     if(index !== document.querySelectorAll(".lead-form-card").length - 1){
@@ -475,12 +516,11 @@ document.querySelectorAll(".lead-form-card").forEach((card, index) => {
 });
 
 const exitBtn = formContainer.querySelector("#exitFormBtn");
-
-exitBtn.addEventListener("click", function (e) {
+exitBtn.addEventListener("click", (e) => {
     e.preventDefault();
     e.stopPropagation();
-
-    closeLeadFormAndReturnHome();
+    formContainer.remove();
+    initializeWelcomeGreeting();
 });
     document.getElementById("submitGatedLeadBtn").onclick = (e) => {
         e.preventDefault();
