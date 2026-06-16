@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Soltech Energy - Ultra-Premium Modernized Chatbot Layout Custom Overhaul
+   Soltech Energy - Ultra-Premium Modernized Chatbot Layout Overhaul
    ========================================================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
@@ -119,7 +119,7 @@
     background: transparent;
 }
 
-/* Prevent the dynamic logo from blowing up the background */
+/* Prevent dynamic logos from exploding the template space */
 .chat-box img, 
 .company-logo-container img {
     max-width: 120px !important;
@@ -245,7 +245,7 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15) !important;
 }
 
-/* Clean single-line Language Switcher inside header */
+/* Clean single-line Language Switcher inside header options */
 .lang-switcher {
     display: flex;
     gap: 4px;
@@ -356,7 +356,7 @@
     text-decoration: underline;
 }
 
-/* Horizontal Sticky Tabs Container */
+/* Horizontal Sticky Tabs Navigation Engine UI */
 .horizontal-tabs-nav {
     display: flex;
     flex-direction: row;
@@ -369,7 +369,6 @@
     z-index: 10;
 }
 
-/* Individual Tab Item Buttons */
 .tab-nav-btn {
     flex: 1;
     background: #f5f7fa;
@@ -410,8 +409,8 @@
 
 .quick-btn {
     background-color: #ffffff !important;
-    border: 1px solid #cbd5e1 !important; /* Smooth grey neutral border by default */
-    color: #475569 !important;            /* Slate grey text by default */
+    border: 1px solid #cbd5e1 !important; 
+    color: #475569 !important;            
     padding: 8px 16px !important;
     border-radius: 30px !important;
     font-size: 12px !important;
@@ -421,26 +420,24 @@
     align-items: center !important;
     justify-content: center !important;
     white-space: nowrap !important;
-    /* Smooth transition for background fill, border, and text color */
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02) !important;
 }
 
 .quick-btn:hover {
-    background-color: #cbd5e1 !important;  /* same as border */
-    border-color: #cbd5e1 !important;      /* match exactly */
-    color: #0f172a !important;             /* cleaner dark text */
+    background-color: #cbd5e1 !important;  
+    border-color: #cbd5e1 !important;      
+    color: #0f172a !important;             
     transform: translateY(-2px) !important;
     box-shadow: 0 6px 14px rgba(203, 213, 225, 0.6) !important;
 }
 
-/* Tactile click-down animation */
 .quick-btn:active {
     transform: translateY(1px) !important;
     box-shadow: 0 2px 4px rgba(15, 23, 42, 0.04) !important;
 }
 
-/* Premium persistent behavior for specific main call-to-actions */
+/* Premium active modifiers */
 .quick-btn.orange-quote-btn {
     background: var(--accent-orange) !important;
     color: #ffffff !important;
@@ -460,14 +457,49 @@
     border-color: #25d366 !important;
     color: #128c7e !important;
 }
+
 .wa-direct-btn:hover {
     background: linear-gradient(135deg, #25d366 0%, #1ea952 100%) !important;
     border-color: #25d366 !important;
     color: #ffffff !important;
 }
+
 .back-btn {
     background-color: #f1f5f9 !important;
     border-color: #e2e8f0 !important;
+}
+
+/* Gated Lead verification specific forms inputs */
+.lead-form-card input[type="text"],
+.lead-form-card input[type="tel"] {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 13px;
+    outline: none;
+    background: #ffffff;
+    transition: border-color 0.2s ease;
+}
+
+.lead-form-card input:focus {
+    border-color: #2563eb;
+}
+
+.verify-btn {
+    background: var(--accent-orange) !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.verify-btn:hover {
+    opacity: 0.95;
 }
 
 /* ── TYPING ACTIVITY LOADING DOTS ── */
@@ -514,7 +546,7 @@
     40% { transform: scale(1.1); opacity: 1; }
 }
 
-/* ── ACCESS-OPTIMIZED WHATSAPP BANNER + TYPING ROW STYLING ── */
+/* ── INTERACTION ROW FOOTER STYLING ── */
 .chat-footer,
 .chat-input-container {
     display: flex !important;
@@ -561,7 +593,7 @@
     font-size: 16px !important;
 }
 
-/* Manual Text Typing Input Area Row */
+/* Manual Text Input Workspace Row */
 .typing-row {
     display: flex !important;
     width: 100% !important;
@@ -569,7 +601,6 @@
     box-sizing: border-box !important;
 }
 
-/* Input Field Box Styling */
 .chat-input-field,
 .typing-row input[type="text"],
 #user-input {
@@ -591,14 +622,12 @@
     box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1) !important;
 }
 
-/* Traditional Send Button layout next to the text input */
 .chat-submit-btn,
 .typing-row button,
 #send-btn {
     background: #161b22 !important; 
     color: #ffffff !important;
     border: none !important;
-    padding: 0 16px !important;
     width: 44px;
     height: 44px;
     border-radius: 6px !important;
@@ -652,42 +681,18 @@
 }
 
 @keyframes iconEntrance {
-    0% {
-        transform: scale(0) translateY(100px) rotate(-45deg);
-        opacity: 0;
-    }
-    70% {
-        transform: scale(1.15) translateY(-5px) rotate(10deg);
-        opacity: 1;
-    }
-    100% {
-        transform: scale(1) translateY(0) rotate(0deg);
-        opacity: 1;
-    }
+    0% { transform: scale(0) translateY(100px) rotate(-45deg); opacity: 0; }
+    70% { transform: scale(1.15) translateY(-5px) rotate(10deg); opacity: 1; }
+    100% { transform: scale(1) translateY(0) rotate(0deg); opacity: 1; }
 }
 
 @keyframes iconAttention {
-    0%, 100% {
-        transform: scale(1) rotate(0deg);
-        box-shadow: 0 8px 24px rgba(230, 92, 0, 0.3);
-    }
-    8% {
-        transform: scale(1.14) translateY(-6px) rotate(-10deg);
-        box-shadow: 0 16px 32px rgba(230, 92, 0, 0.45);
-    }
-    14% {
-        transform: scale(1.14) translateY(-6px) rotate(12deg);
-    }
-    20% {
-        transform: scale(1.14) translateY(-6px) rotate(-6deg);
-    }
-    26% {
-        transform: scale(1.14) translateY(-6px) rotate(4deg);
-    }
-    32% {
-        transform: scale(1) translateY(0) rotate(0deg);
-        box-shadow: 0 8px 24px rgba(230, 92, 0, 0.3);
-    }
+    0%, 100% { transform: scale(1) rotate(0deg); box-shadow: 0 8px 24px rgba(230, 92, 0, 0.3); }
+    8% { transform: scale(1.14) translateY(-6px) rotate(-10deg); box-shadow: 0 16px 32px rgba(230, 92, 0, 0.45); }
+    14% { transform: scale(1.14) translateY(-6px) rotate(12deg); }
+    20% { transform: scale(1.14) translateY(-6px) rotate(-6deg); }
+    26% { transform: scale(1.14) translateY(-6px) rotate(4deg); }
+    32% { transform: scale(1) translateY(0) rotate(0deg); box-shadow: 0 8px 24px rgba(230, 92, 0, 0.3); }
 }
 
 .notification-dot {
@@ -745,7 +750,7 @@
     color: #ef4444;
 }
 
-/* ── RESPONSIVE SPECIFICATION FOR MOBILE ── */
+/* ── RESPONSIVE OVERRIDES ── */
 @media (max-width: 480px) {
     #chatbot-container, 
     .chatbot-container {
