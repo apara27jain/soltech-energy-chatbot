@@ -1,8 +1,3 @@
-/* ==========================================================================
-   Soltech Premium Responsive Chatbot Core Stylesheet Configuration
-   ========================================================================== */
-
-/* ── BASE CONTAINER & ENVIRONMENT STRUCTURAL HOOKS ── */
 #chatbot-container, 
 .chatbot-container {
     position: fixed;
@@ -20,15 +15,13 @@
     transform: translateY(120%);
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
 }
 
 #chatbot-container.open {
     transform: translateY(0);
 }
 
-/* ── FIXED TOP HEADER - PRECISE ALIGNMENTS WITH CIRCLE-IN-A-CIRCLE BADGE ── */
+/* ── FIXED TOP HEADER WITH CORNER CIRCLE-IN-A-CIRCLE BADGE ── */
 .chat-header {
     background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
     padding: 12px 14px;
@@ -48,7 +41,7 @@
     gap: 10px;
 }
 
-/* Premium Circle-in-a-Circle Logo Design */
+/* Precision Circle-In-A-Circle Geometric Architecture */
 .chat-header-logo-outer-ring {
     width: 38px;
     height: 38px;
@@ -111,6 +104,7 @@
     display: inline-block;
 }
 
+/* ── PRECISE HEADER CONTROLS GROUP WORKSPACE ── */
 .chat-header-controls {
     display: flex !important;
     flex-direction: row !important;
@@ -135,7 +129,7 @@
     color: #ffffff;
 }
 
-/* ── CONTROLS PANEL LANGUAGE CHANGER PILLS ── */
+/* Compact Pill Multi-Language Bar Workspace */
 .premium-lang-bar {
     display: flex !important;
     gap: 2px !important;
@@ -168,7 +162,7 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15) !important;
 }
 
-/* ── PROGRESS BAR LOADER ── */
+/* ── PROGRESS BAR ── */
 #lead-progress {
     width: 100%;
     height: 3px;
@@ -188,7 +182,7 @@
     transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* ── SCROLLING CHAT BOX ── */
+/* ── SCROLLING CHAT CONTAINER ── */
 #chat-box {
     flex: 1;
     background-color: #f8fafc !important;
@@ -200,48 +194,18 @@
     box-sizing: border-box;
 }
 
-/* ── SIDEBAR AVATAR SPECS FOR BOT MESSAGES ── */
-.bot-message-wrapper {
-    display: flex !important;
-    align-items: flex-end !important;
-    gap: 10px !important;
-    margin-top: 6px !important;
-    width: 100% !important;
-    box-sizing: border-box;
-    animation: fadeInRow 0.25s ease-out forwards;
-}
-
-.company-logo-sidebar {
-    flex-shrink: 0 !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    width: 32px !important;
-    height: 32px !important;
-}
-
-.chat-sidebar-logo {
-    height: 32px !important;
-    width: 32px !important;
-    border-radius: 50% !important;
-    object-fit: cover !important;
-    border: 1px solid #e2e8f0 !important;
-    background-color: #ffffff !important;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-/* ── CHAT BUBBLES ── */
+/* ── MESSAGE BUBBLES ── */
 .bot-message {
     background-color: #ffffff !important;
     color: #1e293b;
     border: 1px solid #e2e8f0;
     padding: 12px 14px;
     border-radius: 14px 14px 14px 2px;
-    max-width: 82% !important;
+    max-width: 85%;
     font-size: 13.5px;
     line-height: 1.5;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
-    box-sizing: border-box;
+    align-self: flex-start;
     word-wrap: break-word;
 }
 
@@ -256,7 +220,6 @@
     align-self: flex-end;
     box-shadow: 0 3px 10px rgba(230, 92, 0, 0.15);
     word-wrap: break-word;
-    animation: fadeInUser 0.2s ease-out forwards;
 }
 
 .message-content a.download-link {
@@ -265,21 +228,20 @@
     text-decoration: underline;
 }
 
-/* ── HORIZONTAL BUTTON ACTION CHIPS ── */
+/* ── HORIZONTAL CHIP SYSTEM ROWS ── */
 .quick-actions-wrapper {
     display: flex !important;
     flex-direction: row !important;
     flex-wrap: wrap !important;
     justify-content: flex-start !important;
     gap: 8px !important;
-    padding: 6px 0 10px 42px !important;
+    padding: 4px 0 10px 0 !important;
     width: 100% !important;
     box-sizing: border-box !important;
     clear: both !important;
 }
 
-.quick-btn, 
-.quick-actions-wrapper button {
+.quick-btn {
     background-color: #ffffff !important;
     color: #475569 !important;
     border: 1px solid #cbd5e1 !important;
@@ -296,8 +258,7 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03) !important;
 }
 
-.quick-btn:hover, 
-.quick-actions-wrapper button:hover {
+.quick-btn:hover {
     background: linear-gradient(135deg, #ff6b00 0%, #e65c00 100%) !important;
     color: #ffffff !important;
     border-color: #ff6b00 !important;
@@ -316,37 +277,6 @@
 .back-btn {
     background-color: #f1f5f9 !important;
     border-color: #e2e8f0 !important;
-}
-
-/* ── LEAD FORMS INTAKE STAGE ── */
-.lead-form-card input {
-    width: 100%;
-    padding: 8px 10px;
-    font-size: 12.5px;
-    border: 1px solid #cbd5e1;
-    border-radius: 6px;
-    background-color: #f8fafc;
-    color: #0f172a;
-    box-sizing: border-box;
-    transition: all 0.2s ease;
-}
-
-.lead-form-card input:focus {
-    outline: none;
-    border-color: #ff6b00;
-    background-color: #ffffff;
-    box-shadow: 0 0 0 2px rgba(255, 107, 0, 0.15);
-}
-
-.lead-form-card .verify-btn {
-    background: linear-gradient(135deg, #ff6b00 0%, #e65c00 100%) !important;
-    color: #ffffff !important;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 6px;
-    font-size: 13px;
-    font-weight: 700;
-    cursor: pointer;
 }
 
 /* ── TYPING ACTIVITY LOADING DOTS ── */
@@ -371,7 +301,7 @@
     display: none !important;
 }
 
-/* ── FOOTER SUBMISSION BAR PANEL ── */
+/* ── FOOTER INPUT LAYOUT ── */
 .chat-footer {
     padding: 12px;
     background-color: #ffffff;
@@ -414,15 +344,10 @@
     align-items: center;
     justify-content: center;
     font-size: 14px;
-    transition: transform 0.2s ease;
     flex-shrink: 0;
 }
 
-.chat-submit-btn:hover {
-    transform: scale(1.05);
-}
-
-/* ── CIRCULAR EXT FLOATER TRIGGER PANEL ── */
+/* ── FLOATER TRIGGER PANEL ── */
 #chat-toggle {
     position: fixed;
     bottom: 20px;
@@ -440,28 +365,14 @@
     font-size: 24px;
     box-shadow: 0 4px 16px rgba(230, 92, 0, 0.3);
     z-index: 99998;
-    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-#chat-toggle:hover {
-    transform: scale(1.08);
-}
-
-/* ── KEYFRAME BASE ENGINE RULES ── */
-@keyframes fadeInRow {
-    from { opacity: 0; transform: translateY(6px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-@keyframes fadeInUser {
-    from { opacity: 0; transform: translateY(4px); }
-    to { opacity: 1; transform: translateY(0); }
-}
 @keyframes bounceTyping {
     0%, 80%, 100% { transform: scale(0); }
     40% { transform: scale(1.0); }
 }
 
-/* ── RESPONSIVE RESPONSIVENESS MATRIX ── */
+/* ── RESPONSIVE SPECIFICATION FOR MOBILE ── */
 @media (max-width: 480px) {
     #chatbot-container, 
     .chatbot-container {
@@ -470,12 +381,5 @@
         width: 100% !important;
         height: 100% !important;
         border-radius: 0 !important;
-    }
-    .bot-message {
-        max-width: 80% !important;
-    }
-    .quick-actions-wrapper {
-        padding-left: 42px !important;
-        gap: 6px !important;
     }
 }
