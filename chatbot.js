@@ -1,6 +1,6 @@
 // ==========================================================================
 // Soltech Energy Chatbot Engine
-// chatbot.js [SYNTAX ERROR FIXED & STRUCTURALLY VERIFIED]
+// chatbot.js [STRUCTURALLY RECONCILED & REPAIRED]
 // ==========================================================================
 
 const chatToggle = document.getElementById("chat-toggle");
@@ -406,47 +406,59 @@ function injectGatedActionCTAs() {
     scrollBottom();
 }
 
+// ==========================================================================
+// UPDATED & ENHANCED VERIFICATION FORM GENERATOR
+// ==========================================================================
 function triggerGatedWall(targetActionGoal) {
     document.querySelectorAll(".gated-wrapper-panel").forEach(el => el.remove());
     document.querySelectorAll(".quick-actions-wrapper").forEach(el => el.remove());
 
-    let leadFormHtml = `
-📋 // Locate where you output the verification window inside chatbot.js
-const formHTML = `
-<div class="lead-form-card">
-    <strong>📋 Identity Verification Required:</strong>
-    <p>You must fill out your name and phone number to book a demo or download our brochure files:</p>
+    // Secure DOM Creation Strategy prevents breaking out of template literals
+    const formContainer = document.createElement("div");
+    formContainer.className = "lead-form-card";
     
-    <input type="text" id="leadName" placeholder="Your Name *" required>
-    <input type="tel" id="leadPhone" placeholder="Phone Number *" required>
-    <input type="text" id="leadCompany" placeholder="Company Name (Optional)">
-    
-    <button class="verify-btn" onclick="handleLeadSubmission()">Verify to Access</button>
-    
-    <a href="#" class="exit-menu-link" onclick="initializeWelcomeGreeting(); return false;">
-        ↪️ Exit to Menu
-    </a>
-</div>`
-;
-    addBotMessage(leadFormHtml, false);
+    formContainer.innerHTML = `
+        <strong>📋 Identity Verification Required:</strong>
+        <p>Please provide your name and phone number to unlock automated files or book your live tracking design:</p>
+        
+        <input type="text" id="leadName" placeholder="Your Name *" required>
+        <input type="tel" id="leadPhone" placeholder="Phone Number *" required>
+        <input type="text" id="leadCompany" placeholder="Company Name (Optional)">
+        
+        <button id="submitGatedLeadBtn" class="verify-btn">Verify to Access</button>
+        
+        <a href="#" id="exitFormLink" class="exit-menu-link">
+            ↪️ Exit to Menu
+        </a>
+    `;
 
-    document.getElementById("cancel-lead-gated-btn").onclick = () => initializeWelcomeGreeting();
+    chatBox.appendChild(formContainer);
+    scrollBottom();
 
-    document.getElementById("submit-lead-gated-btn").onclick = () => {
-        const nameVal = document.getElementById("lead-name").value.trim();
-        const phoneVal = document.getElementById("lead-phone").value.trim();
-        const companyVal = document.getElementById("lead-company").value.trim();
+    // Bind clean structural event handlers
+    document.getElementById("exitFormLink").onclick = (e) => {
+        e.preventDefault();
+        initializeWelcomeGreeting();
+    };
+
+    document.getElementById("submitGatedLeadBtn").onclick = (e) => {
+        e.preventDefault();
+        const nameVal = document.getElementById("leadName").value.trim();
+        const phoneVal = document.getElementById("leadPhone").value.trim();
+        const companyVal = document.getElementById("leadCompany").value.trim();
         
         if (!nameVal || !phoneVal) {
-            alert("Name and Phone Number fields are strictly required to proceed.");
+            alert("Name and Phone Number are strictly required fields.");
             return;
         }
         
         flowData.leadName = nameVal;
         flowData.leadPhone = phoneVal;
-        flowData.leadCompany = companyVal;
+        flowData.leadCompany = companyVal || "Individual/Residential";
         flowData.actionContextTarget = targetActionGoal;
         
+        // Remove the visual form element now that the data is saved
+        formContainer.remove();
         processCompletedLeadCaptured();
     };
 }
