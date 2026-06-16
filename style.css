@@ -1,70 +1,44 @@
-
 /* ==========================================================================
-   Soltech Energy Premium Chatbot Stylesheet - COMPLETE VISUAL REFINEMENT
+   Soltech Energy Premium Chatbot Stylesheet - COMPLETE DESIGN UPDATE
    ========================================================================== */
 
 :root {
-    --soltech-primary: #1a252f;       /* Deep Slate / Trust & Engineering */
-    --soltech-accent: #f39c12;        /* Solar Gold / Sunlight Capture */
-    --soltech-accent-hover: #e67e22;  /* Deep Amber Transition */
-    --soltech-success: #27ae60;       /* High-Yield / Subsidy Gains */
-    --soltech-bg-light: #f8f9fa;      /* Premium Cool Grey Ice White */
-    --soltech-card-bg: #ffffff;       /* Pure White Elevated Surfaces */
-    --soltech-text-main: #2c3e50;     /* Slate Dark Text Body */
-    --soltech-text-muted: #7f8c8d;    /* Muted Engineering Spec Gray */
-    --soltech-radius-lg: 16px;        /* Smooth Rounded Structural Corners */
-    --soltech-radius-sm: 8px;
-    --soltech-shadow: 0 12px 40px rgba(0, 0, 0, 0.12); /* Atmospheric Depth */
+    --soltech-primary: #1a252f;
+    --soltech-accent: #f39c12;
+    --soltech-accent-hover: #e67e22;
+    --soltech-success: #27ae60;
+    --soltech-success-hover: #1ebd56;
+    --soltech-bg-light: #f8f9fa;
+    --soltech-card-bg: #ffffff;
+    --soltech-text-main: #2c3e50;
+    --soltech-text-muted: #7f8c8d;
+    --soltech-radius-lg: 12px;
+    --soltech-radius-sm: 6px;
+    --soltech-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     --soltech-transition: cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-/* --- Core Floating Widget Toggle Button --- */
-#chat-toggle {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 65px;
-    height: 65px;
-    background: linear-gradient(135deg, var(--soltech-primary), #2c3e50);
-    color: #ffffff;
-    border-radius: 50%;
-    box-shadow: 0 6px 20px rgba(26, 37, 47, 0.3);
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 26px;
-    z-index: 9999;
-    transition: all 0.4s var(--soltech-transition);
-}
-
-#chat-toggle:hover {
-    transform: translateY(-4px) scale(1.05);
-    box-shadow: 0 10px 25px rgba(243, 156, 18, 0.4);
-    background: linear-gradient(135deg, var(--soltech-accent), var(--soltech-accent-hover));
-}
-
-/* --- Main Framework Window Container --- */
+/* --- Optimized Compact Chatbot Container --- */
 #chatbot-container {
     position: fixed;
-    bottom: 110px;
-    right: 30px;
-    width: min(460px, calc(100vw - 40px));
-    height: min(720px, 85vh);
+    bottom: 90px;
+    right: 25px;
+    /* Reduced width and height for a sleek, compact viewport footprint */
+    width: min(400px, calc(100vw - 30px));
+    height: min(600px, 75vh);
     background: var(--soltech-bg-light);
     border-radius: var(--soltech-radius-lg);
     box-shadow: var(--soltech-shadow);
-    border: 1px solid rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(0, 0, 0, 0.05);
     display: flex;
     flex-direction: column;
     overflow: hidden;
     z-index: 9998;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
     opacity: 0;
-    transform: translateY(30px) scale(0.95);
+    transform: translateY(20px) scale(0.96);
     pointer-events: none;
-    transition: all 0.4s var(--soltech-transition);
+    transition: all 0.3s var(--soltech-transition);
 }
 
 #chatbot-container.open {
@@ -73,27 +47,26 @@
     pointer-events: auto;
 }
 
-/* --- Upgraded Header Block Component --- */
+/* --- Header & Title Components --- */
 .chat-header {
     background: linear-gradient(135deg, var(--soltech-primary), #111a24);
     color: #ffffff;
-    padding: 18px 22px;
+    padding: 14px 18px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     flex-shrink: 0;
 }
 
 .chat-header-left {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
 }
 
 .chat-header-avatar {
-    width: 38px;
-    height: 38px;
+    width: 32px;
+    height: 32px;
     background: rgba(255, 255, 255, 0.1);
     border-radius: 50%;
     display: flex;
@@ -101,390 +74,310 @@
     justify-content: center;
     border: 1.5px solid var(--soltech-accent);
     color: var(--soltech-accent);
-    font-size: 18px;
-}
-
-.chat-header-info {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
 }
 
 .chat-header-info h3 {
     margin: 0;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 600;
-    letter-spacing: 0.3px;
-    line-height: 1.2;
 }
 
-/* Fixed positioning overlap bug for online indicator text fields */
-.chat-header-info span, 
-.chat-header-info p,
-#chatbot-container .online-status {
-    margin: 0 !important;
-    padding: 0 !important;
-    font-size: 11px !important;
-    color: var(--soltech-success) !important;
-    display: flex !important;
-    align-items: center !important;
-    gap: 4px !important;
-    font-weight: 500 !important;
-    background: transparent !important;
-    border: none !important;
-}
-
-.chat-header-info span::before {
-    content: "●";
-    font-size: 9px;
-    animation: pulse-green 2s infinite;
-}
-
-.chat-header-actions {
+.chat-header-info span {
+    font-size: 11px;
+    color: var(--soltech-success);
     display: flex;
     align-items: center;
-    gap: 14px;
-    font-size: 16px;
-    color: rgba(255, 255, 255, 0.7);
+    gap: 4px;
 }
 
-.chat-header-actions i,
-.chat-header-actions span,
-.chat-header-actions button {
-    cursor: pointer;
+/* --- Header Utility Controls Hover Effects --- */
+.chat-header-right button {
     background: transparent;
     border: none;
     color: rgba(255, 255, 255, 0.7);
-    transition: color 0.2s;
-}
-
-.chat-header-actions i:hover {
-    color: var(--soltech-accent);
-}
-
-/* --- Premium Language Selection Header Anchor --- */
-.premium-lang-bar {
-    background: #ffffff;
-    display: flex !important;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-    padding: 10px 16px;
-    gap: 10px;
-    flex-shrink: 0;
-}
-
-.lang-toggle-btn {
-    flex: 1;
-    background: var(--soltech-bg-light);
-    border: 1px solid rgba(0,0,0,0.06);
-    padding: 10px 14px;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--soltech-text-main);
-    border-radius: var(--soltech-radius-sm);
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    transition: all 0.25s ease;
-}
-
-.lang-toggle-btn:hover {
-    background: #eaecee;
-}
-
-.lang-toggle-btn.active-lang {
-    background: rgba(243, 156, 18, 0.1);
-    border-color: rgba(243, 156, 18, 0.4);
-    color: var(--soltech-accent-hover);
-}
-
-/* Global Clean Patch to suppress unstyled native buttons leakage inside containers */
-#chat-box > button:not([class*="btn"]),
-.chat-header + div:not(.premium-lang-bar):not(#lead-progress) {
-    display: none !important;
-}
-
-/* --- Unified Global Quick Action Button Matrix (Top Strip & Message Content) --- */
-.quick-actions-wrapper,
-.chat-buttons-container {
-    display: flex !important;
-    flex-direction: row !important;
-    overflow-x: auto !important;
-    white-space: nowrap !important;
-    padding: 12px 16px !important;
-    gap: 10px !important;
-    background: #ffffff !important;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
-    flex-shrink: 0;
-}
-
-/* Handle custom instances where buttons render directly inside conversational logs */
-.bot-message .quick-actions-wrapper,
-.bot-message .chat-buttons-container {
-    background: transparent !important;
-    padding: 8px 0 0 0 !important;
-    border-bottom: none !important;
-}
-
-/* Smooth custom scrollbars for interactive scrolling panels */
-.quick-actions-wrapper::-webkit-scrollbar,
-.chat-buttons-container::-webkit-scrollbar {
-    height: 4px;
-}
-.quick-actions-wrapper::-webkit-scrollbar-thumb,
-.chat-buttons-container::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.08);
+    font-size: 14px;
+    padding: 4px;
+    margin-left: 6px;
     border-radius: 4px;
+    transition: all 0.2s ease;
 }
 
-/* MASTER REFINEMENT: Normalizes both types of interactive query pills */
-.quick-btn,
-.quick-actions-wrapper button,
-.chat-buttons-container button,
-#chat-box .quick-btn {
-    background: #ffffff !important;
-    color: var(--soltech-text-main) !important;
-    border: 1px solid rgba(0, 0, 0, 0.08) !important;
-    padding: 0 16px !important;
-    font-size: 13px !important;
-    font-weight: 600 !important;
-    border-radius: 30px !important;
-    cursor: pointer !important;
-    min-height: 38px !important;
-    height: 38px !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    flex-shrink: 0 !important;
-    box-sizing: border-box !important;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.02) !important;
-    text-decoration: none !important;
-    transition: all 0.25s var(--soltech-transition) !important;
+.chat-header-right button:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.15);
+    transform: scale(1.05);
 }
 
-.quick-btn:hover,
-.quick-actions-wrapper button:hover,
-.chat-buttons-container button:hover {
-    background: var(--soltech-primary) !important;
-    color: #ffffff !important;
-    border-color: var(--soltech-primary) !important;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.08) !important;
-}
-
-/* System Action Modifiers */
-.back-btn {
-    background: transparent !important;
-    color: #c0392b !important;
-    border: 1px dashed rgba(192, 57, 43, 0.4) !important;
-}
-.back-btn:hover {
-    background: #c0392b !important;
-    color: #ffffff !important;
-}
-
-/* --- Messaging Box Frame & Custom Scrollbars --- */
+/* --- Main Scrollable Chat Area --- */
 #chat-box {
     flex: 1;
-    padding: 24px;
+    padding: 16px;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    scroll-behavior: smooth;
+    gap: 14px;
     background: var(--soltech-bg-light);
 }
 
-#chat-box::-webkit-scrollbar {
-    width: 6px;
-}
-#chat-box::-webkit-scrollbar-track {
-    background: transparent;
-}
-#chat-box::-webkit-scrollbar-thumb {
-    background: rgba(127, 140, 141, 0.3);
-    border-radius: 10px;
-}
-
-/* --- Dialogue Conversational Card Containers --- */
+/* --- Dialogue Containers --- */
 .bot-message, .user-message {
-    max-width: 90%;
+    max-width: 85%;
     display: flex;
     flex-direction: column;
-    animation: fade-up 0.35s var(--soltech-transition);
 }
-
 .bot-message { align-self: flex-start; }
 .user-message { align-self: flex-end; }
 
 .bot-message .message-content {
-    background: var(--soltech-card-bg);
+    background: #ffffff;
     color: var(--soltech-text-main);
+    padding: 12px 14px;
     border-radius: 4px var(--soltech-radius-lg) var(--soltech-radius-lg) var(--soltech-radius-lg);
-    padding: 16px 18px;
-    font-size: 14.5px;
-    line-height: 1.6;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.015);
-    border: 1px solid rgba(0, 0, 0, 0.03);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.01);
+    border: 1px solid rgba(0,0,0,0.03);
+    font-size: 13.5px;
+    line-height: 1.45;
 }
 
 .user-message .message-content {
     background: linear-gradient(135deg, var(--soltech-primary), #2c3e50);
     color: #ffffff;
+    padding: 10px 14px;
     border-radius: var(--soltech-radius-lg) 4px var(--soltech-radius-lg) var(--soltech-radius-lg);
-    padding: 14px 18px;
-    font-size: 14.5px;
-    line-height: 1.5;
+    font-size: 13.5px;
 }
 
-/* Premium Interactive Welcome Card Highlight */
-.intro-card .message-content {
-    border-left: 4px solid var(--soltech-accent);
-    background: linear-gradient(135deg, rgba(243, 156, 18, 0.04), #ffffff) !important;
+/* --- Horizontal Suggestion Button Containers --- */
+.quick-actions-wrapper, 
+.gated-wrapper-panel {
+    display: flex !important;
+    flex-direction: row !important;
+    overflow-x: auto !important;
+    white-space: nowrap !important;
+    padding: 8px 14px !important;
+    gap: 6px !important;
+    background: #ffffff !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04) !important;
+    flex-shrink: 0;
 }
 
-.intro-card img {
-    max-width: 110px;
-    height: auto;
-    margin-bottom: 12px;
-    display: block;
+/* Hide scrollbars */
+.quick-actions-wrapper::-webkit-scrollbar,
+.gated-wrapper-panel::-webkit-scrollbar {
+    height: 3px;
+}
+.quick-actions-wrapper::-webkit-scrollbar-thumb,
+.gated-wrapper-panel::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.08);
+    border-radius: 2px;
 }
 
-/* --- REPAIRED: Clean High-Visibility WhatsApp Action Trigger --- */
-.wa-direct-btn,
-a[href*="wa.me"],
-a[href*="whatsapp.com"],
-#chat-box button[class*="whatsapp"],
-#chat-box a[class*="whatsapp"] {
+/* --- COMPLETE HOVER EFFECTS FOR SUGGESTION BUTTONS --- */
+.quick-btn,
+.quick-actions-wrapper button,
+.gated-wrapper-panel button {
+    background: #ffffff !important;
+    color: var(--soltech-text-main) !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    padding: 0 14px !important;
+    font-size: 12.5px !important;
+    font-weight: 600 !important;
+    border-radius: 18px !important;
+    cursor: pointer !important;
+    height: 32px !important;
     display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+    box-sizing: border-box !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.01) !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* High-Contrast Interactive Hover Rule */
+.quick-btn:hover,
+.quick-actions-wrapper button:hover,
+.gated-wrapper-panel button:hover {
+    background: var(--soltech-primary) !important;
+    color: #ffffff !important;
+    border-color: var(--soltech-primary) !important;
+    transform: translateY(-1.5px) !important;
+    box-shadow: 0 4px 8px rgba(26, 37, 47, 0.15) !important;
+}
+
+/* System Back Button Modifier */
+.back-btn {
+    color: #c0392b !important;
+    border: 1px dashed rgba(192, 57, 43, 0.35) !important;
+}
+.back-btn:hover {
+    background: #c0392b !important;
+    color: #ffffff !important;
+    border-color: #c0392b !important;
+}
+
+/* --- STABLE WHATSAPP CTA HOVER DESIGN --- */
+#chat-box .wa-direct-btn,
+.gated-wrapper-panel .wa-direct-btn,
+#footer-whatsapp-cta {
+    display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     gap: 8px !important;
     background: #25d366 !important;
     color: #ffffff !important;
-    text-decoration: none !important;
-    padding: 12px 20px !important;
-    font-weight: 600 !important;
-    font-size: 14px !important;
+    border: none !important;
+    padding: 10px 20px !important;
+    font-weight: 700 !important;
+    font-size: 13px !important;
     border-radius: var(--soltech-radius-sm) !important;
-    margin: 8px 0 !important;
-    border: none !important;
-    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2) !important;
-    align-self: flex-start !important; /* Locks button box shape from shifting outward */
-    box-sizing: border-box !important;
-    transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+    width: 100% !important;
+    max-width: 300px !important;
+    margin: 6px auto !important;
+    box-shadow: 0 3px 10px rgba(37, 211, 102, 0.25) !important;
+    cursor: pointer !important;
+    text-decoration: none !important;
+    height: 38px !important;
+    transition: all 0.2s ease !important;
 }
 
-.wa-direct-btn:hover, a[href*="wa.me"]:hover {
-    transform: translateY(-1px) !important;
-    box-shadow: 0 6px 16px rgba(37, 211, 102, 0.35) !important;
-    background: #20ba5a !important;
-}
-
-/* --- Premium Dynamic Modules --- */
-.savings-card {
-    background: linear-gradient(135deg, var(--soltech-success), #2ecc71);
+#chat-box .wa-direct-btn:hover,
+.gated-wrapper-panel .wa-direct-btn:hover,
+#footer-whatsapp-cta:hover {
+    background: var(--soltech-success-hover) !important;
     color: #ffffff !important;
-    border-radius: 14px;
-    padding: 18px;
-    box-shadow: 0 6px 18px rgba(39, 174, 96, 0.25);
-    border: none !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4) !important;
 }
 
-.subsidy-badge {
-    background: rgba(39, 174, 96, 0.1);
-    color: var(--soltech-success);
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-weight: 600;
-    display: inline-block;
+/* --- Identity Verification Forms --- */
+.lead-form-card {
+    background: #ffffff;
+    border: 1px solid rgba(0,0,0,0.06);
+    border-radius: var(--soltech-radius-lg);
+    padding: 16px;
+    box-shadow: var(--soltech-shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 8px 0;
+}
+
+.lead-form-card strong {
+    font-size: 14px;
+}
+
+.lead-form-card p {
+    margin: 0 0 4px 0;
     font-size: 12px;
+    color: var(--soltech-text-muted);
 }
 
-/* --- Footer Controls & Input Processing Architecture --- */
+.lead-form-card input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid rgba(0,0,0,0.12);
+    border-radius: var(--soltech-radius-sm);
+    font-size: 13px;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease;
+}
+
+.lead-form-card input:focus {
+    border-color: var(--soltech-accent);
+    outline: none;
+}
+
+/* Verification Submit Button & Hover */
+.lead-form-card .verify-btn {
+    background: #25d366;
+    color: white;
+    border: none;
+    padding: 11px;
+    font-weight: 700;
+    font-size: 13px;
+    border-radius: var(--soltech-radius-sm);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.lead-form-card .verify-btn:hover {
+    background: var(--soltech-success-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(37, 211, 102, 0.2);
+}
+
+/* Form Cancel/Exit Button & Hover */
+.lead-form-card .exit-form-btn {
+    background: transparent;
+    color: var(--soltech-text-muted);
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+    padding: 4px;
+    transition: color 0.2s ease;
+}
+
+.lead-form-card .exit-form-btn:hover {
+    color: #c0392b;
+    text-decoration: underline;
+}
+
+/* --- Footer Chat Input Bar --- */
 .chat-footer {
     background: #ffffff;
-    padding: 14px 18px;
+    padding: 10px 14px;
     display: flex;
     align-items: center;
-    gap: 12px;
-    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    gap: 8px;
+    border-top: 1px solid rgba(0, 0, 0, 0.04);
     flex-shrink: 0;
 }
 
 #user-input {
     flex: 1;
     border: none;
-    padding: 10px 4px;
-    font-size: 14px;
-    color: var(--soltech-text-main);
     background: transparent;
-    resize: none;
-    max-height: 60px;
-}
-
-#user-input:focus {
+    font-size: 13px;
+    color: var(--soltech-text-main);
     outline: none;
+    resize: none;
 }
 
+/* Message Send Button & Hover */
 #send-btn {
     background: var(--soltech-primary);
     border: none;
     color: #ffffff;
-    width: 38px;
-    height: 38px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
-    transition: background 0.2s;
+    transition: all 0.2s ease;
 }
 
 #send-btn:hover {
     background: var(--soltech-accent);
+    transform: scale(1.05);
 }
 
-/* Progress Tracker Bar */
+/* --- Progress Management Indicators --- */
 #lead-progress {
-    height: 4px;
+    height: 3px;
     background: #e1e4e6;
     width: 100%;
-    position: relative;
     flex-shrink: 0;
 }
 
 #progress-bar-fill {
     height: 100%;
     width: 0%;
-    background: linear-gradient(90deg, var(--soltech-accent), var(--soltech-success));
-    transition: width 0.4s ease;
-}
-
-@keyframes fade-up {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes pulse-green {
-    0% { transform: scale(0.95); opacity: 0.5; }
-    50% { transform: scale(1.1); opacity: 1; }
-    100% { transform: scale(0.95); opacity: 0.5; }
+    background: var(--soltech-accent);
+    transition: width 0.3s ease;
 }
 
 .hidden { display: none !important; }
-
-/* --- Mobile Device Layout Rules --- */
-@media (max-width: 480px) {
-    #chatbot-container {
-        bottom: 0;
-        right: 0;
-        width: 100vw;
-        height: 100vh;
-        max-height: 100vh;
-        border-radius: 0;
-    }
-}
-
-```
