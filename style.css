@@ -28,36 +28,78 @@
     transform: translateY(0);
 }
 
-/* ── HEADER NAVIGATION & METRIC ALIGNMENTS ── */
+/* ── FIXED TOP HEADER - PRECISE ALIGNMENTS WITH CIRCLE-IN-A-CIRCLE BADGE ── */
 .chat-header {
     background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-    padding: 14px 16px;
+    padding: 12px 14px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     color: #ffffff;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    height: 64px;
+    box-sizing: border-box;
+    flex-shrink: 0;
+}
+
+.chat-header-left-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Premium Circle-in-a-Circle Logo Design */
+.chat-header-logo-outer-ring {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.chat-header-logo-inner-ring {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chat-header-logo-inner-ring img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .chat-header-info {
     display: flex;
     flex-direction: column;
+    justify-content: center;
 }
 
 .chat-header-title {
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 700;
     color: #ffffff;
     letter-spacing: 0.3px;
+    line-height: 1.2;
 }
 
 .chat-header-status {
     font-size: 11px;
     color: #38bdf8;
-    margin-top: 2px;
+    margin-top: 3px;
     display: flex;
     align-items: center;
     gap: 4px;
+    line-height: 1;
 }
 
 .chat-header-status::before {
@@ -73,30 +115,33 @@
     display: flex !important;
     flex-direction: row !important;
     align-items: center !important;
-    gap: 10px !important;
+    gap: 8px !important;
 }
 
 .chat-header-btn {
     background: transparent;
     border: none;
     color: #94a3b8;
-    font-size: 16px;
+    font-size: 15px;
     cursor: pointer;
     padding: 4px;
     transition: color 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .chat-header-btn:hover {
     color: #ffffff;
 }
 
-/* ── CORNER CONTROLS LANGUAGES MODAL TOGGLE ELEMENT BUTTONS ── */
+/* ── CONTROLS PANEL LANGUAGE CHANGER PILLS ── */
 .premium-lang-bar {
     display: flex !important;
-    gap: 4px !important;
-    background: rgba(255, 255, 255, 0.08) ;
+    gap: 2px !important;
+    background: rgba(255, 255, 255, 0.08);
     padding: 2px;
-    border-radius: 14px;
+    border-radius: 12px;
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
@@ -104,10 +149,10 @@
     background: transparent !important;
     color: #94a3b8 !important;
     border: none !important;
-    padding: 3px 8px !important;
-    font-size: 11px !important;
+    padding: 3px 6px !important;
+    font-size: 10px !important;
     font-weight: 700 !important;
-    border-radius: 12px !important;
+    border-radius: 10px !important;
     cursor: pointer !important;
     transition: all 0.2s ease !important;
     line-height: 1 !important;
@@ -120,10 +165,10 @@
 .lang-toggle-btn.active-lang {
     background-color: #ffffff !important;
     color: #ff6b00 !important;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15) !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15) !important;
 }
 
-/* ── PROGRESS MATRIX TRACK BAR ── */
+/* ── PROGRESS BAR LOADER ── */
 #lead-progress {
     width: 100%;
     height: 3px;
@@ -143,7 +188,7 @@
     transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* ── SCROLL MAIN STAGE CANVAS ── */
+/* ── SCROLLING CHAT BOX ── */
 #chat-box {
     flex: 1;
     background-color: #f8fafc !important;
@@ -155,10 +200,10 @@
     box-sizing: border-box;
 }
 
-/* ── EXTERIOR LOGO AVATAR ARCHITECTURE ── */
+/* ── SIDEBAR AVATAR SPECS FOR BOT MESSAGES ── */
 .bot-message-wrapper {
     display: flex !important;
-    align-items: flex-end !important; /* Bottom coordinates locked cleanly alongside message bubbles */
+    align-items: flex-end !important;
     gap: 10px !important;
     margin-top: 6px !important;
     width: 100% !important;
@@ -173,26 +218,25 @@
     justify-content: center !important;
     width: 32px !important;
     height: 32px !important;
-    margin-bottom: 2px; /* Slight alignment boost relative to lower font baselines */
 }
 
 .chat-sidebar-logo {
     height: 32px !important;
     width: 32px !important;
-    border-radius: 50% !important; /* Forces the image object to load inside a precise visual circle */
+    border-radius: 50% !important;
     object-fit: cover !important;
     border: 1px solid #e2e8f0 !important;
     background-color: #ffffff !important;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-/* ── BUBBLE DIALOGUE CONTEXT LAYOUT METRICS ── */
+/* ── CHAT BUBBLES ── */
 .bot-message {
     background-color: #ffffff !important;
     color: #1e293b;
     border: 1px solid #e2e8f0;
     padding: 12px 14px;
-    border-radius: 14px 14px 14px 2px; /* Bot tail profile corner signature */
+    border-radius: 14px 14px 14px 2px;
     max-width: 82% !important;
     font-size: 13.5px;
     line-height: 1.5;
@@ -205,11 +249,11 @@
     background: linear-gradient(135deg, #ff6b00 0%, #e65c00 100%);
     color: #ffffff !important;
     padding: 11px 14px;
-    border-radius: 14px 14px 2px 14px; /* User tail profile corner signature */
+    border-radius: 14px 14px 2px 14px;
     max-width: 80%;
     font-size: 13.5px;
     line-height: 1.5;
-    align-self: flex-end; /* Snaps bubble clean to the right window margins */
+    align-self: flex-end;
     box-shadow: 0 3px 10px rgba(230, 92, 0, 0.15);
     word-wrap: break-word;
     animation: fadeInUser 0.2s ease-out forwards;
@@ -221,20 +265,19 @@
     text-decoration: underline;
 }
 
-/* ── HORIZONTAL CHIP PILL NAVIGATION ── */
+/* ── HORIZONTAL BUTTON ACTION CHIPS ── */
 .quick-actions-wrapper {
     display: flex !important;
     flex-direction: row !important;
-    flex-wrap: wrap !important; /* Enables multiple item horizontal wrapping profiles safely */
+    flex-wrap: wrap !important;
     justify-content: flex-start !important;
     gap: 8px !important;
-    padding: 6px 0 10px 42px !important; /* Uniform left offset indent to align below the text card lines */
+    padding: 6px 0 10px 42px !important;
     width: 100% !important;
     box-sizing: border-box !important;
     clear: both !important;
 }
 
-/* White baseline buttons styling rules */
 .quick-btn, 
 .quick-actions-wrapper button {
     background-color: #ffffff !important;
@@ -248,12 +291,11 @@
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    white-space: nowrap !important; /* Protects word labels from vertical text clipping */
+    white-space: nowrap !important;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03) !important;
 }
 
-/* Premium micro-interaction changes during hover */
 .quick-btn:hover, 
 .quick-actions-wrapper button:hover {
     background: linear-gradient(135deg, #ff6b00 0%, #e65c00 100%) !important;
@@ -263,7 +305,6 @@
     box-shadow: 0 4px 10px rgba(230, 92, 0, 0.2) !important;
 }
 
-/* Specific theme classes */
 .wa-direct-btn {
     border-color: #25d366 !important;
     color: #128c7e !important;
@@ -277,7 +318,7 @@
     border-color: #e2e8f0 !important;
 }
 
-/* ── LEAD FORMS CARD INJECTION STRUCTURAL FIELD ── */
+/* ── LEAD FORMS INTAKE STAGE ── */
 .lead-form-card input {
     width: 100%;
     padding: 8px 10px;
@@ -306,14 +347,9 @@
     font-size: 13px;
     font-weight: 700;
     cursor: pointer;
-    transition: opacity 0.2s ease;
 }
 
-.lead-form-card .verify-btn:hover {
-    opacity: 0.95;
-}
-
-/* ── TYPING ACTIVITY DOT ANIMATIONS ── */
+/* ── TYPING ACTIVITY LOADING DOTS ── */
 .typing-indicator-wrapper {
     display: flex;
     align-items: center;
@@ -335,7 +371,7 @@
     display: none !important;
 }
 
-/* ── BOTTOM TEXT SUBMISSION CONTAINER CHANNEL ── */
+/* ── FOOTER SUBMISSION BAR PANEL ── */
 .chat-footer {
     padding: 12px;
     background-color: #ffffff;
@@ -344,6 +380,7 @@
     align-items: center;
     gap: 8px;
     box-sizing: border-box;
+    flex-shrink: 0;
 }
 
 .chat-input-field {
@@ -385,7 +422,7 @@
     transform: scale(1.05);
 }
 
-/* ── LAUNCH TRIGGER ENTRY CHIP FLOATER ── */
+/* ── CIRCULAR EXT FLOATER TRIGGER PANEL ── */
 #chat-toggle {
     position: fixed;
     bottom: 20px;
@@ -410,7 +447,7 @@
     transform: scale(1.08);
 }
 
-/* ── ANIMATIONS ── */
+/* ── KEYFRAME BASE ENGINE RULES ── */
 @keyframes fadeInRow {
     from { opacity: 0; transform: translateY(6px); }
     to { opacity: 1; transform: translateY(0); }
@@ -424,7 +461,7 @@
     40% { transform: scale(1.0); }
 }
 
-/* ── RESPONSIVE MOBILE DEVICE MEDIA CONFIGURATIONS ── */
+/* ── RESPONSIVE RESPONSIVENESS MATRIX ── */
 @media (max-width: 480px) {
     #chatbot-container, 
     .chatbot-container {
