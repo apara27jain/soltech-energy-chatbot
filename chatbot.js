@@ -440,13 +440,19 @@ function triggerGatedWall(targetActionGoal) {
     scrollBottom();
 
     // Bind clean structural event handlers
-    document.getElementById("exitFormBtn").onclick = (e) => {
-        e.preventDefault();
-        // 1. Instantly drop the active form out of the chat log viewport
+// Bind clean structural event handlers
+document.getElementById("exitFormBtn").onclick = (e) => {
+    e.preventDefault();
+        if (typeof formContainer !== "undefined" && formContainer) {
         formContainer.remove();
-        // 2. Safely trigger the core main welcome landing page view
-        initializeWelcomeGreeting();
-    };
+    }
+    const staticFormCard = document.querySelector(".lead-form-card");
+    if (staticFormCard) {
+        staticFormCard.style.display = "none"; 
+    }
+    
+    initializeWelcomeGreeting();
+};
 
     document.getElementById("submitGatedLeadBtn").onclick = (e) => {
         e.preventDefault();
