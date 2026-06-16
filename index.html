@@ -20,72 +20,44 @@
     </button>
 
     <div id="chatbot-container" class="chatbot-container">
-<div class="chat-header">
-    <div class="chat-header-left-group">
-        <div class="chat-header-logo-outer-ring">
-            <div class="chat-header-logo-inner-ring">
-                <img src="logo.jpg" alt="Soltech Logo">
+<div id="chatbot-container" class="chatbot-container">
+    
+    <div class="chat-header">
+        <div class="header-info">
+            <img src="logo.jpg" alt="Soltech Logo" class="chat-company-logo">
+            <div>
+                <h4>Soltech Assistant</h4>
+                <span class="status-indicator">Online</span>
             </div>
         </div>
-                <div class="bot-info">
-                    <h3>Soltech Assistant</h3>
-                    <span class="status"><span class="online-dot"></span>Online</span>
-                </div>
+        <div class="header-actions">
+            <div class="lang-switcher">
+                <button id="lang-en" class="lang-btn active">EN</button>
+                <button id="lang-hi" class="lang-btn">हि</button>
             </div>
-            <div class="header-actions">
-                <div class="lang-switcher-pill">
-                    <button class="lang-btn active" data-lang="EN">EN</button>
-                    <button class="lang-btn" data-lang="HI">HI</button>
-                </div>
-                <button id="refresh-chat" title="Restart Chat">
-                    <i class="fas fa-rotate-right"></i>
-                </button>
-                <button id="minimize-chat" title="Minimize">
-                    <i class="fas fa-minus"></i>
-                </button>
-            </div>
-        </div>
-
-        <div class="persistent-tabs-grid">
-            <div class="persistent-tab-item" data-intent="Cost Calculator" title="Quick System Sizing Estimate">💰 Cost Calc</div>
-            <div class="persistent-tab-item" data-intent="Savings Calculator" title="ROI Calculation Profile">📈 Savings</div>
-            <div class="persistent-tab-item" data-intent="Subsidy Info" title="Government Schemes Rules">📋 Subsidy</div>
-            <div class="persistent-tab-item" data-intent="Book Site Survey" style="color:#e65100;" title="Schedule Solar Site Inspection">📅 Book Survey</div>
-        </div>
-
-        <div id="lead-progress" class="lead-progress hidden">
-            <div class="progress-bar">
-                <div id="progress-fill"></div>
-            </div>
-            <small>Solar Assessment Progress</small>
-        </div>
-        
-        <div id="chat-box" class="chat-box"></div>
-
-        <div id="typing-indicator" class="typing-indicator hidden">
-            <div class="typing-bubble">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-
-        <div class="chat-input-container"> 
-            
-            <div id="submenu-controls-wrapper" class="quick-actions-wrapper hidden"></div>
-
-            <button class="whatsapp-footer-cta" id="footer-whatsapp-cta">
-                 <i class="fab fa-whatsapp"></i> CONNECT VIA WHATSAPP
-            </button>
-
-            <div class="typing-row">
-                 <input type="text" id="user-input" placeholder="Type your solar query here...">
-                 <button id="send-btn">
-                    <i class="fas fa-paper-plane"></i>
-                 </button>
-            </div>
+            <button id="refresh-chat"><i class="fas fa-sync-alt"></i></button>
+            <button id="minimize-chat"><i class="fas fa-minus"></i></button>
         </div>
     </div>
+
+    <div class="horizontal-tabs-nav">
+        <button class="tab-nav-btn" onclick="startFlow('ESTIMATOR')">💰 Cost Calc</button>
+        <button class="tab-nav-btn" onclick="startFlow('ESTIMATOR')">📈 Savings</button>
+        <button class="tab-nav-btn" onclick="triggerGatedWall('Subsidy Info')">📋 Subsidy</button>
+        <button class="tab-nav-btn" onclick="startFlow('SITE_VISIT')">🗓️ Book Survey</button>
+    </div>
+
+    <div id="chat-box" class="chat-box">
+        </div>
+
+    <div class="chat-footer">
+        <button id="footer-whatsapp-cta" class="whatsapp-btn">CONNECT VIA WHATSAPP</button>
+        <div class="input-container">
+            <input type="text" id="user-input" placeholder="Type your solar query here...">
+            <button id="send-btn"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+</div>
 
     <script src="intents.js"></script>
     <script src="chatbot.js"></script>
