@@ -25,6 +25,21 @@ const CRM_SETTINGS = {
     LeadStorageWebhook: "http://localhost:5000/api/leads"
 };
 
+const JAIPUR_PINCODE_MIN = 302001;
+const JAIPUR_PINCODE_MAX = 302043;
+
+function isValidIndianMobile(phone) {
+    return /^[6-9]\d{9}$/.test(phone);
+}
+
+function isJaipurServicePincode(pincode) {
+    const cleanPincode = String(pincode).trim();
+    const numericPincode = Number(cleanPincode);
+    return /^\d{6}$/.test(cleanPincode) &&
+        numericPincode >= JAIPUR_PINCODE_MIN &&
+        numericPincode <= JAIPUR_PINCODE_MAX;
+}
+
 // ==========================================================================
 // TRANSLATION DICTIONARY
 // ==========================================================================
@@ -345,8 +360,7 @@ function handleFlowStep(userInputText) {
                 addBotMessage(STRINGS[currentLanguage].est_step2, false);
                 injectActionMenuButtons([], true);
             } else if (currentStep === 2) {
-                const pincodeRegex = /^[1-9][0-9]{5}$/;
-                if (!pincodeRegex.test(userInputText.trim())) {
+                if (!isJaipurServicePincode(userInputText)) {
                     addBotMessage(STRINGS[currentLanguage].invalidPincode, false);
                     injectActionMenuButtons([], true);
                     return;
@@ -444,8 +458,7 @@ function handleFlowStep(userInputText) {
         // FLOW D: SITE VISIT
         else if (currentFlow === "SITE_VISIT") {
             if (currentStep === 1) {
-                const pincodeRegex = /^[1-9][0-9]{5}$/;
-                if (!pincodeRegex.test(userInputText.trim())) {
+                if (!isJaipurServicePincode(userInputText)) {
                     addBotMessage(STRINGS[currentLanguage].invalidSurveyPincode, false);
                     injectActionMenuButtons([], true);
                     return;
@@ -599,24 +612,32 @@ function injectGatedActionCTAs() {
 
     const d = document.createElement("button");
     d.className = "quick-btn";
-    d.innerHTML = STRINGS[currentLanguage].btnDemo;
+    d.innerHTML = currentLanguage === "en"
+        ? "<i class='fas fa-calendar-check'></i> Book a Free Demo / Site Survey"
+        : "<i class='fas fa-calendar-check'></i> मुफ्त डेमो / साइट सर्वेक्षण बुक करें";
     d.onclick = () => triggerGatedWall("Free Site Demo Request");
 
     const b = document.createElement("button");
     b.className = "quick-btn";
-    b.innerHTML = STRINGS[currentLanguage].btnBrochure;
+    b.innerHTML = currentLanguage === "en"
+        ? "<i class='fas fa-file-arrow-down'></i> Download Technical Brochure"
+        : "<i class='fas fa-file-arrow-down'></i> तकनीकी ब्रोशर डाउनलोड करें";
     b.onclick = () => triggerGatedWall("Technical Brochure Download");
 
     const w = document.createElement("button");
     w.className = "quick-btn wa-direct-btn";
-    w.innerHTML = STRINGS[currentLanguage].btnWhatsApp;
+    w.innerHTML = currentLanguage === "en"
+        ? "<i class='fab fa-whatsapp'></i> WhatsApp Expert Desk"
+        : "<i class='fab fa-whatsapp'></i> व्हाट्सएप विशेषज्ञ डेस्क";
     w.onclick = () => {
         window.open(`https://wa.me/${CRM_SETTINGS.WhatsAppNumber}?text=${encodeURIComponent(CRM_SETTINGS.InitialHiMessage)}`, "_blank");
     };
 
     const main = document.createElement("button");
     main.className = "quick-btn back-btn";
-    main.innerHTML = STRINGS[currentLanguage].mainMenuBtn;
+    main.innerHTML = currentLanguage === "en"
+        ? "<i class='fas fa-arrow-left'></i> Main Menu"
+        : "<i class='fas fa-arrow-left'></i> मुख्य मेनू";
     main.onclick = () => returnToMainMenu();
 
     wrap.appendChild(d);
@@ -638,7 +659,7 @@ function triggerGatedWall(actionContextName) {
             <strong>${STRINGS[currentLanguage].gatedTitle}</strong><br>
             <small style="color:#7f8c8d; display:block; margin:4px 0 10px 0;">${STRINGS[currentLanguage].gatedDesc} (${actionContextName})</small>
             <input type="text" id="gated-name" placeholder="${STRINGS[currentLanguage].placeholderName}" autocomplete="off" />
-            <input type="tel" id="gated-phone" placeholder="${STRINGS[currentLanguage].placeholderPhone}" autocomplete="off" style="margin-top:8px;" />
+            <input type="tel" id="gated-phone" placeholder="${STRINGS[currentLanguage].placeholderPhone}" autocomplete="off" inputmode="numeric" maxlength="10" pattern="[6-9][0-9]{9}" style="margin-top:8px;" oninput="this.value = this.value.replace(/\\D/g, '').slice(0, 10);" />
             <input type="text" id="gated-company" placeholder="${STRINGS[currentLanguage].placeholderCompany}" autocomplete="off" style="margin-top:8px;" />
             <div style="display:flex; gap:8px; margin-top:12px;">
                 <button class="verify-btn" onclick="submitLeadForm()" style="flex:1;">${STRINGS[currentLanguage].btnVerify}</button>
@@ -658,6 +679,13 @@ function submitLeadForm() {
 
     if (!nameVal || !phoneVal) {
         alert(STRINGS[currentLanguage].reqAlert);
+        return;
+    }
+
+    if (!isValidIndianMobile(phoneVal)) {
+        alert(currentLanguage === "en"
+            ? "Please enter a valid 10-digit Indian mobile number starting with 6, 7, 8, or 9."
+            : "कृपया 6, 7, 8 या 9 से शुरू होने वाला वैध 10 अंकों का भारतीय मोबाइल नंबर दर्ज करें।");
         return;
     }
 
@@ -816,14 +844,34 @@ if (sendBtn && userInput) {
     userInput.addEventListener("keypress", (e) => { if (e.key === "Enter") handleInput(); });
 }
 
+// Clean tab labels after the UI refreshes language state.
+updateHorizontalTabsText = function() {
+    const labels = [
+        ["tab-cost-calc", "fa-calculator", "Cost Calc"],
+        ["tab-savings", "fa-chart-line", "Savings"],
+        ["tab-subsidy", "fa-file-invoice", "Subsidy"],
+        ["tab-survey", "fa-calendar-check", "Book Survey"]
+    ];
+
+    labels.forEach(([id, icon, label]) => {
+        const tab = document.getElementById(id);
+        if (tab) tab.innerHTML = `<i class="fas ${icon}"></i> ${label}`;
+    });
+};
+
 // Initialization Entry Core Load check
 function loadChat() {
     let chat = localStorage.getItem("Soltech_chat");
-    if (chat) {
+    if (chat && chat.trim().length > 20) {
         if (chatBox) chatBox.innerHTML = chat;
         updateLanguageUI(); 
         updateHorizontalTabsText();
+        if (!chatBox || !chatBox.querySelector(".bot-message, .user-message")) {
+            localStorage.removeItem("Soltech_chat");
+            initializeWelcomeGreeting();
+        }
     } else {
+        localStorage.removeItem("Soltech_chat");
         updateHorizontalTabsText();
         initializeWelcomeGreeting();
     }

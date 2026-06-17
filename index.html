@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -14,27 +14,36 @@
 </head>
 <body>
 
-    <button id="chat-toggle" class="chat-toggle">
+    <button id="chat-toggle" class="chat-toggle" aria-label="Open Soltech Energy chat">
         <i class="fas fa-comments"></i>
         <span class="notification-dot"></span>
     </button>
 
-    <div id="chatbot-container" class="chatbot-container">
-        
+    <div id="chatbot-container" class="chatbot-container open">
         <div class="chat-header">
-            <div class="header-info">
-                <span class="welcome-title" style="font-size: 14px; font-weight: 600;">Soltech Energy Assistant</span>
-                <span class="status-indicator" style="font-size: 11px; display: flex; align-items: center; gap: 4px; margin-top: 2px;">
-                    <span style="width: 6px; height: 6px; background-color: #34d399; border-radius: 50%; display: inline-block;"></span> Online
-                </span>
-            </div>
-            <div class="header-actions">
-                <div class="lang-switcher">
-                    <button id="lang-en" class="lang-btn active-lang">EN</button>
-                    <button id="lang-hi" class="lang-btn">हि</button>
+            <div class="chat-header-brand">
+                <div class="chat-header-logo-outer-ring">
+                    <div class="chat-header-logo-inner-ring">
+                        <img src="logo.jpg" alt="Soltech Energy">
+                    </div>
                 </div>
-                <button id="refresh-chat" style="background: none; border: none; color: white; cursor: pointer; margin-left: 8px;"><i class="fas fa-sync-alt"></i></button>
-                <button id="minimize-chat" style="background: none; border: none; color: white; cursor: pointer; margin-left: 8px;"><i class="fas fa-minus"></i></button>
+                <div class="header-info">
+                    <span class="welcome-title">Soltech Energy Assistant</span>
+                    <span class="status-indicator"><span></span> Online</span>
+                </div>
+            </div>
+
+            <div class="header-actions">
+                <div class="lang-switcher" aria-label="Language selector">
+                    <button id="lang-en" class="lang-btn active-lang" type="button">EN</button>
+                    <button id="lang-hi" class="lang-btn" type="button">HI</button>
+                </div>
+                <button id="refresh-chat" type="button" aria-label="Refresh chat">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+                <button id="minimize-chat" type="button" aria-label="Minimize chat">
+                    <i class="fas fa-minus"></i>
+                </button>
             </div>
         </div>
 
@@ -43,10 +52,18 @@
         </div>
 
         <div class="horizontal-tabs-nav">
-            <button id="tab-cost-calc" class="tab-nav-btn" onclick="startFlow('ESTIMATOR')">💰 Cost Calc</button>
-            <button id="tab-savings" class="tab-nav-btn" onclick="startFlow('ESTIMATOR')">📈 Savings</button>
-            <button id="tab-subsidy" class="tab-nav-btn" onclick="triggerGatedWall('Subsidy Info')">📋 Subsidy</button>
-            <button id="tab-survey" class="tab-nav-btn" onclick="startFlow('SITE_VISIT')">🗓️ Book Survey</button>
+            <button id="tab-cost-calc" class="tab-nav-btn" type="button" onclick="startFlow('ESTIMATOR')">
+                <i class="fas fa-calculator"></i> Cost Calc
+            </button>
+            <button id="tab-savings" class="tab-nav-btn" type="button" onclick="startFlow('ESTIMATOR')">
+                <i class="fas fa-chart-line"></i> Savings
+            </button>
+            <button id="tab-subsidy" class="tab-nav-btn" type="button" onclick="triggerGatedWall('Subsidy Info')">
+                <i class="fas fa-file-invoice"></i> Subsidy
+            </button>
+            <button id="tab-survey" class="tab-nav-btn" type="button" onclick="startFlow('SITE_VISIT')">
+                <i class="fas fa-calendar-check"></i> Book Survey
+            </button>
         </div>
 
         <div id="chat-box" class="chat-box"></div>
@@ -60,15 +77,16 @@
         </div>
 
         <div class="chat-footer">
-            <button id="footer-whatsapp-cta" class="whatsapp-footer-cta">
-                <i class="fab fa-whatsapp"></i> CONNECT VIA WHATSAPP
+            <button id="footer-whatsapp-cta" class="whatsapp-footer-cta" type="button">
+                <i class="fab fa-whatsapp"></i> Connect via WhatsApp
             </button>
             <div class="typing-row">
                 <input type="text" id="user-input" placeholder="Type your solar inquiry here..." autocomplete="off">
-                <button id="send-btn"><i class="fas fa-paper-plane"></i></button>
+                <button id="send-btn" type="button" aria-label="Send message">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
             </div>
         </div>
-
     </div>
 
     <script src="chatbot.js"></script>
