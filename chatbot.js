@@ -168,17 +168,26 @@ const MENUS = {
 // =====================================
 // WINDOW MANAGEMENT
 // =====================================
+function syncChatOpenState() {
+    if (!chatbotContainer) return;
+    document.body.classList.toggle("chat-is-open", chatbotContainer.classList.contains("open"));
+}
+
 if (chatToggle) {
     chatToggle.addEventListener("click", () => {
         chatbotContainer.classList.toggle("open");
+        syncChatOpenState();
     });
 }
 
 if (minimizeChat) {
     minimizeChat.addEventListener("click", () => {
         chatbotContainer.classList.remove("open");
+        syncChatOpenState();
     });
 }
+
+syncChatOpenState();
 
 // ==========================================================================
 // UNIFIED FIXED-HEADER LANGUAGE SWITCHER SYNC LOGIC
@@ -318,15 +327,16 @@ if (refreshChat) {
 // SEQUENTIAL STEP FLOWS HANDLING ENGINE
 // ==========================================================================
 function startFlow(flowName) {
-    currentFlow = flowName;
+    const estimatorMode = flowName === "SAVINGS_CALC" ? "savings" : "cost";
+    currentFlow = (flowName === "COST_CALC" || flowName === "SAVINGS_CALC") ? "ESTIMATOR" : flowName;
     currentStep = 1;
-    flowData = {};
+    flowData = currentFlow === "ESTIMATOR" ? { estimatorMode } : {};
 
     const progressNode = document.getElementById("lead-progress");
     if (progressNode) progressNode.classList.remove("hidden");
     updateProgressBar(1, 6);
 
-    if (flowName === "ESTIMATOR") {
+    if (currentFlow === "ESTIMATOR") {
         addBotMessage(STRINGS[currentLanguage].est_step1, false);
         injectActionMenuButtons(MENUS[currentLanguage].propertyTypes, true);
     } else if (flowName === "FINANCING") {
@@ -509,33 +519,53 @@ function renderEstimatorResults() {
 
     let outputHtml = "";
     if (currentLanguage === "en") {
-        outputHtml = `
+        if (flowData.estimatorMode === "savings") {
+            outputHtml = `
+📈 <strong>Your Soltech Savings Estimate:</strong><br><br>
+• <strong>Target Coverage Pincode:</strong> ${flowData.pincode || "N/A"}<br>
+• <strong>Recommended System Size:</strong> ${sizeKw} kWp<br>
+• <strong>Expected Annual Generation:</strong> ${annualGen} Units (kWh)<br>
+• <strong>Monthly Savings Estimate:</strong> ₹${monthlySavings.toLocaleString()}<br>
+• <strong>Estimated Annual Savings:</strong> ₹${(monthlySavings * 12).toLocaleString()}<br>
+• <strong>Approx Payback Period:</strong> ~${paybackYears} Years<br><br>
+For an exact savings report, our team can verify your bill pattern and roof conditions.
+`;
+        } else {
+            outputHtml = `
 📊 <strong>Your Custom Soltech System Design Blueprint:</strong><br><br>
 • <strong>Target Coverage Pincode:</strong> ${flowData.pincode || "N/A"}<br>
 • <strong>Recommended System Size:</strong> ${sizeKw} kWp<br>
 • <strong>Estimated Project Cost (Gross):</strong> ₹${baseCost.toLocaleString()}<br>
 • <strong>Government Subsidy Benefit:</strong> -₹${subsidy.toLocaleString()}<br>
 • <strong style="color: #2e7d32;">Net Cost Investment:</strong> ₹${netCost.toLocaleString()}<br>
-• <strong>Expected Annual Generation:</strong> ${annualGen} Units (kWh)<br>
-• <strong>Monthly Savings Estimate:</strong> ₹${monthlySavings.toLocaleString()}<br>
-• <strong>Payback Period:</strong> ~${paybackYears} Years<br>
-• <strong>Typical EMI Baseline (7.99% Rate over 36M):</strong> ₹${emiResult.toLocaleString()}/month<br><br>
-Would you like to unlock your detailed structural engineering proposal brochure or speak to our loan counter expert?
+• <strong>Estimated Cost Per kWp:</strong> ₹${Math.round(baseCost / sizeKw).toLocaleString()}<br><br>
+For final pricing, Soltech should verify roof access, shadow-free area, structure type, and net-metering requirements.
 `;
+        }
     } else {
-        outputHtml = `
+        if (flowData.estimatorMode === "savings") {
+            outputHtml = `
+📈 <strong>आपका सॉलटेक बचत अनुमान:</strong><br><br>
+• <strong>लक्ष्य कवरेज पिनकोड:</strong> ${flowData.pincode || "N/A"}<br>
+• <strong>अनुशंसित सिस्टम आकार:</strong> ${sizeKw} kWp<br>
+• <strong>अपेक्षित वार्षिक उत्पादन:</strong> ${annualGen} यूनिट्स (kWh)<br>
+• <strong>मासिक बचत अनुमान:</strong> ₹${monthlySavings.toLocaleString()}<br>
+• <strong>वार्षिक बचत अनुमान:</strong> ₹${(monthlySavings * 12).toLocaleString()}<br>
+• <strong>अनुमानित पेबैक अवधि:</strong> ~${paybackYears} वर्ष<br><br>
+सटीक बचत रिपोर्ट के लिए हमारी टीम आपके बिल पैटर्न और छत की स्थिति सत्यापित कर सकती है।
+`;
+        } else {
+            outputHtml = `
 📊 <strong>आपका कस्टम सॉलटेक सिस्टम डिज़ाइन ब्लूप्रिंट:</strong><br><br>
 • <strong>लक्ष्य कवरेज पिनकोड:</strong> ${flowData.pincode || "N/A"}<br>
 • <strong>अनुशंसित सिस्टम आकार:</strong> ${sizeKw} kWp<br>
 • <strong>अनुमानित परियोजना लागत (Gross):</strong> ₹${baseCost.toLocaleString()}<br>
 • <strong>सरकारी सब्सिडी लाभ:</strong> -₹${subsidy.toLocaleString()}<br>
 • <strong style="color: #2e7d32;">शुद्ध लागत निवेश (Net Cost):</strong> ₹${netCost.toLocaleString()}<br>
-• <strong>अपेक्षित वार्षिक उत्पादन:</strong> ${annualGen} यूनिट्स (kWh)<br>
-• <strong>मासिक बचत अनुमान:</strong> ₹${monthlySavings.toLocaleString()}<br>
-• <strong>पेबैक अवधि (लोन वापसी):</strong> ~${paybackYears} वर्ष<br>
-• <strong>विशिष्ट EMI बेसलाइन (36 महीने के लिए 7.99% दर पर):</strong> ₹${emiResult.toLocaleString()}/माह<br><br>
-क्या आप अपने विस्तृत स्ट्रक्चरल इंजीनियरिंग प्रस्ताव ब्रोशर को अनलॉक करना चाहते हैं या हमारे लोन काउंटर विशेषज्ञ से बात करना चाहते हैं?
+• <strong>अनुमानित लागत प्रति kWp:</strong> ₹${Math.round(baseCost / sizeKw).toLocaleString()}<br><br>
+अंतिम कीमत के लिए सॉलटेक को छत की पहुंच, छाया-मुक्त क्षेत्र, संरचना प्रकार और नेट-मीटरिंग आवश्यकताओं की जांच करनी होगी।
 `;
+        }
     }
 
     addBotMessage(outputHtml, false);
@@ -571,6 +601,49 @@ To book a live system demo and download the technical loan structure brochure, t
     }
     addBotMessage(outputHtml, false);
     injectGatedActionCTAs();
+}
+
+function showSubsidyInfo() {
+    currentFlow = null;
+    currentStep = 0;
+    flowData = {};
+    const progressNode = document.getElementById("lead-progress");
+    if (progressNode) progressNode.classList.add("hidden");
+
+    const outputHtml = currentLanguage === "en" ? `
+📋 <strong>Solar Subsidy Guidance for Jaipur Homes:</strong><br><br>
+• Subsidy is mainly applicable for eligible residential rooftop solar systems.<br>
+• Final subsidy depends on consumer category, system capacity, DISCOM approval, and current government rules.<br>
+• Commercial and industrial projects usually follow different financial benefits instead of residential subsidy.<br><br>
+To check your exact eligibility, verify your details and our team will map it against your Jaipur pincode and project type.
+` : `
+📋 <strong>जयपुर घरों के लिए सोलर सब्सिडी जानकारी:</strong><br><br>
+• सब्सिडी मुख्य रूप से पात्र residential rooftop solar systems पर लागू होती है।<br>
+• अंतिम सब्सिडी consumer category, system capacity, DISCOM approval और वर्तमान सरकारी नियमों पर निर्भर करती है।<br>
+• Commercial और industrial projects में आमतौर पर residential subsidy के बजाय अलग financial benefits होते हैं।<br><br>
+अपनी सही eligibility जांचने के लिए details verify करें, हमारी टीम आपके Jaipur pincode और project type के हिसाब से check करेगी।
+`;
+
+    addBotMessage(outputHtml, false);
+    const wrap = document.createElement("div");
+    wrap.className = "quick-actions-wrapper";
+
+    const verify = document.createElement("button");
+    verify.className = "quick-btn orange-quote-btn";
+    verify.innerHTML = "<i class='fas fa-file-shield'></i> Check Subsidy Eligibility";
+    verify.onclick = () => triggerGatedWall("Subsidy Eligibility Check");
+
+    const main = document.createElement("button");
+    main.className = "quick-btn back-btn";
+    main.innerHTML = currentLanguage === "en"
+        ? "<i class='fas fa-arrow-left'></i> Main Menu"
+        : "<i class='fas fa-arrow-left'></i> मुख्य मेनू";
+    main.onclick = () => returnToMainMenu();
+
+    wrap.appendChild(verify);
+    wrap.appendChild(main);
+    if (chatBox) chatBox.appendChild(wrap);
+    scrollBottom();
 }
 
 function renderCIResults() {
@@ -740,6 +813,7 @@ function addBotMessage(text, isMenuOptionClick) {
 // Global scope access wrapper to trigger sub-header horizontal element routes safely
 window.startFlow = startFlow;
 window.triggerGatedWall = triggerGatedWall;
+window.showSubsidyInfo = showSubsidyInfo;
 
 function addUserMessage(text) {
     const div = document.createElement("div");
@@ -766,9 +840,9 @@ function injectActionMenuButtons(optionsArray, isFlowActive) {
             
             if (!isFlowActive) {
                 // Route generic landing entries
-                if (opt.includes("Estimate") || opt.includes("लागत का अनुमान")) startFlow("ESTIMATOR");
-                else if (opt.includes("Savings") || opt.includes("बचत की गणना")) startFlow("ESTIMATOR");
-                else if (opt.includes("Residential") || opt.includes("आवासीय")) startFlow("ESTIMATOR");
+                if (opt.includes("Estimate") || opt.includes("लागत का अनुमान")) startFlow("COST_CALC");
+                else if (opt.includes("Savings") || opt.includes("बचत की गणना")) startFlow("SAVINGS_CALC");
+                else if (opt.includes("Residential") || opt.includes("आवासीय")) startFlow("COST_CALC");
                 else if (opt.includes("Commercial") || opt.includes("वाणिज्यिक")) startFlow("CI_QUALIFY");
                 else if (opt.includes("Industries") || opt.includes("उद्योगों")) startFlow("CI_QUALIFY");
                 else if (opt.includes("Visit") || opt.includes("विज़िट")) startFlow("SITE_VISIT");
@@ -818,7 +892,9 @@ function scrollBottom() {
 }
 
 function saveChat() {
-    if (chatBox) localStorage.setItem("Soltech_chat", chatBox.innerHTML);
+    // Interactive buttons lose their click handlers when saved as raw HTML.
+    // Keep startup fresh so suggestion buttons always remain clickable.
+    localStorage.removeItem("Soltech_chat");
 }
 
 // User text bar event submission parsing
@@ -861,20 +937,9 @@ updateHorizontalTabsText = function() {
 
 // Initialization Entry Core Load check
 function loadChat() {
-    let chat = localStorage.getItem("Soltech_chat");
-    if (chat && chat.trim().length > 20) {
-        if (chatBox) chatBox.innerHTML = chat;
-        updateLanguageUI(); 
-        updateHorizontalTabsText();
-        if (!chatBox || !chatBox.querySelector(".bot-message, .user-message")) {
-            localStorage.removeItem("Soltech_chat");
-            initializeWelcomeGreeting();
-        }
-    } else {
-        localStorage.removeItem("Soltech_chat");
-        updateHorizontalTabsText();
-        initializeWelcomeGreeting();
-    }
+    localStorage.removeItem("Soltech_chat");
+    updateHorizontalTabsText();
+    initializeWelcomeGreeting();
 }
 
 // Initialize execution sequence

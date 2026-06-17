@@ -749,7 +749,9 @@
     color: #ffffff !important;
     border: none !important;
     width: 44px;
+    min-width: 44px;
     height: 44px;
+    flex: 0 0 44px;
     border-radius: 10px !important;
     cursor: pointer !important;
     display: flex !important;
@@ -878,6 +880,11 @@ input:focus-visible {
 
 /* ── RESPONSIVE OVERRIDES ── */
 @media (max-width: 480px) {
+    body.chat-is-open #chat-toggle,
+    body.chat-is-open .chat-toggle {
+        display: none !important;
+    }
+
     #chatbot-container, 
     .chatbot-container {
         right: 0 !important;
