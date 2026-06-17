@@ -19,7 +19,7 @@ let flowData = {};
 let currentLanguage = "en"; // "en" for English, "hi" for Hindi
 
 const CRM_SETTINGS = {
-    WhatsAppNumber: "91 8239573979",
+    WhatsAppNumber: "918239573979",
     InitialHiMessage: "Hi! I want to check solar details for my property.",
     DefaultLeadLocation: "Jaipur",
     LeadStorageWebhook: "http://localhost:5000/api/leads"
@@ -635,7 +635,8 @@ To check your exact eligibility, verify your details and our team will map it ag
 
     const main = document.createElement("button");
     main.className = "quick-btn back-btn";
-    main.innerHTML = currentLanguage === "en"
+    main.innerHTML = currentLanguage ===
+        "en"
         ? "<i class='fas fa-arrow-left'></i> Main Menu"
         : "<i class='fas fa-arrow-left'></i> मुख्य मेनू";
     main.onclick = () => returnToMainMenu();
@@ -703,8 +704,10 @@ function injectGatedActionCTAs() {
         ? "<i class='fab fa-whatsapp'></i> WhatsApp Expert Desk"
         : "<i class='fab fa-whatsapp'></i> व्हाट्सएप विशेषज्ञ डेस्क";
     w.onclick = () => {
-        window.open(`https://wa.me/${CRM_SETTINGS.WhatsAppNumber}?text=${encodeURIComponent(CRM_SETTINGS.InitialHiMessage)}`, "_blank");
-    };
+    const whatsappUrl =
+        `https://wa.me/918239573979?text=${encodeURIComponent(CRM_SETTINGS.InitialHiMessage)}`;
+    window.open(whatsappUrl, "_blank");
+};
 
     const main = document.createElement("button");
     main.className = "quick-btn back-btn";
