@@ -19,7 +19,7 @@ let flowData = {};
 let currentLanguage = "en"; // "en" for English, "hi" for Hindi
 
 const CRM_SETTINGS = {
-    WhatsAppNumber: "918239573979",
+    WhatsAppNumber: "91 8239573979",
     InitialHiMessage: "Hi! I want to check solar details for my property.",
     DefaultLeadLocation: "Jaipur",
     LeadStorageWebhook: "http://localhost:5000/api/leads"
