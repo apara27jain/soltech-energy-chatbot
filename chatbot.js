@@ -184,7 +184,13 @@ const MENUS = {
 // =====================================
 function syncChatOpenState() {
     if (!chatbotContainer) return;
-    document.body.classList.toggle("chat-is-open", chatbotContainer.classList.contains("open"));
+    const isOpen = chatbotContainer.classList.contains("open");
+    document.body.classList.toggle("chat-is-open", isOpen);
+    if (chatToggle) chatToggle.setAttribute("aria-expanded", String(isOpen));
+}
+
+if (chatbotContainer && !window.matchMedia("(max-width: 480px)").matches) {
+    chatbotContainer.classList.add("open");
 }
 
 if (chatToggle) {
