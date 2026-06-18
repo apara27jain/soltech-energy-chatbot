@@ -25,6 +25,20 @@ const CRM_SETTINGS = {
     LeadStorageWebhook: "http://localhost:5000/api/leads"
 };
 
+function openWhatsAppChat() {
+    const phoneNumber = String(CRM_SETTINGS.WhatsAppNumber).replace(/\D/g, "");
+    const message = encodeURIComponent(CRM_SETTINGS.InitialHiMessage);
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
+    const link = document.createElement("a");
+
+    link.href = whatsappUrl;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+}
+
 const JAIPUR_PINCODE_MIN = 302001;
 const JAIPUR_PINCODE_MAX = 302043;
 
@@ -185,6 +199,10 @@ if (minimizeChat) {
         chatbotContainer.classList.remove("open");
         syncChatOpenState();
     });
+}
+
+if (footerWhitespaceCta) {
+    footerWhitespaceCta.addEventListener("click", openWhatsAppChat);
 }
 
 syncChatOpenState();
@@ -635,8 +653,7 @@ To check your exact eligibility, verify your details and our team will map it ag
 
     const main = document.createElement("button");
     main.className = "quick-btn back-btn";
-    main.innerHTML = currentLanguage ===
-        "en"
+    main.innerHTML = currentLanguage === "en"
         ? "<i class='fas fa-arrow-left'></i> Main Menu"
         : "<i class='fas fa-arrow-left'></i> मुख्य मेनू";
     main.onclick = () => returnToMainMenu();
@@ -703,11 +720,7 @@ function injectGatedActionCTAs() {
     w.innerHTML = currentLanguage === "en"
         ? "<i class='fab fa-whatsapp'></i> WhatsApp Expert Desk"
         : "<i class='fab fa-whatsapp'></i> व्हाट्सएप विशेषज्ञ डेस्क";
-    w.onclick = () => {
-    const whatsappUrl =
-        `https://wa.me/918239573979?text=${encodeURIComponent(CRM_SETTINGS.InitialHiMessage)}`;
-    window.open(whatsappUrl, "_blank");
-};
+    w.onclick = openWhatsAppChat;
 
     const main = document.createElement("button");
     main.className = "quick-btn back-btn";
