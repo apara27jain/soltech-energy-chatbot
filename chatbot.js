@@ -201,10 +201,6 @@ if (minimizeChat) {
     });
 }
 
-if (footerWhitespaceCta) {
-    footerWhitespaceCta.addEventListener("click", openWhatsAppChat);
-}
-
 syncChatOpenState();
 
 // ==========================================================================

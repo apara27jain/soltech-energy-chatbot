@@ -681,8 +681,10 @@
 .whatsapp-footer-cta {
     width: 100% !important;
     height: 42px !important; 
+    box-sizing: border-box !important;
     background: var(--brand-green) !important;
     color: #ffffff !important;
+    text-decoration: none !important;
     border: none !important;
     border-radius: 10px !important;
     font-size: 13px !important;
