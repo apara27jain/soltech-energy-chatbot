@@ -59,8 +59,8 @@ function isJaipurServicePincode(pincode) {
 // ==========================================================================
 const STRINGS = {
     en: {
-        welcomeTitle: "Welcome! I'm your Solar Assistant. How can I help you today?",
-        welcomeDesc: "We are Jaipur's premier solar engineering firm, designing high-yield systems for residential rooftops and commercial enterprises.<br><br>🤖 Solar system costs vary continuously based on your roof space, shadows, and shifting JVVNL net-metering regulations. Feel free to use our quick calculators below!",
+        welcomeTitle: "Welcome to Soltech Energy! I'm your Solar Assistant.",
+        welcomeDesc: "👋 I'm here to help you with questions about rooftop solar, system sizes, subsidies, installation, and estimated costs. How can I help you today? Please note: Every solar system is customized based on your electricity usage, roof space, and site conditions. Any prices shared here are estimated and your final quotation will be provided after a site assessment.",
         backMenu: "↩️ Back to Main Menu",
         mainMenuBtn: "<i class='fas fa-arrow-left'></i> Main Menu",
         invalidPincode: "⚠️ <strong>Invalid Format:</strong> Please enter a valid 6-digit Jaipur Pincode (e.g., 302018) to accurately calculate baseline logistics.",
@@ -102,8 +102,8 @@ const STRINGS = {
         site_step1: "🗓️ <strong>Let's schedule your structural deployment evaluation. Please enter your 6-digit Pincode:</strong>"
     },
     hi: {
-        welcomeTitle: "स्वागत है! मैं आपका सोलर असिस्टेंट हूँ। आज मैं आपकी क्या सहायता कर सकता हूँ?",
-        welcomeDesc: "हम जयपुर की प्रमुख सोलर इंजीनियरिंग फर्म हैं, जो आवासीय छतों (residential rooftops) और वाणिज्यिक उद्यमों (commercial enterprises) के लिए उच्च-उपज प्रणालियों को डिज़ाइन करते हैं।<br><br>🤖 आपकी छत की जगह, छाया और बदलते JVVNL नेट-मीटरिंग नियमों के आधार पर सोलर सिस्टम की लागत बदलती रहती है। नीचे दिए गए हमारे त्वरित कैलकुलेटर का उपयोग करने में संकोच न करें!",
+        welcomeTitle: "👋 Soltech Energy में आपका स्वागत है! मैं आपका सोलर सहायक हूँ।",
+        welcomeDesc: "मैं रूफटॉप सोलर, सिस्टम क्षमता, सरकारी सब्सिडी, इंस्टॉलेशन और अनुमानित लागत से जुड़े आपके प्रश्नों के उत्तर देने के लिए यहाँ हूँ। मैं आपकी किस प्रकार सहायता कर सकता हूँ? कृपया ध्यान दें: प्रत्येक सोलर सिस्टम आपकी मासिक बिजली खपत, छत की उपलब्ध जगह और साइट की वास्तविक परिस्थितियों के अनुसार डिज़ाइन किया जाता है। यहाँ बताई गई कीमतें केवल अनुमानित हैं। अंतिम कोटेशन साइट सर्वे और तकनीकी मूल्यांकन के बाद ही प्रदान किया जाता है।",
         backMenu: "↩️ मुख्य मेनू पर वापस जाएं",
         mainMenuBtn: "<i class='fas fa-arrow-left'></i> मुख्य मेनू",
         invalidPincode: "⚠️ <strong>अमान्य प्रारूप:</strong> रसद की सही गणना के लिए कृपया एक वैध 6-अंकीय जयपुर पिनकोड (जैसे, 302018) दर्ज करें।",
@@ -148,7 +148,7 @@ const STRINGS = {
 
 const MENUS = {
     en: {
-        main: ["Get a Solar Cost Estimate", "Calculate Savings", "Request a Site Visit", "Financing & Maintainance", "Talk to an Expert"],
+        main: ["Solar Solutions", "Request a Site Visit", "Financing & Maintainance", "Talk to an Expert"],
         keywords: ["Subsidy Info", "Net Metering", "Residential Setup", "Commercial Setup", "Maintenance & AMC", "Warranty & Life", "Weather Safety", "Connect Live"],
         propertyTypes: ["Home", "Commercial Building", "Factory/Industry", "School/Institution"],
         bills: ["< ₹2,000", "₹2,000–₹5,000", "₹5,000–₹10,000", "₹10,000+"],
@@ -163,7 +163,7 @@ const MENUS = {
         ciArea: ["1,000–5,000 sq ft", "5,000–10,000 sq ft", "10,000+ sq ft"]
     },
     hi: {
-        main: ["सोलर लागत का अनुमान लगाएं", "बचत की गणना करें", "साइट विज़िट का अनुरोध करें", "वित्तीय सहायता और रखरखाव", "विशेषज्ञ से बात करें"],
+        main: ["सोलर समाधान", "साइट विज़िट का अनुरोध करें", "वित्तीय सहायता और रखरखाव", "विशेषज्ञ से बात करें"],
         keywords: ["सब्सिडी की जानकारी", "नेट मीटरिंग", "आवासीय सेटअप", "वाणिज्यिक सेटअप", "रखरखाव और एएमसी", "वारंटी और जीवन", "मौसम सुरक्षा", "लाइव कनेक्ट करें"],
         propertyTypes: ["घर", "वाणिज्यिक भवन", "फैक्ट्री/उद्योग", "स्कूल/संस्थान"],
         bills: ["< ₹2,000", "₹2,000–₹5,000", "₹5,000–₹10,000", "₹10,000+"],
