@@ -148,7 +148,7 @@ const STRINGS = {
 
 const MENUS = {
     en: {
-        main: ["Get a Solar Cost Estimate", "Calculate Savings", "Residential Solar", "Commercial Solar", "Solar for Industries", "Request a Site Visit", "Financing & Subsidies", "Talk to an Expert"],
+        main: ["Get a Solar Cost Estimate", "Calculate Savings", "Request a Site Visit", "Financing & Maintainance", "Talk to an Expert"],
         keywords: ["Subsidy Info", "Net Metering", "Residential Setup", "Commercial Setup", "Maintenance & AMC", "Warranty & Life", "Weather Safety", "Connect Live"],
         propertyTypes: ["Home", "Commercial Building", "Factory/Industry", "School/Institution"],
         bills: ["< ₹2,000", "₹2,000–₹5,000", "₹5,000–₹10,000", "₹10,000+"],
@@ -163,7 +163,7 @@ const MENUS = {
         ciArea: ["1,000–5,000 sq ft", "5,000–10,000 sq ft", "10,000+ sq ft"]
     },
     hi: {
-        main: ["सोलर लागत का अनुमान लगाएं", "बचत की गणना करें", "आवासीय सोलर", "वाणिज्यिक सोलर", "उद्योगों के लिए सोलर", "साइट विज़िट का अनुरोध करें", "वित्तीय सहायता और सब्सिडी", "विशेषज्ञ से बात करें"],
+        main: ["सोलर लागत का अनुमान लगाएं", "बचत की गणना करें", "साइट विज़िट का अनुरोध करें", "वित्तीय सहायता और रखरखाव", "विशेषज्ञ से बात करें"],
         keywords: ["सब्सिडी की जानकारी", "नेट मीटरिंग", "आवासीय सेटअप", "वाणिज्यिक सेटअप", "रखरखाव और एएमसी", "वारंटी और जीवन", "मौसम सुरक्षा", "लाइव कनेक्ट करें"],
         propertyTypes: ["घर", "वाणिज्यिक भवन", "फैक्ट्री/उद्योग", "स्कूल/संस्थान"],
         bills: ["< ₹2,000", "₹2,000–₹5,000", "₹5,000–₹10,000", "₹10,000+"],
