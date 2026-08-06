@@ -60,7 +60,7 @@ function isJaipurServicePincode(pincode) {
 const STRINGS = {
     en: {
         welcomeTitle: "Welcome to Soltech Energy! I'm your Solar Assistant.",
-        welcomeDesc: "👋 I'm here to help you with questions about rooftop solar, system sizes, subsidies, installation, and estimated costs. How can I help you today? Please note: Every solar system is customized based on your electricity usage, roof space, and site conditions. Any prices shared here are estimated and your final quotation will be provided after a site assessment.",
+        welcomeDesc: "👋 I'm here to help you with questions about rooftop solar, system sizes, subsidies, installation, and estimated costs. How can I help you today? <br> <br> <br> Please note: Every solar system is customized based on your electricity usage, roof space, and site conditions. Any prices shared here are estimated and your final quotation will be provided after a site assessment.",
         backMenu: "↩️ Back to Main Menu",
         mainMenuBtn: "<i class='fas fa-arrow-left'></i> Main Menu",
         invalidPincode: "⚠️ <strong>Invalid Format:</strong> Please enter a valid 6-digit Jaipur Pincode (e.g., 302018) to accurately calculate baseline logistics.",
@@ -103,7 +103,7 @@ const STRINGS = {
     },
     hi: {
         welcomeTitle: "👋 Soltech Energy में आपका स्वागत है! मैं आपका सोलर सहायक हूँ।",
-        welcomeDesc: "मैं रूफटॉप सोलर, सिस्टम क्षमता, सरकारी सब्सिडी, इंस्टॉलेशन और अनुमानित लागत से जुड़े आपके प्रश्नों के उत्तर देने के लिए यहाँ हूँ। मैं आपकी किस प्रकार सहायता कर सकता हूँ? कृपया ध्यान दें: प्रत्येक सोलर सिस्टम आपकी मासिक बिजली खपत, छत की उपलब्ध जगह और साइट की वास्तविक परिस्थितियों के अनुसार डिज़ाइन किया जाता है। यहाँ बताई गई कीमतें केवल अनुमानित हैं। अंतिम कोटेशन साइट सर्वे और तकनीकी मूल्यांकन के बाद ही प्रदान किया जाता है।",
+        welcomeDesc: "मैं रूफटॉप सोलर, सिस्टम क्षमता, सरकारी सब्सिडी, इंस्टॉलेशन और अनुमानित लागत से जुड़े आपके प्रश्नों के उत्तर देने के लिए यहाँ हूँ। मैं आपकी किस प्रकार सहायता कर सकता हूँ? <br> <br> <br> कृपया ध्यान दें: प्रत्येक सोलर सिस्टम आपकी मासिक बिजली खपत, छत की उपलब्ध जगह और साइट की वास्तविक परिस्थितियों के अनुसार डिज़ाइन किया जाता है। यहाँ बताई गई कीमतें केवल अनुमानित हैं। अंतिम कोटेशन साइट सर्वे और तकनीकी मूल्यांकन के बाद ही प्रदान किया जाता है।",
         backMenu: "↩️ मुख्य मेनू पर वापस जाएं",
         mainMenuBtn: "<i class='fas fa-arrow-left'></i> मुख्य मेनू",
         invalidPincode: "⚠️ <strong>अमान्य प्रारूप:</strong> रसद की सही गणना के लिए कृपया एक वैध 6-अंकीय जयपुर पिनकोड (जैसे, 302018) दर्ज करें।",
