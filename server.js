@@ -11,6 +11,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.use(express.static(__dirname));
 // 1. Added Home Route to handle http://localhost:5000/
 app.get("/", (req, res) => {
   res.send("🚀 Soltech Energy Chatbot Backend is running successfully!");
