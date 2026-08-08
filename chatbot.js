@@ -102,7 +102,7 @@ const STRINGS = {
         btnCancel: "↩️ रद्द करें और मुख्य मेनू पर लौटें",
         reqAlert: "नाम और फ़ोन नंबर दर्ज करना अनिवार्य है।",
         leadSuccess: "✅ <strong>धन्यवाद, {name}।</strong> आपका अनुरोध सत्यापित कर दिया गया है और सॉलटेक द्वारा संसाधित किया जा रहा है।",
-        accessGranted: "🎉 <strong>अनुमति मिली:</strong> <a href='#' onclick=\"alert('सॉलटेक तकनीकी ब्रोशर डाउनलोड शुरू हो रहा है...'); return false;\" class='download-link'>ब्रोशर फ़ाइल डाउनलोड करने के लिए यहाँ क्लिक करें</a>.",
+        accessGranted: "📄 <a href='#' onclick=\"openBrochureWhatsApp(); return false;\" class='download-link'>ब्रोशर डाउनलोड करें</a>",        
         teamConnect: "📞 हमारी engineering टीम आपके लाइव सिस्टम डेमो के लिए जल्द ही आपसे <strong>{phone}</strong> पर संपर्क करेगी।",
         fallbackResponse: "🤖 कस्टम इंजीनियरिंग योजनाओं, सटीक सॉलटेक प्रोजेक्ट विवरण या तेज़ JVVNL स्वीकृतियों के लिए, नीचे दिए गए विकल्पों के माध्यम से सीधे हमारे डेस्क से जुड़ें:",
 
