@@ -47,21 +47,14 @@
             </div>
         </div>
 
-        <div id="lead-progress" class="lead-progress hidden">
-            <div id="progress-bar-fill"></div>
-        </div>
-
         <div class="horizontal-tabs-nav">
-            <button id="tab-cost-calc" class="tab-nav-btn" type="button" onclick="startFlow('COST_CALC')">
-                <i class="fas fa-calculator"></i> Cost Calc
+            <button id="tab-solar-solutions" class="tab-nav-btn" type="button" onclick="openSolarSolutionsTab()">
+                <i class="fas fa-solar-panel"></i> Solar Solutions
             </button>
-            <button id="tab-savings" class="tab-nav-btn" type="button" onclick="startFlow('SAVINGS_CALC')">
-                <i class="fas fa-chart-line"></i> Savings
-            </button>
-            <button id="tab-subsidy" class="tab-nav-btn" type="button" onclick="showSubsidyInfo()">
+            <button id="tab-subsidy" class="tab-nav-btn" type="button" onclick="openSubsidyTab()">
                 <i class="fas fa-file-invoice"></i> Subsidy
             </button>
-            <button id="tab-survey" class="tab-nav-btn" type="button" onclick="startFlow('SITE_VISIT')">
+            <button id="tab-survey" class="tab-nav-btn" type="button" onclick="openBookSurveyTab()">
                 <i class="fas fa-calendar-check"></i> Book Survey
             </button>
         </div>

@@ -13,8 +13,6 @@ const sendBtn = document.getElementById("send-btn");
 const footerWhitespaceCta = document.getElementById("footer-whatsapp-cta");
 
 // State Tracking Parameters
-let currentFlow = null;
-let currentStep = 0;
 let flowData = {};
 let currentLanguage = "en"; // "en" for English, "hi" for Hindi
 
@@ -22,7 +20,7 @@ const CRM_SETTINGS = {
     WhatsAppNumber: "918239573979",
     InitialHiMessage: "Hi! I want to check solar details for my property.",
     DefaultLeadLocation: "Jaipur",
-    LeadStorageWebhook: "http://localhost:5000/api/leads"
+    LeadStorageWebhook: "https://soltechenergy.co.in/api/leads"
 };
 
 function openWhatsAppChat() {
@@ -39,19 +37,8 @@ function openWhatsAppChat() {
     link.remove();
 }
 
-const JAIPUR_PINCODE_MIN = 302001;
-const JAIPUR_PINCODE_MAX = 302043;
-
 function isValidIndianMobile(phone) {
     return /^[6-9]\d{9}$/.test(phone);
-}
-
-function isJaipurServicePincode(pincode) {
-    const cleanPincode = String(pincode).trim();
-    const numericPincode = Number(cleanPincode);
-    return /^\d{6}$/.test(cleanPincode) &&
-        numericPincode >= JAIPUR_PINCODE_MIN &&
-        numericPincode <= JAIPUR_PINCODE_MAX;
 }
 
 // ==========================================================================
@@ -63,13 +50,12 @@ const STRINGS = {
         welcomeDesc: "👋 I'm here to help you with questions about rooftop solar, system sizes, subsidies, installation, and estimated costs. How can I help you today? <br> <br> <br> Please note: Every solar system is customized based on your electricity usage, roof space, and site conditions. Any prices shared here are estimated and your final quotation will be provided after a site assessment.",
         backMenu: "↩️ Back to Main Menu",
         mainMenuBtn: "<i class='fas fa-arrow-left'></i> Main Menu",
-        invalidPincode: "⚠️ <strong>Invalid Format:</strong> Please enter a valid 6-digit Jaipur Pincode (e.g., 302018) to accurately calculate baseline logistics.",
-        invalidSurveyPincode: "⚠️ <strong>Invalid Format:</strong> Please enter a valid 6-digit site Pincode to coordinate engineering schedules.",
         gatedTitle: "📋 Identity Verification Required:",
         gatedDesc: "Please provide your name and phone number to unlock automated files or book your live tracking design:",
         placeholderName: "Your Name *",
         placeholderPhone: "Phone Number *",
         placeholderCompany: "Company Name (Optional)",
+        placeholderPincode: "Site Pincode (Optional)",
         btnVerify: "Verify to Access",
         btnCancel: "↩️ Cancel & Return to Main Menu",
         reqAlert: "Name and Phone Number are strictly required fields.",
@@ -77,42 +63,33 @@ const STRINGS = {
         accessGranted: "🎉 <strong>Access Granted:</strong> <a href='#' onclick=\"alert('Starting your Soltech technical brochure download...'); return false;\" class='download-link'>Click here to download the brochure file</a>.",
         teamConnect: "📞 Our engineering team will connect with you shortly at <strong>{phone}</strong> to conduct your live system demo.",
         fallbackResponse: "🤖 For custom engineering schematics, precise Soltech project breakdowns, or fast JVVNL approvals, connect with our desk directly via the options below:",
-        btnDemo: "📅 Book a Free Demo / Site Survey",
-        btnBrochure: "📥 Download Technical Brochure",
-        btnWhatsApp: "<i class='fab fa-whatsapp'></i> WhatsApp Expert Desk",
-        
-        // Flow steps
-        est_step1: "1️⃣ <strong>What type of property are you looking to solarize?</strong>",
-        est_step2: "2️⃣ <strong>Please enter your Jaipur's 6 digit pincode (e.g., 302018)</strong>",
-        est_step3: "3️⃣ <strong>Select your average monthly electricity bill bracket:</strong>",
-        est_step4: "4️⃣ <strong>What type of roof structure is available?</strong>",
-        est_step5: "5️⃣ <strong>What is the approximate shadow-free roof area available?</strong>",
-        est_step6: "6️⃣ <strong>Do you own the property?</strong>",
-        
-        fin_step1: "1️⃣ <strong>Please specify your project deployment type:</strong>",
-        fin_step2: "2️⃣ <strong>What is your projected installation budget range?</strong>",
-        fin_step3: "3️⃣ <strong>Which financial deployment asset model are you looking to check?</strong>",
-        
-        ci_step1: "1️⃣ <strong>What is your specific industry or business sector type?</strong>",
-        ci_step2: "2️⃣ <strong>What is your sanctioned connected load in kW?</strong>",
-        ci_step3: "3️⃣ <strong>What is your typical monthly electricity expense corporate bracket?</strong>",
-        ci_step4: "4️⃣ <strong>What is the total estimated factory or roof area available?</strong>",
-        ci_step5: "5️⃣ <strong>How many independent production facilities do you operate?</strong>",
-        
-        site_step1: "🗓️ <strong>Let's schedule your structural deployment evaluation. Please enter your 6-digit Pincode:</strong>"
+
+        homeSolarInfo: `<strong>Residential Solar Solutions</strong><br><br>` +
+            `Soltech Energy designs rooftop solar systems for homes based on your electricity usage, available roof space, and site conditions. A well-designed residential solar system can significantly reduce your monthly electricity bill and is eligible for central government subsidy support under the PM Surya Ghar scheme.<br><br>` +
+            `Our team manages the complete process, including site assessment, system design, installation, net metering approval, and after-installation support. For an exact quotation, our team will need to review your electricity bill pattern and roof details.`,
+
+        commercialSolarInfo: `<strong>Commercial &amp; Industrial Solar Solutions</strong><br><br>` +
+            `Soltech Energy provides solar solutions for businesses, factories, and commercial establishments. A commercial solar installation can help reduce operating costs, protect against rising commercial electricity tariffs, and may qualify for accelerated depreciation tax benefits.<br><br>` +
+            `Our team manages the complete project, including site assessment, system design, installation, and regulatory approvals. For an exact proposal, our team will need details about your connected load, monthly electricity expense, and available site area.`,
+
+        maintenanceInfo: `🛠️ <strong>Maintenance &amp; AMC Support</strong><br><br>` +
+            `Solar systems have no moving parts, which makes them highly durable. However, regular upkeep helps maintain generation efficiency, especially in Jaipur's dusty environment.<br><br>` +
+            `• <strong>Cleaning Cycle:</strong> Panels should be rinsed with water once every 2 weeks. Dust accumulation can reduce output by up to 15%.<br>` +
+            `• <strong>Soltech AMC Protection:</strong> Every installation includes 1 Year of Complimentary Comprehensive Maintenance, covering 4 structural and electrical checkups.<br>` +
+            `• <strong>Post-Warranty AMC:</strong> Optional Annual Maintenance Contracts are available for ₹3,000 to ₹5,000/year, covering system cleaning, inverter diagnostics, and pressure washing.<br><br>` +
+            `For a maintenance visit or AMC enrolment, our team can assist you further.`
     },
     hi: {
         welcomeTitle: "👋 Soltech Energy में आपका स्वागत है! मैं आपका सोलर सहायक हूँ।",
         welcomeDesc: "मैं रूफटॉप सोलर, सिस्टम क्षमता, सरकारी सब्सिडी, इंस्टॉलेशन और अनुमानित लागत से जुड़े आपके प्रश्नों के उत्तर देने के लिए यहाँ हूँ। मैं आपकी किस प्रकार सहायता कर सकता हूँ? <br> <br> <br> कृपया ध्यान दें: प्रत्येक सोलर सिस्टम आपकी मासिक बिजली खपत, छत की उपलब्ध जगह और साइट की वास्तविक परिस्थितियों के अनुसार डिज़ाइन किया जाता है। यहाँ बताई गई कीमतें केवल अनुमानित हैं। अंतिम कोटेशन साइट सर्वे और तकनीकी मूल्यांकन के बाद ही प्रदान किया जाता है।",
         backMenu: "↩️ मुख्य मेनू पर वापस जाएं",
         mainMenuBtn: "<i class='fas fa-arrow-left'></i> मुख्य मेनू",
-        invalidPincode: "⚠️ <strong>अमान्य प्रारूप:</strong> रसद की सही गणना के लिए कृपया एक वैध 6-अंकीय जयपुर पिनकोड (जैसे, 302018) दर्ज करें।",
-        invalidSurveyPincode: "⚠️ <strong>अमान्य प्रारूप:</strong> इंजीनियरिंग शेड्यूल के समन्वय के लिए कृपया एक वैध 6-अंकीय साइट पिनकोड दर्ज करें।",
         gatedTitle: "📋 पहचान सत्यापन आवश्यक:",
         gatedDesc: "फ़ाइलें अनलॉक करने या लाइव डिज़ाइन बुक करने के लिए कृपया अपना नाम और फ़ोन नंबर प्रदान करें:",
         placeholderName: "आपका नाम *",
         placeholderPhone: "फ़ोन नंबर *",
         placeholderCompany: "कंपनी का नाम (वैकल्पिक)",
+        placeholderPincode: "साइट पिनकोड (वैकल्पिक)",
         btnVerify: "पहुंच के लिए सत्यापित करें",
         btnCancel: "↩️ रद्द करें और मुख्य मेनू पर लौटें",
         reqAlert: "नाम और फ़ोन नंबर दर्ज करना अनिवार्य है।",
@@ -120,62 +97,30 @@ const STRINGS = {
         accessGranted: "🎉 <strong>अनुमति मिली:</strong> <a href='#' onclick=\"alert('सॉलटेक तकनीकी ब्रोशर डाउनलोड शुरू हो रहा है...'); return false;\" class='download-link'>ब्रोशर फ़ाइल डाउनलोड करने के लिए यहाँ क्लिक करें</a>.",
         teamConnect: "📞 हमारी engineering टीम आपके लाइव सिस्टम डेमो के लिए जल्द ही आपसे <strong>{phone}</strong> पर संपर्क करेगी।",
         fallbackResponse: "🤖 कस्टम इंजीनियरिंग योजनाओं, सटीक सॉलटेक प्रोजेक्ट विवरण या तेज़ JVVNL स्वीकृतियों के लिए, नीचे दिए गए विकल्पों के माध्यम से सीधे हमारे डेस्क से जुड़ें:",
-        btnDemo: "📅 मुफ्त डेमो / साइट सर्वेक्षण बुक करें",
-        btnBrochure: "📥 तकनीकी ब्रोशर डाउनलोड करें",
-        btnWhatsApp: "<i class='fab fa-whatsapp'></i> व्हाट्सएप विशेषज्ञ डेस्क",
-        
-        // Flow steps
-        est_step1: "1️⃣ <strong>आप किस प्रकार की संपत्ति पर सोलर लगाना चाहते हैं?</strong>",
-        est_step2: "2️⃣ <strong>कृपया अपने जयपुर का 6 अंकों का पिनकोड दर्ज करें (जैसे, 302018)</strong>",
-        est_step3: "3️⃣ <strong>अपने औसत मासिक बिजली बिल ब्रैकेट का चयन करें:</strong>",
-        est_step4: "4️⃣ <strong>किस प्रकार की छत की संरचना उपलब्ध है?</strong>",
-        est_step5: "5️⃣ <strong>लगभग कितनी छाया-मुक्त छत का क्षेत्र उपलब्ध है?</strong>",
-        est_step6: "6️⃣ <strong>क्या आप संपत्ति के मालिक हैं?</strong>",
-        
-        fin_step1: "1️⃣ <strong>कृपया अपने प्रोजेक्ट परिनियोजन प्रकार को निर्दिष्ट करें:</strong>",
-        fin_step2: "2️⃣ <strong>आपका अनुमानित इंस्टॉलेशन बजट दायरा क्या है?</strong>",
-        fin_step3: "3️⃣ <strong>आप कौन सा वित्तीय परिनियोजन एसेट मॉडल चेक करना चाहते हैं?</strong>",
-        
-        ci_step1: "1️⃣ <strong>आपका विशिष्ट उद्योग या व्यवसाय क्षेत्र का प्रकार क्या है?</strong>",
-        ci_step2: "2️⃣ <strong>किलोवाट (kW) में आपका स्वीकृत कनेक्टेड लोड क्या है?</strong>",
-        ci_step3: "3️⃣ <strong>आपका विशिष्ट मासिक बिजली खर्च कॉर्पोरेट ब्रैकेट क्या है?</strong>",
-        ci_step4: "4️⃣ <strong>कुल अनुमानित फैक्ट्री या छत का उपलब्ध क्षेत्र कितना है?</strong>",
-        ci_step5: "5️⃣ <strong>आप कितनी स्वतंत्र उत्पादन सुविधाओं का संचालन करते हैं?</strong>",
-        
-        site_step1: "🗓️ <strong>आइए आपके संरचनात्मक मूल्यांकन को शेड्यूल करें। कृपया अपना 6 अंकों का पिनकोड दर्ज करें:</strong>"
+
+        homeSolarInfo: `<strong>आवासीय सोलर समाधान</strong><br><br>` +
+            `सॉलटेक एनर्जी आपके घर के लिए रूफटॉप सोलर सिस्टम को आपकी बिजली खपत, उपलब्ध छत क्षेत्र और साइट की परिस्थितियों के अनुसार डिज़ाइन करता है। एक उचित रूप से डिज़ाइन किया गया आवासीय सोलर सिस्टम आपके मासिक बिजली बिल को काफी हद तक कम कर सकता है और PM Surya Ghar योजना के तहत केंद्र सरकार की सब्सिडी के लिए पात्र है।<br><br>` +
+            `हमारी टीम साइट असेसमेंट, सिस्टम डिज़ाइन, इंस्टॉलेशन, नेट मीटरिंग अनुमोदन और इंस्टॉलेशन के बाद के सहयोग सहित पूरी प्रक्रिया का प्रबंधन करती है। सटीक कोटेशन के लिए, हमारी टीम को आपके बिजली बिल पैटर्न और छत के विवरण की समीक्षा करनी होगी।`,
+
+        commercialSolarInfo: `<strong>वाणिज्यिक और औद्योगिक सोलर समाधान</strong><br><br>` +
+            `सॉलटेक एनर्जी व्यवसायों, फैक्ट्रियों और वाणिज्यिक प्रतिष्ठानों के लिए सोलर समाधान प्रदान करता है। एक वाणिज्यिक सोलर इंस्टॉलेशन परिचालन लागत को कम करने, बढ़ते वाणिज्यिक बिजली टैरिफ से सुरक्षा प्रदान करने और त्वरित मूल्यह्रास कर लाभ (Accelerated Depreciation) के लिए पात्र होने में मदद कर सकता है।<br><br>` +
+            `हमारी टीम साइट असेसमेंट, सिस्टम डिज़ाइन, इंस्टॉलेशन और नियामक अनुमोदन सहित पूरी परियोजना का प्रबंधन करती है। सटीक प्रस्ताव के लिए, हमारी टीम को आपके कनेक्टेड लोड, मासिक बिजली खर्च और उपलब्ध साइट क्षेत्र के विवरण की आवश्यकता होगी।`,
+
+        maintenanceInfo: `🛠️ <strong>रखरखाव और एएमसी सहायता</strong><br><br>` +
+            `सोलर सिस्टम में कोई गतिशील पुर्जे नहीं होते, जिससे ये अत्यधिक टिकाऊ होते हैं। हालांकि, जयपुर के धूल भरे वातावरण में नियमित रखरखाव generation efficiency बनाए रखने में मदद करता है।<br><br>` +
+            `• <strong>सफाई चक्र:</strong> पैनल को हर 2 सप्ताह में पानी से साफ करना चाहिए। धूल जमा होने से आउटपुट में 15% तक की कमी आ सकती है।<br>` +
+            `• <strong>सॉलटेक एएमसी सुरक्षा:</strong> हर इंस्टॉलेशन के साथ 1 वर्ष की निःशुल्क व्यापक मेंटेनेंस मिलती है, जिसमें 4 structural और electrical checkups शामिल हैं।<br>` +
+            `• <strong>वारंटी के बाद एएमसी:</strong> वैकल्पिक Annual Maintenance Contract ₹3,000 से ₹5,000/वर्ष में उपलब्ध हैं, जिसमें सिस्टम क्लीनिंग, इन्वर्टर डायग्नोस्टिक्स और प्रेशर वाशिंग शामिल है।<br><br>` +
+            `मेंटेनेंस विज़िट या एएमसी एनरोलमेंट के लिए, हमारी टीम आपकी सहायता कर सकती है।`
     }
 };
 
 const MENUS = {
     en: {
-        main: ["Solar Solutions", "Request a Site Visit", "Financing & Maintainance", "Talk to an Expert"],
-        keywords: ["Subsidy Info", "Net Metering", "Residential Setup", "Commercial Setup", "Maintenance & AMC", "Warranty & Life", "Weather Safety", "Connect Live"],
-        propertyTypes: ["Home", "Commercial Building", "Factory/Industry", "School/Institution"],
-        bills: ["< ₹2,000", "₹2,000–₹5,000", "₹5,000–₹10,000", "₹10,000+"],
-        roofs: ["RCC Roof", "Metal Shed", "Ground Mounted", "Not Sure"],
-        areas: ["<500 sq ft", "500–1000 sq ft", "1000–5000 sq ft", "5000+ sq ft"],
-        yesNo: ["Yes", "No"],
-        finProject: ["Residential Rooftop", "Commercial Enterprise", "Industrial Facility"],
-        finBudget: ["Under ₹3 Lakhs", "₹3 Lakhs to ₹7 Lakhs", "Above ₹7 Lakhs"],
-        finModel: ["EMI", "Loan", "CAPEX", "OPEX/PPA"],
-        ciIndustry: ["Manufacturing", "Textiles", "Cold Storage", "Warehousing", "Other Commercial"],
-        ciExpense: ["₹50,000–₹1 Lakh", "₹1 Lakh–₹5 Lakhs", "₹5 Lakhs+"],
-        ciArea: ["1,000–5,000 sq ft", "5,000–10,000 sq ft", "10,000+ sq ft"]
+        main: ["Get a Free Quote", "Request a Site Visit", "Financing", "Maintenance", "Talk to an Expert"]
     },
     hi: {
-        main: ["सोलर समाधान", "साइट विज़िट का अनुरोध करें", "वित्तीय सहायता और रखरखाव", "विशेषज्ञ से बात करें"],
-        keywords: ["सब्सिडी की जानकारी", "नेट मीटरिंग", "आवासीय सेटअप", "वाणिज्यिक सेटअप", "रखरखाव और एएमसी", "वारंटी और जीवन", "मौसम सुरक्षा", "लाइव कनेक्ट करें"],
-        propertyTypes: ["घर", "वाणिज्यिक भवन", "फैक्ट्री/उद्योग", "स्कूल/संस्थान"],
-        bills: ["< ₹2,000", "₹2,000–₹5,000", "₹5,000–₹10,000", "₹10,000+"],
-        roofs: ["आरसीसी छत (RCC)", "मेटल शेड", "ग्राउंड माउंटेड", "पक्का नहीं पता"],
-        areas: ["<500 वर्ग फुट", "500–1000 वर्ग फुट", "1000–5000 वर्ग फुट", "5000+ वर्ग फुट"],
-        yesNo: ["हाँ", "नहीं"],
-        finProject: ["आवासीय छत", "वाणिज्यिक उद्यम", "औद्योगिक सुविधा"],
-        finBudget: ["₹3 लाख से कम", "₹3 लाख से ₹7 लाख", "₹7 लाख से अधिक"],
-        finModel: ["ईएमआई (EMI)", "लोन", "कैपेक्स (CAPEX)", "ओपेक्स (OPEX/PPA)"],
-        ciIndustry: ["विनिर्माण (Manufacturing)", "कपड़ा उद्योग", "कोल्ड स्टोरेज", "गोदाम (Warehousing)", "अन्य वाणिज्यिक"],
-        ciExpense: ["₹50,000–₹1 लाख", "₹1 लाख–₹5 लाख", "₹5 लाख+"],
-        ciArea: ["1,000–5,000 वर्ग फुट", "5,000–10,000 वर्ग फुट", "10,000+ वर्ग फुट"]
+        main: ["मुफ्त कोटेशन प्राप्त करें", "साइट विज़िट का अनुरोध करें", "वित्तीय सहायता", "रखरखाव", "विशेषज्ञ से बात करें"]
     }
 };
 
@@ -248,19 +193,16 @@ document.getElementById("lang-hi")?.addEventListener("click", (e) => {
 
 // Updates the horizontal tab button labels on language shift dynamically
 function updateHorizontalTabsText() {
-    const tab1 = document.getElementById("tab-cost-calc");
-    const tab2 = document.getElementById("tab-savings");
+    const tab1 = document.getElementById("tab-solar-solutions");
     const tab3 = document.getElementById("tab-subsidy");
     const tab4 = document.getElementById("tab-survey");
 
     if (currentLanguage === "en") {
-        if (tab1) tab1.innerHTML = "💰 Cost Calc";
-        if (tab2) tab2.innerHTML = "📈 Savings";
+        if (tab1) tab1.innerHTML = "☀️ Solar Solutions";
         if (tab3) tab3.innerHTML = "📋 Subsidy";
         if (tab4) tab4.innerHTML = "🗓️ Book Survey";
     } else {
-        if (tab1) tab1.innerHTML = "💰 लागत Calc";
-        if (tab2) tab2.innerHTML = "📈 बचत गणना";
+        if (tab1) tab1.innerHTML = "☀️ सोलर समाधान";
         if (tab3) tab3.innerHTML = "📋 सब्सिडी";
         if (tab4) tab4.innerHTML = "🗓️ सर्वे बुक करें";
     }
@@ -270,14 +212,7 @@ function updateHorizontalTabsText() {
 // WELCOME INITIALIZER
 // ==========================================================================
 function initializeWelcomeGreeting() {
-    currentFlow = null;
-    currentStep = 0;
     flowData = {};
-
-    const progressNode = document.getElementById("lead-progress");
-    if (progressNode) {
-        progressNode.classList.add("hidden");
-    }
 
     if (chatBox) chatBox.innerHTML = "";
 
@@ -322,7 +257,7 @@ function initializeWelcomeGreeting() {
     if (chatBox) chatBox.appendChild(botMessageDiv);
 
     // Dynamic vertical menu elements inside chatbox text line are rendered here
-    injectActionMenuButtons(MENUS[currentLanguage].main, false);
+    injectActionMenuButtons(MENUS[currentLanguage].main);
     scrollBottom();
     saveChat();
 }
@@ -344,254 +279,8 @@ if (refreshChat) {
 }
 
 // ==========================================================================
-// SEQUENTIAL STEP FLOWS HANDLING ENGINE
-// ==========================================================================
-function startFlow(flowName) {
-    const estimatorMode = flowName === "SAVINGS_CALC" ? "savings" : "cost";
-    currentFlow = (flowName === "COST_CALC" || flowName === "SAVINGS_CALC") ? "ESTIMATOR" : flowName;
-    currentStep = 1;
-    flowData = currentFlow === "ESTIMATOR" ? { estimatorMode } : {};
-
-    const progressNode = document.getElementById("lead-progress");
-    if (progressNode) progressNode.classList.remove("hidden");
-    updateProgressBar(1, 6);
-
-    if (currentFlow === "ESTIMATOR") {
-        addBotMessage(STRINGS[currentLanguage].est_step1, false);
-        injectActionMenuButtons(MENUS[currentLanguage].propertyTypes, true);
-    } else if (flowName === "FINANCING") {
-        updateProgressBar(1, 3);
-        addBotMessage(STRINGS[currentLanguage].fin_step1, false);
-        injectActionMenuButtons(MENUS[currentLanguage].finProject, true);
-    } else if (flowName === "CI_QUALIFY") {
-        updateProgressBar(1, 5);
-        addBotMessage(STRINGS[currentLanguage].ci_step1, false);
-        injectActionMenuButtons(MENUS[currentLanguage].ciIndustry, true);
-    } else if (flowName === "SITE_VISIT") {
-        updateProgressBar(1, 2);
-        addBotMessage(STRINGS[currentLanguage].site_step1, false);
-        injectActionMenuButtons([], true);
-    }
-}
-
-function handleFlowStep(userInputText) {
-    if (userInputText.includes("Main Menu") || userInputText.includes("मुख्य मेनू")) return;
-
-    showTyping();
-    setTimeout(() => {
-        hideTyping();
-        
-        // FLOW A: SOLAR COST ESTIMATOR
-        if (currentFlow === "ESTIMATOR") {
-            if (currentStep === 1) {
-                flowData.propertyType = userInputText;
-                currentStep = 2;
-                updateProgressBar(2, 6);
-                addBotMessage(STRINGS[currentLanguage].est_step2, false);
-                injectActionMenuButtons([], true);
-            } else if (currentStep === 2) {
-                if (!isJaipurServicePincode(userInputText)) {
-                    addBotMessage(STRINGS[currentLanguage].invalidPincode, false);
-                    injectActionMenuButtons([], true);
-                    return;
-                }
-                flowData.pincode = userInputText.trim();
-                currentStep = 3;
-                updateProgressBar(3, 6);
-                addBotMessage(STRINGS[currentLanguage].est_step3, false);
-                injectActionMenuButtons(MENUS[currentLanguage].bills, true);
-            } else if (currentStep === 3) {
-                flowData.monthlyBill = userInputText;
-                currentStep = 4;
-                updateProgressBar(4, 6);
-                addBotMessage(STRINGS[currentLanguage].est_step4, false);
-                injectActionMenuButtons(MENUS[currentLanguage].roofs, true);
-            } else if (currentStep === 4) {
-                flowData.roofType = userInputText;
-                currentStep = 5;
-                updateProgressBar(5, 6);
-                addBotMessage(STRINGS[currentLanguage].est_step5, false);
-                injectActionMenuButtons(MENUS[currentLanguage].areas, true);
-            } else if (currentStep === 5) {
-                flowData.roofArea = userInputText;
-                currentStep = 6;
-                updateProgressBar(6, 6);
-                addBotMessage(STRINGS[currentLanguage].est_step6, false);
-                injectActionMenuButtons(MENUS[currentLanguage].yesNo, true);
-            } else if (currentStep === 6) {
-                flowData.ownership = userInputText;
-                if (document.getElementById("lead-progress")) {
-                    document.getElementById("lead-progress").classList.add("hidden");
-                }
-                renderEstimatorResults();
-            }
-        }
-        
-        // FLOW B: FINANCING ASSISTANT
-        else if (currentFlow === "FINANCING") {
-            if (currentStep === 1) {
-                flowData.projectType = userInputText;
-                currentStep = 2;
-                updateProgressBar(2, 3);
-                addBotMessage(STRINGS[currentLanguage].fin_step2, false);
-                injectActionMenuButtons(MENUS[currentLanguage].finBudget, true);
-            } else if (currentStep === 2) {
-                flowData.budget = userInputText;
-                currentStep = 3;
-                updateProgressBar(3, 3);
-                addBotMessage(STRINGS[currentLanguage].fin_step3, false);
-                injectActionMenuButtons(MENUS[currentLanguage].finModel, true);
-            } else if (currentStep === 3) {
-                flowData.modelChoice = userInputText;
-                if (document.getElementById("lead-progress")) {
-                    document.getElementById("lead-progress").classList.add("hidden");
-                }
-                renderFinancingOutputs();
-            }
-        }
-
-        // FLOW C: C&I LEAD QUALIFICATION
-        else if (currentFlow === "CI_QUALIFY") {
-            if (currentStep === 1) {
-                flowData.industryType = userInputText;
-                currentStep = 2;
-                updateProgressBar(2, 5);
-                addBotMessage(STRINGS[currentLanguage].ci_step2, false);
-                injectActionMenuButtons([], true);
-            } else if (currentStep === 2) {
-                flowData.connectedLoad = userInputText;
-                currentStep = 3;
-                updateProgressBar(3, 5);
-                addBotMessage(STRINGS[currentLanguage].ci_step3, false);
-                injectActionMenuButtons(MENUS[currentLanguage].ciExpense, true);
-            } else if (currentStep === 3) {
-                flowData.monthlyExpense = userInputText;
-                currentStep = 4;
-                updateProgressBar(4, 5);
-                addBotMessage(STRINGS[currentLanguage].ci_step4, false);
-                injectActionMenuButtons(MENUS[currentLanguage].ciArea, true);
-            } else if (currentStep === 4) {
-                flowData.roofArea = userInputText;
-                currentStep = 5;
-                updateProgressBar(5, 5);
-                addBotMessage(STRINGS[currentLanguage].ci_step5, false);
-                injectActionMenuButtons([], true);
-            } else if (currentStep === 5) {
-                flowData.facilityCount = userInputText;
-                if (document.getElementById("lead-progress")) {
-                    document.getElementById("lead-progress").classList.add("hidden");
-                }
-                renderCIResults();
-            }
-        }
-
-        // FLOW D: SITE VISIT
-        else if (currentFlow === "SITE_VISIT") {
-            if (currentStep === 1) {
-                if (!isJaipurServicePincode(userInputText)) {
-                    addBotMessage(STRINGS[currentLanguage].invalidSurveyPincode, false);
-                    injectActionMenuButtons([], true);
-                    return;
-                }
-                flowData.pincode = userInputText.trim();
-                triggerGatedWall(currentLanguage === "en" ? "Book Site Survey Plan" : "साइट सर्वेक्षण योजना बुक करें");
-            }
-        }
-    }, 600);
-}
-
-// ==========================================================================
 // CORE CALCULATIONS ENGINE
 // ==========================================================================
-function renderEstimatorResults() {
-    let sizeKw = 3; 
-    let baseCost = 180000; 
-    let subsidy = 78000; 
-    let annualGen = 4380; 
-    let monthlySavings = 3000;
-
-    if (flowData.monthlyBill && flowData.monthlyBill.includes("< ₹2,000")) {
-        sizeKw = 2; baseCost = 130000; subsidy = 60000; annualGen = 2920; monthlySavings = 1600;
-    } else if (flowData.monthlyBill && (flowData.monthlyBill.includes("₹2,000–₹5,000") || flowData.monthlyBill.includes("2,000"))) {
-        sizeKw = 4; baseCost = 240000; subsidy = 78000; annualGen = 5840; monthlySavings = 4000;
-    } else if (flowData.monthlyBill && (flowData.monthlyBill.includes("₹5,000–₹10,000") || flowData.monthlyBill.includes("5,000"))) {
-        sizeKw = 7; baseCost = 410000; subsidy = 78000; annualGen = 10220; monthlySavings = 7500;
-    } else if (flowData.monthlyBill && flowData.monthlyBill.includes("10,000")) {
-        sizeKw = 10; baseCost = 550000; subsidy = 78000; annualGen = 14600; monthlySavings = 11000;
-    }
-
-    if (flowData.roofArea && (flowData.roofArea.includes("<500") || flowData.roofArea.includes("500 वर्ग")) && sizeKw > 4) {
-        if (currentLanguage === "en") {
-            addBotMessage(`⚠️ <strong>Roof Constraints Identified:</strong> Your consumption requires a ${sizeKw}kW system, but your area fits up to 4kW. Our team will optimize placement using satellite mapping.`, false);
-        } else {
-            addBotMessage(`⚠️ <strong>छत की बाधाएं पहचानी गईं:</strong> आपकी खपत के लिए ${sizeKw}kW सिस्टम की आवश्यकता है, लेकिन आपके क्षेत्र में केवल 4kW तक ही आ सकता है। हमारी टीम सैटेलाइट मैपिंग का उपयोग करके प्लेसमेंट को अनुकूलित करेगी।`, false);
-        }
-        sizeKw = 4;
-    }
-
-    let netCost = baseCost - subsidy;
-    let paybackYears = (netCost / (monthlySavings * 12)).toFixed(1);
-
-    let p = netCost;
-    let r = 7.99 / 12 / 100;
-    let n = 36;
-    let emiResult = Math.round((p * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1));
-
-    let outputHtml = "";
-    if (currentLanguage === "en") {
-        if (flowData.estimatorMode === "savings") {
-            outputHtml = `
-📈 <strong>Your Soltech Savings Estimate:</strong><br><br>
-• <strong>Target Coverage Pincode:</strong> ${flowData.pincode || "N/A"}<br>
-• <strong>Recommended System Size:</strong> ${sizeKw} kWp<br>
-• <strong>Expected Annual Generation:</strong> ${annualGen} Units (kWh)<br>
-• <strong>Monthly Savings Estimate:</strong> ₹${monthlySavings.toLocaleString()}<br>
-• <strong>Estimated Annual Savings:</strong> ₹${(monthlySavings * 12).toLocaleString()}<br>
-• <strong>Approx Payback Period:</strong> ~${paybackYears} Years<br><br>
-For an exact savings report, our team can verify your bill pattern and roof conditions.
-`;
-        } else {
-            outputHtml = `
-📊 <strong>Your Custom Soltech System Design Blueprint:</strong><br><br>
-• <strong>Target Coverage Pincode:</strong> ${flowData.pincode || "N/A"}<br>
-• <strong>Recommended System Size:</strong> ${sizeKw} kWp<br>
-• <strong>Estimated Project Cost (Gross):</strong> ₹${baseCost.toLocaleString()}<br>
-• <strong>Government Subsidy Benefit:</strong> -₹${subsidy.toLocaleString()}<br>
-• <strong style="color: #2e7d32;">Net Cost Investment:</strong> ₹${netCost.toLocaleString()}<br>
-• <strong>Estimated Cost Per kWp:</strong> ₹${Math.round(baseCost / sizeKw).toLocaleString()}<br><br>
-For final pricing, Soltech should verify roof access, shadow-free area, structure type, and net-metering requirements.
-`;
-        }
-    } else {
-        if (flowData.estimatorMode === "savings") {
-            outputHtml = `
-📈 <strong>आपका सॉलटेक बचत अनुमान:</strong><br><br>
-• <strong>लक्ष्य कवरेज पिनकोड:</strong> ${flowData.pincode || "N/A"}<br>
-• <strong>अनुशंसित सिस्टम आकार:</strong> ${sizeKw} kWp<br>
-• <strong>अपेक्षित वार्षिक उत्पादन:</strong> ${annualGen} यूनिट्स (kWh)<br>
-• <strong>मासिक बचत अनुमान:</strong> ₹${monthlySavings.toLocaleString()}<br>
-• <strong>वार्षिक बचत अनुमान:</strong> ₹${(monthlySavings * 12).toLocaleString()}<br>
-• <strong>अनुमानित पेबैक अवधि:</strong> ~${paybackYears} वर्ष<br><br>
-सटीक बचत रिपोर्ट के लिए हमारी टीम आपके बिल पैटर्न और छत की स्थिति सत्यापित कर सकती है।
-`;
-        } else {
-            outputHtml = `
-📊 <strong>आपका कस्टम सॉलटेक सिस्टम डिज़ाइन ब्लूप्रिंट:</strong><br><br>
-• <strong>लक्ष्य कवरेज पिनकोड:</strong> ${flowData.pincode || "N/A"}<br>
-• <strong>अनुशंसित सिस्टम आकार:</strong> ${sizeKw} kWp<br>
-• <strong>अनुमानित परियोजना लागत (Gross):</strong> ₹${baseCost.toLocaleString()}<br>
-• <strong>सरकारी सब्सिडी लाभ:</strong> -₹${subsidy.toLocaleString()}<br>
-• <strong style="color: #2e7d32;">शुद्ध लागत निवेश (Net Cost):</strong> ₹${netCost.toLocaleString()}<br>
-• <strong>अनुमानित लागत प्रति kWp:</strong> ₹${Math.round(baseCost / sizeKw).toLocaleString()}<br><br>
-अंतिम कीमत के लिए सॉलटेक को छत की पहुंच, छाया-मुक्त क्षेत्र, संरचना प्रकार और नेट-मीटरिंग आवश्यकताओं की जांच करनी होगी।
-`;
-        }
-    }
-
-    addBotMessage(outputHtml, false);
-    injectGatedActionCTAs();
-}
-
 function renderFinancingOutputs() {
     let outputHtml = "";
     if (currentLanguage === "en") {
@@ -623,12 +312,122 @@ To book a live system demo and download the technical loan structure brochure, t
     injectGatedActionCTAs();
 }
 
-function showSubsidyInfo() {
-    currentFlow = null;
-    currentStep = 0;
+// ==========================================================================
+// TOP TAB ENTRY POINTS
+// Each wrapper echoes the tab click into the chat as a user message, then
+// triggers the relevant response, so the action is always visible in the
+// conversation history.
+// ==========================================================================
+function openSolarSolutionsTab() {
+    addUserMessage(currentLanguage === "en" ? "Solar Solutions" : "सोलर समाधान");
+    showSolarSolutionsOptions();
+}
+window.openSolarSolutionsTab = openSolarSolutionsTab;
+
+function openSubsidyTab() {
+    addUserMessage(currentLanguage === "en" ? "Subsidy" : "सब्सिडी");
+    showSubsidyInfo();
+}
+window.openSubsidyTab = openSubsidyTab;
+
+function openBookSurveyTab() {
+    addUserMessage(currentLanguage === "en" ? "Book Survey" : "सर्वे बुक करें");
+    openSiteVisitDirect();
+}
+window.openBookSurveyTab = openBookSurveyTab;
+
+// Shared by the Book Survey tab and the "Request a Site Visit" main-menu
+// button — both go straight to the lead form, no questions first.
+function openSiteVisitDirect() {
     flowData = {};
-    const progressNode = document.getElementById("lead-progress");
-    if (progressNode) progressNode.classList.add("hidden");
+    triggerGatedWall(currentLanguage === "en" ? "Book Site Survey Plan" : "साइट सर्वेक्षण योजना बुक करें");
+}
+
+function showSolarSolutionsOptions() {
+    flowData = {};
+
+    const promptText = currentLanguage === "en"
+        ? "Please select the type of property:"
+        : "कृपया संपत्ति का प्रकार चुनें:";
+    const msgDiv = addBotMessage(promptText, false, true);
+    injectSolarTypeButtons();
+    scrollToElement(msgDiv);
+}
+
+function injectSolarTypeButtons() {
+    document.querySelectorAll(".quick-actions-wrapper").forEach(el => el.remove());
+
+    const wrapper = document.createElement("div");
+    wrapper.className = "quick-actions-wrapper";
+
+    const resLabel = currentLanguage === "en" ? "Residential" : "आवासीय";
+    const comLabel = currentLanguage === "en" ? "Commercial" : "वाणिज्यिक";
+
+    const resBtn = document.createElement("button");
+    resBtn.className = "quick-btn";
+    resBtn.innerText = resLabel;
+    resBtn.onclick = () => {
+        addUserMessage(resLabel);
+        wrapper.remove();
+        showHomeSolarInfo();
+    };
+
+    const comBtn = document.createElement("button");
+    comBtn.className = "quick-btn";
+    comBtn.innerText = comLabel;
+    comBtn.onclick = () => {
+        addUserMessage(comLabel);
+        wrapper.remove();
+        showCommercialSolarInfo();
+    };
+
+    const back = document.createElement("button");
+    back.className = "quick-btn back-btn";
+    back.innerHTML = STRINGS[currentLanguage].mainMenuBtn;
+    back.onclick = () => returnToMainMenu();
+
+    wrapper.appendChild(resBtn);
+    wrapper.appendChild(comBtn);
+    wrapper.appendChild(back);
+    if (chatBox) chatBox.appendChild(wrapper);
+}
+
+function showHomeSolarInfo() {
+    flowData = {};
+
+    const msgDiv = addBotMessage(STRINGS[currentLanguage].homeSolarInfo, false, true);
+    injectGatedActionCTAs();
+    scrollToElement(msgDiv);
+}
+window.showHomeSolarInfo = showHomeSolarInfo;
+
+function showCommercialSolarInfo() {
+    flowData = {};
+
+    const msgDiv = addBotMessage(STRINGS[currentLanguage].commercialSolarInfo, false, true);
+    injectGatedActionCTAs();
+    scrollToElement(msgDiv);
+}
+window.showCommercialSolarInfo = showCommercialSolarInfo;
+
+function showFinancingInfo() {
+    flowData = {};
+
+    renderFinancingOutputs();
+}
+window.showFinancingInfo = showFinancingInfo;
+
+function showMaintenanceInfo() {
+    flowData = {};
+
+    const msgDiv = addBotMessage(STRINGS[currentLanguage].maintenanceInfo, false, true);
+    injectGatedActionCTAs();
+    scrollToElement(msgDiv);
+}
+window.showMaintenanceInfo = showMaintenanceInfo;
+
+function showSubsidyInfo() {
+    flowData = {};
 
     const outputHtml = currentLanguage === "en" ? `
 📋 <strong>Solar Subsidy Guidance for Jaipur Homes:</strong><br><br>
@@ -644,7 +443,7 @@ To check your exact eligibility, verify your details and our team will map it ag
 अपनी सही eligibility जांचने के लिए details verify करें, हमारी टीम आपके Jaipur pincode और project type के हिसाब से check करेगी।
 `;
 
-    addBotMessage(outputHtml, false);
+    const msgDiv = addBotMessage(outputHtml, false, true);
     const wrap = document.createElement("div");
     wrap.className = "quick-actions-wrapper";
 
@@ -663,37 +462,7 @@ To check your exact eligibility, verify your details and our team will map it ag
     wrap.appendChild(verify);
     wrap.appendChild(main);
     if (chatBox) chatBox.appendChild(wrap);
-    scrollBottom();
-}
-
-function renderCIResults() {
-    let impliedLoad = parseFloat(flowData.connectedLoad) || 50;
-    let potentialSize = Math.round(impliedLoad * 0.8);
-    let annualSavingsEst = potentialSize * 1450 * 8.5;
-    let carbonSavedTons = (potentialSize * 1450 * 0.00082).toFixed(1);
-
-    let outputHtml = "";
-    if (currentLanguage === "en") {
-        outputHtml = `
-🏭 <strong>Corporate C&I Asset Feasibility Estimates:</strong><br><br>
-• <strong>Potential System Size Allocation:</strong> Up to ${potentialSize} kWp grid-tied asset installation.<br>
-• <strong>Annual Savings Estimate:</strong> Approx ₹${Math.round(annualSavingsEst).toLocaleString()} per annum.<br>
-• <strong>Accelerated Depreciation Asset Benefit:</strong> Up to 40% taxable write-off allowances in Year 1 allocation profiles.<br>
-• <strong>Carbon Reduction Estimate:</strong> Net reduction of <strong>${carbonSavedTons} Metric Tons of CO2</strong> annually.<br><br>
-Unlock full case study portfolios and trigger automated engineering calculations by submitting your verification logs.
-`;
-    } else {
-        outputHtml = `
-🏭 <strong>कॉर्पोरेट C&I एसेट व्यवहार्यता अनुमान:</strong><br><br>
-• <strong>संभावित सिस्टम आकार आवंटन:</strong> ${potentialSize} kWp ग्रिड-टाइड एसेट इंस्टॉलेशन तक।<br>
-• <strong>वार्षिक बचत अनुमान:</strong> लगभग ₹${Math.round(annualSavingsEst).toLocaleString()} प्रति वर्ष।<br>
-• <strong>त्वरित मूल्यह्रास संपत्ति लाभ (Tax Benefit):</strong> पहले वर्ष में 40% तक कर छूट की अनुमति।<br>
-• <strong>कार्बन कमी का अनुमान:</strong> सालाना <strong>${carbonSavedTons} मीट्रिक टन CO2</strong> की शुद्ध कमी।<br><br>
-अपने सत्यापन लॉग सबमिट करके पूर्ण केस स्टडी पोर्टफोलियो अनलॉक करें और स्वचालित इंजीनियरिंग गणना शुरू करें।
-`;
-    }
-    addBotMessage(outputHtml, false);
-    injectGatedActionCTAs();
+    scrollToElement(msgDiv);
 }
 
 // ==========================================================================
@@ -752,6 +521,7 @@ function triggerGatedWall(actionContextName) {
             <input type="text" id="gated-name" placeholder="${STRINGS[currentLanguage].placeholderName}" autocomplete="off" />
             <input type="tel" id="gated-phone" placeholder="${STRINGS[currentLanguage].placeholderPhone}" autocomplete="off" inputmode="numeric" maxlength="10" pattern="[6-9][0-9]{9}" style="margin-top:8px;" oninput="this.value = this.value.replace(/\\D/g, '').slice(0, 10);" />
             <input type="text" id="gated-company" placeholder="${STRINGS[currentLanguage].placeholderCompany}" autocomplete="off" style="margin-top:8px;" />
+            <input type="text" id="gated-pincode" placeholder="${STRINGS[currentLanguage].placeholderPincode}" autocomplete="off" inputmode="numeric" maxlength="6" style="margin-top:8px;" oninput="this.value = this.value.replace(/\\D/g, '').slice(0, 6);" />
             <div style="display:flex; gap:8px; margin-top:12px;">
                 <button class="verify-btn" onclick="submitLeadForm()" style="flex:1;">${STRINGS[currentLanguage].btnVerify}</button>
                 <button class="quick-btn back-btn" onclick="returnToMainMenu()" style="margin:0; font-size:12px;">${STRINGS[currentLanguage].btnCancel}</button>
@@ -767,6 +537,7 @@ function submitLeadForm() {
     const nameVal = document.getElementById("gated-name")?.value.trim();
     const phoneVal = document.getElementById("gated-phone")?.value.trim();
     const companyVal = document.getElementById("gated-company")?.value.trim();
+    const pincodeVal = document.getElementById("gated-pincode")?.value.trim();
 
     if (!nameVal || !phoneVal) {
         alert(STRINGS[currentLanguage].reqAlert);
@@ -783,13 +554,13 @@ function submitLeadForm() {
     flowData.clientName = nameVal;
     flowData.clientPhone = phoneVal;
     flowData.clientCompany = companyVal || "N/A";
+    flowData.pincode = pincodeVal || "";
 
     const payload = {
         name: flowData.clientName,
         phone: flowData.clientPhone,
         company: flowData.clientCompany,
         pincode: flowData.pincode || CRM_SETTINGS.DefaultLeadLocation,
-        system_size_kw: flowData.propertyType || "Undetermined",
         action_context: flowData.pendingContextAction,
         language: currentLanguage
     };
@@ -819,17 +590,29 @@ function submitLeadForm() {
 // ==========================================================================
 // RENDERING ELEMENT UTILITIES
 // ==========================================================================
-function addBotMessage(text, isMenuOptionClick) {
+function addBotMessage(text, isMenuOptionClick, scrollToTop) {
     const div = document.createElement("div");
     div.className = "bot-message";
     div.innerHTML = `<div class="message-content">${text}</div>`;
     if (chatBox) chatBox.appendChild(div);
-    scrollBottom();
+    if (scrollToTop) {
+        scrollToElement(div);
+    } else {
+        scrollBottom();
+    }
     saveChat();
+    return div;
+}
+
+// Scrolls the chat box so the given message starts at the top of the
+// visible area, instead of jumping to the bottom of the conversation.
+function scrollToElement(el) {
+    if (chatBox && el) {
+        chatBox.scrollTop = Math.max(0, el.offsetTop - 8);
+    }
 }
 
 // Global scope access wrapper to trigger sub-header horizontal element routes safely
-window.startFlow = startFlow;
 window.triggerGatedWall = triggerGatedWall;
 window.showSubsidyInfo = showSubsidyInfo;
 
@@ -842,7 +625,7 @@ function addUserMessage(text) {
     saveChat();
 }
 
-function injectActionMenuButtons(optionsArray, isFlowActive) {
+function injectActionMenuButtons(optionsArray) {
     document.querySelectorAll(".quick-actions-wrapper").forEach(el => el.remove());
 
     const wrapper = document.createElement("div");
@@ -855,43 +638,18 @@ function injectActionMenuButtons(optionsArray, isFlowActive) {
         btn.onclick = () => {
             addUserMessage(opt);
             wrapper.remove();
-            
-            if (!isFlowActive) {
-                // Route generic landing entries
-                if (opt.includes("Estimate") || opt.includes("लागत का अनुमान")) startFlow("COST_CALC");
-                else if (opt.includes("Savings") || opt.includes("बचत की गणना")) startFlow("SAVINGS_CALC");
-                else if (opt.includes("Residential") || opt.includes("आवासीय")) startFlow("COST_CALC");
-                else if (opt.includes("Commercial") || opt.includes("वाणिज्यिक")) startFlow("CI_QUALIFY");
-                else if (opt.includes("Industries") || opt.includes("उद्योगों")) startFlow("CI_QUALIFY");
-                else if (opt.includes("Visit") || opt.includes("विज़िट")) startFlow("SITE_VISIT");
-                else if (opt.includes("Financing") || opt.includes("वित्तीय")) startFlow("FINANCING");
-                else triggerGatedWall("Direct Expert Consultation Request");
-            } else {
-                handleFlowStep(opt);
-            }
+
+            // Route main-menu entries to their direct response
+            if (opt.includes("Visit") || opt.includes("विज़िट")) openSiteVisitDirect();
+            else if (opt.includes("Financing") || opt.includes("वित्तीय")) showFinancingInfo();
+            else if (opt.includes("Maintenance") || opt.includes("रखरखाव")) showMaintenanceInfo();
+            else triggerGatedWall("Direct Expert Consultation Request");
         };
         wrapper.appendChild(btn);
     });
 
-    // Append main menu baseline escape key if deep inside a configuration path
-    if (isFlowActive) {
-        const back = document.createElement("button");
-        back.className = "quick-btn back-btn";
-        back.innerHTML = STRINGS[currentLanguage].mainMenuBtn;
-        back.onclick = () => returnToMainMenu();
-        wrapper.appendChild(back);
-    }
-
     if (chatBox) chatBox.appendChild(wrapper);
     scrollBottom();
-}
-
-function updateProgressBar(step, total) {
-    const bar = document.getElementById("progress-bar-fill");
-    if (bar) {
-        const percentage = Math.round((step / total) * 100);
-        bar.style.width = `${percentage}%`;
-    }
 }
 
 function showTyping() {
@@ -922,17 +680,13 @@ if (sendBtn && userInput) {
         if (!text) return;
         userInput.value = "";
         addUserMessage(text);
-        
-        if (currentFlow) {
-            handleFlowStep(text);
-        } else {
-            showTyping();
-            setTimeout(() => {
-                hideTyping();
-                addBotMessage(STRINGS[currentLanguage].fallbackResponse, false);
-                injectGatedActionCTAs();
-            }, 800);
-        }
+
+        showTyping();
+        setTimeout(() => {
+            hideTyping();
+            addBotMessage(STRINGS[currentLanguage].fallbackResponse, false);
+            injectGatedActionCTAs();
+        }, 800);
     };
     sendBtn.addEventListener("click", handleInput);
     userInput.addEventListener("keypress", (e) => { if (e.key === "Enter") handleInput(); });
@@ -940,9 +694,12 @@ if (sendBtn && userInput) {
 
 // Clean tab labels after the UI refreshes language state.
 updateHorizontalTabsText = function() {
-    const labels = [
-        ["tab-cost-calc", "fa-calculator", "Cost Calc"],
-        ["tab-savings", "fa-chart-line", "Savings"],
+    const labels = currentLanguage === "hi" ? [
+        ["tab-solar-solutions", "fa-solar-panel", "सोलर समाधान"],
+        ["tab-subsidy", "fa-file-invoice", "सब्सिडी"],
+        ["tab-survey", "fa-calendar-check", "सर्वे बुक करें"]
+    ] : [
+        ["tab-solar-solutions", "fa-solar-panel", "Solar Solutions"],
         ["tab-subsidy", "fa-file-invoice", "Subsidy"],
         ["tab-survey", "fa-calendar-check", "Book Survey"]
     ];
