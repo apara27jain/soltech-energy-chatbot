@@ -37,6 +37,14 @@ function openWhatsAppChat() {
     link.remove();
 }
 
+function openBrochureWhatsApp() {
+    const phoneNumber = String(CRM_SETTINGS.WhatsAppNumber).replace(/\D/g, "");
+    const message = encodeURIComponent("Send me the brochure");
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
+
+    window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+}
+
 function isValidIndianMobile(phone) {
     return /^[6-9]\d{9}$/.test(phone);
 }
@@ -60,7 +68,7 @@ const STRINGS = {
         btnCancel: "↩️ Cancel & Return to Main Menu",
         reqAlert: "Name and Phone Number are strictly required fields.",
         leadSuccess: "✅ <strong>Thank you, {name}.</strong> Your request has been verified and processed by Soltech.",
-        accessGranted: "🎉 <strong>Access Granted:</strong> <a href='#' onclick=\"alert('Starting your Soltech technical brochure download...'); return false;\" class='download-link'>Click here to download the brochure file</a>.",
+        accessGranted: "📄 <a href='#' onclick=\"openBrochureWhatsApp(); return false;\" class='download-link'>Download Brochure</a>",
         teamConnect: "📞 Our engineering team will connect with you shortly at <strong>{phone}</strong> to conduct your live system demo.",
         fallbackResponse: "🤖 For custom engineering schematics, precise Soltech project breakdowns, or fast JVVNL approvals, connect with our desk directly via the options below:",
 
