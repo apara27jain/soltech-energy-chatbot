@@ -2,10 +2,9 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const dotenv = require("dotenv");
-const path = require("path"); // Import the built-in path module
 
 // Explicitly point to the .env file in the current directory
-dotenv.config({ path: path.resolve(__dirname, ".env") });
+dotenv.config();
 
 const app = express();
 
