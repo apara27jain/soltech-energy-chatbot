@@ -20,7 +20,7 @@ const CRM_SETTINGS = {
     WhatsAppNumber: "918239573979",
     InitialHiMessage: "Hi! I want to check solar details for my property.",
     DefaultLeadLocation: "Jaipur",
-    LeadStorageWebhook: "https://soltechenergy.co.in/api/leads"
+    LeadStorageWebhook: "https://soltech-energy-chatbot.onrender.com/api/leads"
 };
 
 function openWhatsAppChat() {
