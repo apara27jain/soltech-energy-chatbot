@@ -5,8 +5,7 @@ const Lead = require("../models/Lead");
 // POST /api/leads - save a new lead submitted from the chatbot
 router.post("/", async (req, res) => {
     try {
-        const { name, phone, company, pincode, action_context, language } = req.body;
-
+        const { name, phone, company, pincode, monthly_bill, action_context, language } = req.body;
         if (!name || !phone) {
             return res.status(400).json({ error: "Name and phone are required." });
         }
@@ -16,6 +15,7 @@ router.post("/", async (req, res) => {
             phone,
             company,
             pincode,
+            monthly_bill,
             action_context,
             language
         });
