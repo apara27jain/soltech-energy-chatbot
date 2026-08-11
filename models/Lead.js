@@ -21,6 +21,10 @@ const leadSchema = new mongoose.Schema(
             type: String,
             trim: true
         },
+        monthly_bill: {
+            type: String,
+            trim: true
+        },
         action_context: {
             type: String,
             trim: true
